@@ -1,6 +1,6 @@
 rule kallisto_build_index:
     input:
-        resolve_single_filepath(*references_abs_path('transcriptome_reference'), config.get("transcriptome_fasta"))
+        resolve_single_filepath(*references_abs_path(ref='transcriptome_reference'), config.get("transcriptome_fasta"))
     output: "kallisto/index/transcriptome.kidx.transcripts"
     conda:
         "envs/kallisto_build_index.yaml"
