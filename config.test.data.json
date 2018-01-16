@@ -39,7 +39,8 @@
       "version": 90
     },
     "featureCounts_run": {
-      "gtf_feature_type": "exon"
+      "gtf_feature_type": "exon",
+      "gtf_attribute_type": "gene_id",
     }
   }
 }

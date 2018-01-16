@@ -55,7 +55,7 @@ rule star_map:
 rule featureCounts_run:
     input:
         lambda wildcards: config["samples"][wildcards.sample],
-        "star/{sample}/Aligned.sortedByCoord.out.bam"
+        bam="star/{sample}/Aligned.sortedByCoord.out.bam"
     output:
         "star/{sample}/count/{sample}_counts.cnt"
     conda:
@@ -65,6 +65,7 @@ rule featureCounts_run:
          gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
                                     config.get("genes_gtf")),
          gtf_feature_type=config.get("rules").get("featureCounts_run").get("gtf_feature_type"),
+         gtf_attribute_type=config.get("rules").get("featureCounts_run").get("gtf_attribute_type"),
     threads: pipeline_cpu_count()
     script:
          "scripts/featureCounts_script.py"
