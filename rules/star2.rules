@@ -52,24 +52,19 @@ rule star_map:
         "--outFileNamePrefix {output.out2} "
         "2> {log} "
 
-rule HTSeq_run:
+rule featureCounts_run:
     input:
+        lambda wildcards: config["samples"][wildcards.sample],
         "star/{sample}/Aligned.sortedByCoord.out.bam"
     output:
-        "star/{sample}/count/{sample}_htseq.cnt"
+        "star/{sample}/count/{sample}_counts.cnt"
     conda:
-        "envs/htseq.yaml"
-    log:
-        "star/{sample}/log/{sample}_htseq_count.log"
+        "envs/featureCounts.yaml"
     params:
+         cmd="featureCounts",
          gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
                                     config.get("genes_gtf")),
-         strand=config['strand'],
-    shell:
-         "htseq-count "
-         "-m intersection-nonempty "
-         "--stranded={params.strand} "
-         "--idattr gene_id "
-         "-r pos "
-         "-f bam "
-         "{input} {params.gtf} > {output} 2> {log}"
+         gtf_feature_type=config.get("rules").get("featureCounts_run").get("gtf_feature_type"),
+    threads: pipeline_cpu_count()
+    script:
+         "scripts/featureCounts_script.py"
