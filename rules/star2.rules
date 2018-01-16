@@ -70,6 +70,6 @@ rule HTSeq_run:
          "-m intersection-nonempty "
          "--stranded={params.strand} "
          "--idattr gene_id "
-         "-r name "
+         "-r pos "
          "-f bam "
          "{input} {params.gtf} > {output} 2> {log}"
