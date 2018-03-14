@@ -10,7 +10,7 @@
     "provider": "ensembl",
     "release": "GRCh38"
   },
-  "transcriptome_fasta": "Homo_sapiens.cdna.all.fa.gz",
+  "transcriptome_fasta": "Homo_sapiens.GRCh38.cdna.all.fa.gz",
   "genes_reference": {
     "basepath": "path_to_references_data",
     "provider": "ucsc",
@@ -40,7 +40,7 @@
     },
     "featureCounts_run": {
       "gtf_feature_type": "exon",
-      "gtf_attribute_type": "gene_id",
+      "gtf_attribute_type": "gene_id"
     }
   }
 }
