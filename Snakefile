@@ -7,7 +7,7 @@ rule all:
         # Kallisto+Sleuth workflow
         "kallisto/DEGS/gene_table.txt",
         # Star+htseq workflow
-        expand("star/{sample}/count/{sample}_htseq.cnt", sample=config.get('samples')),
+        expand("star/{sample}/count/{sample}_counts.cnt", sample=config.get('samples')),
 
 
 
