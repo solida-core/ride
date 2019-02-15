@@ -1,3 +1,11 @@
+references:
+    basepath: "path_to_references_data"
+    provider: "_provider_"
+    release: "_release_"
+
+genome_fasta: "_genome_fasta_"
+
+
 {
   "genome_reference": {
     "basepath": "path_to_references_data",

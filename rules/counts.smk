@@ -4,7 +4,7 @@ rule HTSeq_run:
     output:
         "star/{sample}/count/{sample}_counts.cnt"
     conda:
-        "envs/htseq.yaml"
+        "../envs/htseq.yaml"
     log:
         "star/{sample}/log/{sample}_htseq_count.log"
     params:
