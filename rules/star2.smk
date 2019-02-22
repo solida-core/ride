@@ -20,6 +20,7 @@ rule star_build_index:
           "--sjdbGTFfile {params.gtf} "
           "--sjdbOverhang 100"
 
+
 rule star_map:
     input:
         lambda wildcards: config["samples"][wildcards.sample],
