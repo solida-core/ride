@@ -1,19 +1,18 @@
 rule bowtie2_build_index:
     input:
-        resolve_single_filepath(*references_abs_path(ref='genome_reference'),
-                                config.get("genome_fasta"))
+        resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     output:
         touch("bowtie2_index_ready"),
-        genome="{label}.fa".format(label=get_references_label(ref='genome_reference'))
+        genome="{label}.fa".format(label=get_references_label())
     conda:
-        "envs/bowtie2.yaml"
+        "../envs/bowtie2.yaml"
     params:
-        label=get_references_label(ref='genome_reference')
+        label=get_references_label()
     threads: pipeline_cpu_count()
     shell:
         "rsync -av {input} {output.genome} "
         "&& bowtie2-build "
-        "--threads {threads} "
+#        "--threads {threads} "
         "--large-index "
         "{output.genome} {params.label} "
 
@@ -26,10 +25,10 @@ rule tophat_paired:
     output:
         "mapped/{sample}/accepted_hits.bam"
     conda:
-        "envs/tophat2.yaml"
+        "../envs/tophat2.yaml"
     params:
         outdir="mapped/{sample}/",
-	label=get_references_label(ref='genome_reference')
+        label=get_references_label()
     shadow: "shallow"
     threads: pipeline_cpu_count(reserve_cpu=10)
     shell:

@@ -1,16 +1,15 @@
 references:
     basepath: "path_to_references_data"
-    provider: "_provider_"
-    release: "_release_"
-
-genome_fasta: "_genome_fasta_"
-
-
-genome_reference:
-    basepath: "path_to_references_data"
     provider: "ucsc"
     release: "hg19"
 genome_fasta: "ucsc.hg19.fasta"
+
+rseqc_reference:
+    basepath: "path_to_references_data"
+    provider: "rseqc"
+    release: "hg19"
+housekeeping: "hg19.HouseKeepingGenes.bed"
+refseq: "hg19_RefSeq.bed"
 
 transcriptome_reference:
     basepath: "path_to_references_data"

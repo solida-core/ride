@@ -29,7 +29,7 @@ rule star_map:
         out1="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam",
 
     conda:
-        "envs/star2.yaml"
+        "../envs/star2.yaml"
     params:
         genomedir = 'star/index',
         sample = "de",
@@ -44,7 +44,7 @@ rule star_map:
         "--runMode alignReads "
         "--genomeDir {params.genomedir} "
         r" --outSAMattrRGline  ID:{params.sample} SM:{params.sample} PL:{params.platform}  PU:{params.platform} CN:{params.center} "
-        "--readFilesIn {input} "
+        "--readFilesIn {input[0]} "
         "--readFilesCommand zcat "
         "--outStd Log "
         "--outSAMunmapped Within "
@@ -62,7 +62,7 @@ rule featureCounts_run:
     output:
         "star/{sample}/count/{sample}_counts.cnt"
     conda:
-        "envs/featureCounts.yaml"
+        "../envs/featureCounts.yaml"
     params:
          cmd="featureCounts",
          gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
@@ -80,7 +80,7 @@ rule samtools_index:
     output:
         "star/{sample}/{sample}.Aligned.sortedByCoord.out.bam.bai"
     conda:
-        "envs/samtools.yaml"
+        "../envs/samtools.yaml"
     benchmark:
         "benchmarks/samtools/index/{sample}.txt"
     shell:

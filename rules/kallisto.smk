@@ -3,7 +3,7 @@ rule kallisto_build_index:
         resolve_single_filepath(*references_abs_path(ref='transcriptome_reference'), config.get("transcriptome_fasta"))
     output: "kallisto/index/transcriptome.kidx.transcripts"
     conda:
-        "envs/kallisto_build_index.yaml"
+        "../envs/kallisto_build_index.yaml"
     shell:
         "kallisto index -i {output} {input}"
 
@@ -17,15 +17,24 @@ rule kallisto_quant:
         "kallisto/{sample}/abundance.tsv",
         "kallisto/{sample}/run_info.json"
     conda:
-        "envs/kallisto_quant.yaml"
+        "../envs/kallisto_quant.yaml"
     threads: pipeline_cpu_count()
+    log:
+        "log/kallisto/{sample}.kallisto_quant.log"
     shell:
         "kallisto quant "
         "-i {input.index} "
+        "--single "
         "-b 30 "
+        "-l 280 "
+        "-s 80 "
         "-o {output[0]} "
         "-t {threads} "
-        "{input[0]} {input[1]}"
+        "{input[0]} "
+        ">& {log}"
+
+
+
 
 rule sleuth_run:
    input:
@@ -38,7 +47,7 @@ rule sleuth_run:
        sleuth_table="kallisto/DEGS/sleuth_table.txt"
 
    conda:
-       "envs/sleuth_run.yaml"
+       "../envs/sleuth_run.yaml"
    params:
        classes=lambda wildcards, input: ",".join(config.get('classes').keys()),
        class1=lambda wildcards, input: ",".join(config.get('classes').get('C1')),

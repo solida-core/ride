@@ -1,0 +1,8 @@
+channels:
+  - bioconda
+dependencies:
+  - r-base=3.4.1
+  - python=3.6
+  - pip
+  - pip:
+     - rseqc==3.0.0

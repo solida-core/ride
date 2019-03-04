@@ -5,7 +5,7 @@ rule assembly:
         'assembly/{sample}/transcripts.gtf',
         dir='assembly/{sample}'
     conda:
-        "envs/cufflinks.yaml"
+        "../envs/cufflinks.yaml"
     params:
         genome="{label}.fa".format(label=get_references_label(ref='genome_reference'))
     threads: pipeline_cpu_count()
@@ -28,9 +28,9 @@ rule merge_assemblies:
     output:
         'assembly/merged/merged.gtf', dir='assembly/merged'
     conda:
-        "envs/cufflinks.yaml"
+        "../envs/cufflinks.yaml"
     params:
-        genome="{label}.fa".format(label=get_references_label(ref='genome_reference'))
+        genome="{label}.fa".format(label=get_references_label())
     shell:
         'cuffmerge -o {output.dir} -s {params.genome} {input}'
 
@@ -41,9 +41,9 @@ rule compare_assemblies:
         'assembly/comparison/all.stats',
         dir='assembly/comparison'
     conda:
-        "envs/cufflinks.yaml"
+        "../envs/cufflinks.yaml"
     params:
-        genome="{label}.fa".format(label=get_references_label(ref='genome_reference')),
+        genome="{label}.fa".format(label=get_references_label()),
         gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
                                     config.get("genes_gtf"))
     shell:

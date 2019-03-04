@@ -4,7 +4,7 @@ rule rseqc_bam_stat:
     output:
         "rseqc/{sample}/{sample}.bam_stat.txt"
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     shell:
         "bam_stat.py "
         "-i {input} "
@@ -18,9 +18,10 @@ rule rseqc_genebody_coverage:
         "rseqc/{sample}/{sample}.geneBodyCoverage.txt"
     params:
         out_basename="rseqc/{sample}/{sample}",
-        ref="/ELS/els9/users/biosciences/references/rseqc/hg19.HouseKeepingGenes.bed"
+#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19.HouseKeepingGenes.bed"
+        ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("housekeeping"))
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     log:
         "logs/rseqc/genebody_coverage/{sample}_genebodycoverage.log"
     shell:
@@ -38,9 +39,10 @@ rule rseqc_junction_annotation:
         out="rseqc/{sample}/{sample}.junction.txt"
     params:
         out_basename="rseqc/{sample}/{sample}",
-        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+        ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     shell:
         "junction_annotation.py "
         "-r {params.ref} "
@@ -56,9 +58,10 @@ rule rseqc_junction_saturation:
         plotr="rseqc/{sample}/{sample}.junctionSaturation_plot.r"
     params:
         out_basename="rseqc/{sample}/{sample}",
-        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+        ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     log:
         "rseqc/{sample}/{sample}.junctionSaturation.txt"
     shell:
@@ -78,7 +81,7 @@ rule rseqc_GC:
     params:
         out_basename="rseqc/{sample}/{sample}"
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     shell:
         "read_GC.py "
         "-i {input.bam} "
@@ -91,9 +94,10 @@ rule rseqc_read_distribution:
     output:
         "rseqc/{sample}/{sample}.read_distribution.txt"
     params:
-        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+        ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     shell:
         "read_distribution.py "
         "-r {params.ref} "
@@ -108,9 +112,10 @@ rule rseqc_infer_experiment:
     output:
         "rseqc/{sample}/{sample}.infer_experiment.txt"
     params:
-        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+        ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     shell:
         "infer_experiment.py "
         "-r {params.ref} "
@@ -127,7 +132,7 @@ rule rseqc_read_duplication:
     params:
         out_basename="rseqc/{sample}/{sample}"
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     shell:
         "read_duplication.py "
         "-i {input.bam} "
@@ -141,11 +146,12 @@ rule rseqc_RPKM_saturation:
         out1="rseqc/{sample}/{sample}.saturation.pdf"
     params:
         out_basename="rseqc/{sample}/{sample}",
-        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
+        ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     log:
         "log/rseqc/{sample}.RPKM_saturation.log"
     conda:
-        "envs/rseqc.yaml"
+        "../envs/rseqc.yaml"
     shell:
         "RPKM_saturation.py "
         "-r {params.ref} "
