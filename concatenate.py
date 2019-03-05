@@ -28,10 +28,6 @@ class App(object):
     def run(self):
         with open(self.input_file, "r") as inputfile:
             data = yaml.load(inputfile.read())
-
-        print(len(data['samples']))
-        print(len(data['units']))
-
         reads = {}
         for sample, units in data['samples'].items():
             reads[sample] = {'R1': [],
@@ -39,7 +35,6 @@ class App(object):
             for unit in units:
                 for f in data['units'][unit]:
                     reads[sample][self.get_read_pair(f)].append(f)
-
         new_samples = {}
         for s, pairs in reads.items():
             cmd = ['cat']
@@ -56,14 +51,11 @@ class App(object):
         # subprocess.run(' '.join(cmd), shell=True)
             workdir = os.getcwd()
             new_samples[s] = workdir + '/' + self.folder + '/{}_R1.fastq.gz'.format(s)
-
         yaml_template = 'config.template.yaml'
         with open(yaml_template, "r") as inputfile:
             new_data = yaml.load(inputfile.read())
-
         new_data['samples'] = new_samples
         print(new_data)
-
         yaml_project = 'config.project.{}.yaml'.format(self.project)
         with open(yaml_project, "w") as outfile:
             yaml.dump(new_data, outfile, indent=4)
@@ -73,7 +65,7 @@ def make_parser():
     parser = argparse.ArgumentParser(description='Prepare file for pipeline')
 
     parser.add_argument('--input_file', '-i', type=str, required=True,
-                        help='tsv input file')
+                        help='yaml input file')
 
     parser.add_argument('--folder', '-f', metavar="PATH", required=True,
                         help="destination folder for merged fastq files")
