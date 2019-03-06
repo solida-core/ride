@@ -3,6 +3,7 @@ references:
     provider: "ucsc"
     release: "hg19"
 genome_fasta: "ucsc.hg19.fasta"
+genes_gtf: "Annotation/Genes/genes.gtf"
 
 rseqc_reference:
     basepath: "path_to_references_data"
@@ -16,12 +17,6 @@ transcriptome_reference:
     provider: "ensembl"
     release: "GRCh38"
 transcriptome_fasta: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
-
-genes_reference:
-    basepath: "path_to_references_data"
-    provider: "ucsc"
-    release: "hg19"
-genes_gtf: "Annotation/Genes/genes.gtf"
 
 strand": "reverse"
 

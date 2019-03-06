@@ -8,7 +8,7 @@ rule HTSeq_run:
     log:
         "star/{sample}/log/{sample}_htseq_count.log"
     params:
-         gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
+         gtf=resolve_single_filepath(*references_abs_path(),
                                     config.get("genes_gtf")),
          strand=config['strand'],
     shell:
