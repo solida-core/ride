@@ -12,10 +12,11 @@ rule kallisto_quant:
         lambda wildcards: config["samples"][wildcards.sample],
         index=rules.kallisto_build_index.output
     output:
-        "kallisto/{sample}",
         "kallisto/{sample}/abundance.h5",
         "kallisto/{sample}/abundance.tsv",
         "kallisto/{sample}/run_info.json"
+    params:
+        "kallisto/{sample}"
     conda:
         "../envs/kallisto_quant.yaml"
     threads: pipeline_cpu_count()
@@ -28,7 +29,7 @@ rule kallisto_quant:
         "-b 30 "
         "-l 280 "
         "-s 80 "
-        "-o {output[0]} "
+        "-o {params} "
         "-t {threads} "
         "{input[0]} "
         ">& {log}"

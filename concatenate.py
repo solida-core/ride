@@ -43,7 +43,7 @@ class App(object):
             cmd = ['cat']
             for p in pairs['R1']:
                  cmd.append(p)
-            cmd.append('>' + self.folder + '/{}_R1.fastq.gz'.format(s))
+            cmd.append('>' + self.folder + '{}_R1.fastq.gz'.format(s))
             print(cmd)
             subprocess.run(' '.join(cmd), shell=True)
             cmd = ['cat']
@@ -53,7 +53,7 @@ class App(object):
             print(cmd)
             #subprocess.run(' '.join(cmd), shell=True)
             workdir = os.getcwd()
-            new_samples[s] = workdir + '/' + self.folder + '/{}_R1.fastq.gz'.format(s)
+            new_samples[s] = workdir + '/' + self.folder + '{}_R1.fastq.gz'.format(s)
         yaml_template = 'config.template.yaml'
         with open(yaml_template, "r") as inputfile:
             new_data = yaml.full_load(inputfile.read())

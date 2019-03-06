@@ -1,21 +1,21 @@
 rule star_build_index:
     input:
-        resolve_single_filepath(*references_abs_path(ref='genome_reference'),
+        resolve_single_filepath(*references_abs_path(),
                                 config.get("genome_fasta"))
     output:
-          genomeDir='star/index',
+
           length='star/index/chrLength.txt'
     conda:
-        "envs/star2.yaml"
+        "../envs/star2.yaml"
     params:
-        gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
-                                    config.get("genes_gtf"))
+        gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'), config.get("genes_gtf")),
+        genomeDir='star/index'
     threads: pipeline_cpu_count()
     shell:
           "STAR "
           "--runMode genomeGenerate "
           "--runThreadN {threads} "
-          "--genomeDir {output.genomeDir} "
+          "--genomeDir {params.genomeDir} "
           "--genomeFastaFiles {input} "
           "--sjdbGTFfile {params.gtf} "
           "--sjdbOverhang 100"

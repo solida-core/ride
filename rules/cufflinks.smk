@@ -7,7 +7,7 @@ rule assembly:
     conda:
         "../envs/cufflinks.yaml"
     params:
-        genome="{label}.fa".format(label=get_references_label(ref='genome_reference'))
+        genome="{label}.fa".format(label=get_references_label())
     threads: pipeline_cpu_count()
     shell:
         'cufflinks --num-threads {threads} -o {output.dir} '
