@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
 import os
-import yaml
 import sys
 import shlex, subprocess
 import argparse
+subprocess.run("pip install oyaml", shell=True)
+import oyaml as yaml
+
+
 
 
 class App(object):
@@ -27,7 +30,7 @@ class App(object):
 
     def run(self):
         with open(self.input_file, "r") as inputfile:
-            data = yaml.load(inputfile.read())
+            data = yaml.full_load(inputfile.read())
         reads = {}
         for sample, units in data['samples'].items():
             reads[sample] = {'R1': [],
@@ -48,12 +51,14 @@ class App(object):
                 cmd.append(p)
             cmd.append('>' + self.folder + '/{}_R2.fastq.gz'.format(s))
             print(cmd)
-        # subprocess.run(' '.join(cmd), shell=True)
+            #subprocess.run(' '.join(cmd), shell=True)
             workdir = os.getcwd()
             new_samples[s] = workdir + '/' + self.folder + '/{}_R1.fastq.gz'.format(s)
         yaml_template = 'config.template.yaml'
         with open(yaml_template, "r") as inputfile:
-            new_data = yaml.load(inputfile.read())
+            new_data = yaml.full_load(inputfile.read())
+            print(new_data)
+            print("#######################")
         new_data['samples'] = new_samples
         print(new_data)
         yaml_project = 'config.project.{}.yaml'.format(self.project)
