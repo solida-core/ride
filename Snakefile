@@ -1,3 +1,7 @@
+include:
+    "rules/functions.py"
+
+
 
 rule all:
     input:
@@ -27,16 +31,14 @@ rule all:
 include_prefix="rules"
 
 include:
-    include_prefix + "/functions.py"
-include:
     include_prefix + "/kallisto.smk"
 include:
     include_prefix + "/tophat.smk"
 include:
     include_prefix + "/cufflinks.smk"
 include:
-    include_prefix + "/notify.smk"
-include:
     include_prefix + "/star2.smk"
 include:
     include_prefix + "/rseqc.smk"
+include:
+    include_prefix + "/qc.smk"

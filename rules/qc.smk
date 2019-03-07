@@ -1,8 +1,6 @@
 
 rule multiqc:
     input:
-multiqc -m kallisto -m star -m rseqc ...
-
          expand("rseqc/{sample}/{sample}.bam_stat.txt", sample=config.get('samples')),
          expand("rseqc/{sample}/{sample}.geneBodyCoverage.txt", sample=config.get('samples')),
          expand("rseqc/{sample}/{sample}.junction.txt", sample=config.get('samples')),

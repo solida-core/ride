@@ -1,10 +1,9 @@
+
 rule star_build_index:
     input:
-        resolve_single_filepath(*references_abs_path(),
-                                config.get("genome_fasta"))
+        resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     output:
-
-          length='star/index/chrLength.txt'
+        length='star/index/chrLength.txt'
     conda:
         "../envs/star2.yaml"
     params:
@@ -12,13 +11,13 @@ rule star_build_index:
         genomeDir='star/index'
     threads: pipeline_cpu_count()
     shell:
-          "STAR "
-          "--runMode genomeGenerate "
-          "--runThreadN {threads} "
-          "--genomeDir {params.genomeDir} "
-          "--genomeFastaFiles {input} "
-          "--sjdbGTFfile {params.gtf} "
-          "--sjdbOverhang 100"
+        "STAR "
+        "--runMode genomeGenerate "
+        "--runThreadN {threads} "
+        "--genomeDir {params.genomeDir} "
+        "--genomeFastaFiles {input} "
+        "--sjdbGTFfile {params.gtf} "
+        "--sjdbOverhang 100"
 
 
 rule star_map:
@@ -27,7 +26,7 @@ rule star_map:
         length=rules.star_build_index.output.length
     output:
         out1="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam",
-
+        out2="star/{sample}/{sample}.Log.final.out"
     conda:
         "../envs/star2.yaml"
     params:
@@ -64,14 +63,14 @@ rule featureCounts_run:
     conda:
         "../envs/featureCounts.yaml"
     params:
-         cmd="featureCounts",
-         gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
+        cmd="featureCounts",
+        gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
                                     config.get("genes_gtf")),
-         gtf_feature_type=config.get("rules").get("featureCounts_run").get("gtf_feature_type"),
-         gtf_attribute_type=config.get("rules").get("featureCounts_run").get("gtf_attribute_type"),
+        gtf_feature_type=config.get("rules").get("featureCounts_run").get("gtf_feature_type"),
+        gtf_attribute_type=config.get("rules").get("featureCounts_run").get("gtf_attribute_type"),
     threads: pipeline_cpu_count()
     script:
-         "scripts/featureCounts_script.py"
+        "scripts/featureCounts_script.py"
 
 
 rule samtools_index:
