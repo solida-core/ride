@@ -39,6 +39,8 @@ rules:
         database: "ensembl"
         dataset: "hsapiens_gene_ensembl"
         version: 90
+    multiqc:
+        arguments: "--force "
 
     featureCounts_run:
         gtf_feature_type: "exon"

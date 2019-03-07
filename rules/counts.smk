@@ -6,7 +6,7 @@ rule HTSeq_run:
     conda:
         "../envs/htseq.yaml"
     log:
-        "star/{sample}/log/{sample}_htseq_count.log"
+        "logs/star/{sample}/{sample}_htseq_count.log"
     params:
          gtf=resolve_single_filepath(*references_abs_path(),
                                     config.get("genes_gtf")),

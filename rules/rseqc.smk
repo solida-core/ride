@@ -39,7 +39,6 @@ rule rseqc_junction_annotation:
         out="rseqc/{sample}/{sample}.junction.txt"
     params:
         out_basename="rseqc/{sample}/{sample}",
-#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
         ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
         "../envs/rseqc.yaml"
@@ -58,7 +57,6 @@ rule rseqc_junction_saturation:
         plotr="rseqc/{sample}/{sample}.junctionSaturation_plot.r"
     params:
         out_basename="rseqc/{sample}/{sample}",
-#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
         ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
         "../envs/rseqc.yaml"
@@ -94,7 +92,6 @@ rule rseqc_read_distribution:
     output:
         "rseqc/{sample}/{sample}.read_distribution.txt"
     params:
-#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
         ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
         "../envs/rseqc.yaml"
@@ -112,7 +109,6 @@ rule rseqc_infer_experiment:
     output:
         "rseqc/{sample}/{sample}.infer_experiment.txt"
     params:
-#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
         ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     conda:
         "../envs/rseqc.yaml"
@@ -146,10 +142,9 @@ rule rseqc_RPKM_saturation:
         out1="rseqc/{sample}/{sample}.saturation.pdf"
     params:
         out_basename="rseqc/{sample}/{sample}",
-#        ref="/ELS/els9/users/biosciences/references/rseqc/hg19_RefSeq.bed"
         ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))
     log:
-        "log/rseqc/{sample}.RPKM_saturation.log"
+        "logs/rseqc/{sample}.RPKM_saturation.log"
     conda:
         "../envs/rseqc.yaml"
     shell:

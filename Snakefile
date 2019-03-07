@@ -19,6 +19,7 @@ rule all:
         expand("rseqc/{sample}/{sample}.infer_experiment.txt", sample=config.get('samples')),
         expand("rseqc/{sample}/{sample}.pos.DupRate.xls", sample=config.get('samples')),
         expand("rseqc/{sample}/{sample}.saturation.pdf", sample=config.get('samples')),
+        "qc/multiqc.html"
         # Star+htseq workflow
 #        expand("star/{sample}/count/{sample}_counts.cnt", sample=config.get('samples')),
 

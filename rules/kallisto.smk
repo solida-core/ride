@@ -21,7 +21,7 @@ rule kallisto_quant:
         "../envs/kallisto_quant.yaml"
     threads: pipeline_cpu_count()
     log:
-        "log/kallisto/{sample}.kallisto_quant.log"
+        "logs/kallisto/{sample}.kallisto_quant.log"
     shell:
         "kallisto quant "
         "-i {input.index} "
