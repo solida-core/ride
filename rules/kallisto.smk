@@ -9,7 +9,7 @@ rule kallisto_build_index:
 
 rule kallisto_quant:
     input:
-        lambda wildcards: config["samples"][wildcards.sample],
+        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
         index=rules.kallisto_build_index.output
     output:
         "kallisto/{sample}/abundance.h5",

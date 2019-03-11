@@ -1,6 +1,9 @@
 
 rule multiqc:
     input:
+         expand("qc/untrimmed_{sample}.html", sample=config.get('samples')),
+         expand("qc/trimmed_{sample}.html", sample=config.get('samples')),
+         expand("reads/trimmed/{sample}-R1.fq.gz_trimming_report.txt", sample=config.get('samples')),
          expand("rseqc/{sample}/{sample}.bam_stat.txt", sample=config.get('samples')),
          expand("rseqc/{sample}/{sample}.geneBodyCoverage.txt", sample=config.get('samples')),
          expand("rseqc/{sample}/{sample}.junction.txt", sample=config.get('samples')),
@@ -28,3 +31,27 @@ rule multiqc:
         "-o {params.outdir} "
         "-n {params.outname} "
         ">& {log}"
+
+rule fastqc:
+    input:
+       "reads/{sample}-R1.fq.gz"
+    output:
+        html="qc/untrimmed_{sample}.html",
+        zip="qc/untrimmed_{sample}_fastqc.zip"
+    log:
+        "logs/fastqc/{sample}.log"
+    params: ""
+    wrapper:
+        config.get("wrappers").get("fastqc")
+
+rule fastqc_trimmed:
+    input:
+       "reads/trimmed/{sample}-R1-trimmed.fq.gz"
+    output:
+        html="qc/trimmed_{sample}.html",
+        zip="qc/trimmed_{sample}_fastqc.zip"
+    log:
+        "logs/fastqc/{sample}.log"
+    params: ""
+    wrapper:
+        config.get("wrappers").get("fastqc")

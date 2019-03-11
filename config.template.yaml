@@ -41,7 +41,13 @@ rules:
         version: 90
     multiqc:
         arguments: "--force "
-
     featureCounts_run:
         gtf_feature_type: "exon"
         gtf_attribute_type: "gene_id"
+    trim_galore_pe:
+        arguments: "-q 20"
+
+
+wrappers:
+    fastqc: "fastqc_wrapper"
+    trim_galore: "trim_galore_wrapper"

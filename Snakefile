@@ -14,15 +14,15 @@ rule all:
         # Star
         expand("star/{sample}/{sample}.Aligned.sortedByCoord.out.bam", sample=config.get('samples')),
         # Rseqc
-        expand("rseqc/{sample}/{sample}.bam_stat.txt", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.geneBodyCoverage.txt", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.junction.txt", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.junctionSaturation_plot.r", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.GC.xls", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.read_distribution.txt", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.infer_experiment.txt", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.pos.DupRate.xls", sample=config.get('samples')),
-        expand("rseqc/{sample}/{sample}.saturation.pdf", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.bam_stat.txt", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.geneBodyCoverage.txt", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.junction.txt", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.junctionSaturation_plot.r", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.GC.xls", sample=config.get('samples')),
+##        expand("rseqc/{sample}/{sample}.read_distribution.txt", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.infer_experiment.txt", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.pos.DupRate.xls", sample=config.get('samples')),
+#        expand("rseqc/{sample}/{sample}.saturation.pdf", sample=config.get('samples')),
         "qc/multiqc.html"
         # Star+htseq workflow
 #        expand("star/{sample}/count/{sample}_counts.cnt", sample=config.get('samples')),
@@ -42,3 +42,5 @@ include:
     include_prefix + "/rseqc.smk"
 include:
     include_prefix + "/qc.smk"
+include:
+    include_prefix + "/trimming.smk"

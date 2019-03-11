@@ -22,7 +22,7 @@ rule star_build_index:
 
 rule star_map:
     input:
-        lambda wildcards: config["samples"][wildcards.sample],
+        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
         length=rules.star_build_index.output.length
     output:
         out1="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam",
@@ -56,7 +56,7 @@ rule star_map:
 
 rule featureCounts_run:
     input:
-        lambda wildcards: config["samples"][wildcards.sample],
+        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
         bam="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
     output:
         "star/{sample}/count/{sample}_counts.cnt"
