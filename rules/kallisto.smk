@@ -16,7 +16,8 @@ rule kallisto_quant:
         "kallisto/{sample}/abundance.tsv",
         "kallisto/{sample}/run_info.json"
     params:
-        "kallisto/{sample}"
+        outdir="kallisto/{sample}",
+        params=config.get("rules").get("kallisto").get("arguments")
     conda:
         "../envs/kallisto_quant.yaml"
     threads: pipeline_cpu_count()
@@ -29,7 +30,8 @@ rule kallisto_quant:
         "-b 30 "
         "-l 280 "
         "-s 80 "
-        "-o {params} "
+        "-o {params.outdir} "
+        "{params.params} "
         "-t {threads} "
         "{input[0]} "
         ">& {log}"
