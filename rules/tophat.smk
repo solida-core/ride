@@ -18,7 +18,7 @@ rule bowtie2_build_index:
 
 rule tophat_paired:
     input:
-        lambda wildcards: config["samples"][wildcards.sample],
+        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
         index_ready="bowtie2_index_ready",
         gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
                                     config.get("genes_gtf"))
