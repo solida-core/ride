@@ -3,7 +3,7 @@ rule pre_rename_fastq_pe:
     input:
         r1=lambda wildcards: config["samples"][wildcards.sample]
     output:
-        r1=temp("reads/{sample}-R1.fq.gz")
+        r1="reads/untrimmed/{sample}-R1.fq.gz"
     shell:
         "ln -s {input.r1} {output.r1}"
 
@@ -28,7 +28,7 @@ rule post_rename_fastq_pe:
     input:
         r1="reads/trimmed/{sample}-R1_val_1.fq.gz"
     output:
-        r1=temp("reads/trimmed/{sample}-R1-trimmed.fq.gz")
+        r1="reads/trimmed/{sample}-R1-trimmed.fq.gz"
     shell:
         "mv {input.r1} {output.r1}"
 

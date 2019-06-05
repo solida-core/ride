@@ -1,9 +1,9 @@
 
 rule multiqc:
     input:
-         expand("qc/untrimmed_{sample}.html", sample=config.get('samples')),
-         expand("qc/trimmed_{sample}.html", sample=config.get('samples')),
-         expand("qc/trimmed_{sample}.fastq_screen.txt", sample=config.get('samples')),
+         expand("qc/fastqc/untrimmed_{sample}.html", sample=config.get('samples')),
+         expand("qc/fastqc/trimmed_{sample}.html", sample=config.get('samples')),
+         expand("qc/fastqcscreen/trimmed_{sample}.fastq_screen.txt", sample=config.get('samples')),
          expand("reads/trimmed/{sample}-R1.fq.gz_trimming_report.txt", sample=config.get('samples')),
          expand("rseqc/{sample}/{sample}.bam_stat.txt", sample=config.get('samples')),
          expand("rseqc/{sample}/{sample}.geneBodyCoverage.txt", sample=config.get('samples')),
@@ -35,12 +35,12 @@ rule multiqc:
 
 rule fastqc:
     input:
-       "reads/{sample}-R1.fq.gz"
+       "reads/untrimmed/{sample}-R1.fq.gz"
     output:
-        html="qc/untrimmed_{sample}.html",
-        zip="qc/untrimmed_{sample}_fastqc.zip"
+        html="qc/fastqc/untrimmed_{sample}.html",
+        zip="qc/fastqc/untrimmed_{sample}_fastqc.zip"
     log:
-        "logs/fastqc/{sample}.log"
+        "logs/fastqc/untrimmed/{sample}.log"
     params: ""
     wrapper:
         config.get("wrappers").get("fastqc")
@@ -49,10 +49,10 @@ rule fastqc_trimmed:
     input:
        "reads/trimmed/{sample}-R1-trimmed.fq.gz"
     output:
-        html="qc/trimmed_{sample}.html",
-        zip="qc/trimmed_{sample}_fastqc.zip"
+        html="qc/fastqc/trimmed_{sample}.html",
+        zip="qc/fastqc/trimmed_{sample}_fastqc.zip"
     log:
-        "logs/fastqc/{sample}.log"
+        "logs/fastqc/trimmed/{sample}.log"
     params: ""
     wrapper:
         config.get("wrappers").get("fastqc")
@@ -62,10 +62,10 @@ rule fastq_screen:
     input:
         "reads/trimmed/{sample}-R1-trimmed.fq.gz"
     output:
-        png="qc/trimmed_{sample}.fastq_screen.png",
-        txt="qc/trimmed_{sample}.fastq_screen.txt",
-        html="qc/trimmed_{sample}.fastq_screen.html",
-        filtered_fastq="qc/trimmed_{sample}.fastq_screen.filtered.fastq"
+        png="qc/fastqscreen/trimmed_{sample}.fastq_screen.png",
+        txt="qc/fastqscreen/trimmed_{sample}.fastq_screen.txt",
+        html="qc/fastqscreen/trimmed_{sample}.fastq_screen.html",
+        filtered_fastq="qc/fastqscreen/trimmed_{sample}.fastq_screen.filtered.fastq"
     conda:
         "../envs/fastq_screen.yaml"
     params:
