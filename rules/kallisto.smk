@@ -41,8 +41,8 @@ rule kallisto_quant:
 
 rule sleuth_run:
    input:
-       expand("kallisto/{sample}/abundance.h5", sample=config.get('samples')),
-       expand("kallisto/{sample}/abundance.tsv", sample=config.get('samples'))
+       expand("kallisto/{sample}/abundance.h5", sample=samples.reset_index().itertuples()),
+       expand("kallisto/{sample}/abundance.tsv", sample=samples.reset_index().itertuples())
    output:
        dir="kallisto",
        gene_table="kallisto/DEGS/gene_table.txt",

@@ -1,20 +1,20 @@
 
 rule multiqc:
     input:
-         expand("qc/fastqc/untrimmed_{sample}.html", sample=config.get('samples')),
-         expand("qc/fastqc/trimmed_{sample}.html", sample=config.get('samples')),
-         expand("qc/fastqcscreen/trimmed_{sample}.fastq_screen.txt", sample=config.get('samples')),
-         expand("reads/trimmed/{sample}-R1.fq.gz_trimming_report.txt", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.bam_stat.txt", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.geneBodyCoverage.txt", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.junction.txt", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.junctionSaturation_plot.r", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.GC.xls", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.read_distribution.txt", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.infer_experiment.txt", sample=config.get('samples')),
-         expand("rseqc/{sample}/{sample}.pos.DupRate.xls", sample=config.get('samples')),
-         expand("star/{sample}/{sample}.Log.final.out", sample=config.get('samples')),
-         expand("logs/kallisto/{sample}.kallisto_quant.log", sample=config.get('samples'))
+         expand("qc/fastqc/untrimmed_{sample.sample}.html", sample=samples.reset_index().itertuples()),
+         expand("qc/fastqc/trimmed_{sample.sample}.html", sample=samples.reset_index().itertuples()),
+         # expand("qc/fastqcscreen/trimmed_{sample.sample}.fastq_screen.txt", sample=samples.reset_index().itertuples()),
+         expand("reads/trimmed/{sample.sample}-R1.fq.gz_trimming_report.txt", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.bam_stat.txt", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.geneBodyCoverage.txt", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.junction.txt", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.junctionSaturation_plot.r", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.GC.xls", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.read_distribution.txt", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.infer_experiment.txt", sample=samples.reset_index().itertuples()),
+         expand("rseqc/{sample.sample}/{sample.sample}.pos.DupRate.xls", sample=samples.reset_index().itertuples()),
+         expand("star/{sample.sample}/{sample.sample}.Log.final.out", sample=samples.reset_index().itertuples()),
+         expand("logs/kallisto/{sample.sample}.kallisto_quant.log", sample=samples.reset_index().itertuples())
     output:
         "qc/multiqc.html"
     params:

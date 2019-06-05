@@ -1,6 +1,22 @@
+import pandas as pd
+from snakemake.utils import validate, min_version
+##### set minimum snakemake version #####
+min_version("5.1.2")
+
+
+##### load config and sample sheets #####
+#configfile: "config.yaml"
+
+## USER FILES ##
+samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
+## ---------- ##
+
+
+
+
+
 include:
     "rules/functions.py"
-
 
 
 rule all:
@@ -10,9 +26,9 @@ rule all:
 #        'diffexp/isoform_exp.diff',
         # Kallisto+Sleuth workflow
 #        "kallisto/DEGS/gene_table.txt",
-        expand("kallisto/{sample}/abundance.tsv", sample=config.get('samples')),
+        expand("kallisto/{sample.sample}/abundance.tsv", sample=samples.reset_index().itertuples()),
         # Star
-        expand("star/{sample}/{sample}.Aligned.sortedByCoord.out.bam", sample=config.get('samples')),
+        expand("star/{sample.sample}/{sample.sample}.Aligned.sortedByCoord.out.bam", sample=samples.reset_index().itertuples()),
         # Rseqc
 #        expand("rseqc/{sample}/{sample}.bam_stat.txt", sample=config.get('samples')),
 #        expand("rseqc/{sample}/{sample}.geneBodyCoverage.txt", sample=config.get('samples')),
