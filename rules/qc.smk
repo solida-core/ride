@@ -58,34 +58,34 @@ rule fastqc_trimmed:
         config.get("wrappers").get("fastqc")
 
 
-rule fastq_screen:
-    input:
-        "reads/trimmed/{sample}-R1-trimmed.fq.gz"
-    output:
-        png="qc/fastqscreen/trimmed_{sample}.fastq_screen.png",
-        txt="qc/fastqscreen/trimmed_{sample}.fastq_screen.txt",
-        html="qc/fastqscreen/trimmed_{sample}.fastq_screen.html",
-        filtered_fastq="qc/fastqscreen/trimmed_{sample}.fastq_screen.filtered.fastq"
-    conda:
-        "../envs/fastq_screen.yaml"
-    params:
-        params=config.get("rules").get("fastq_screen").get("params"),
-        config_file=config.get("rules").get("fastq_screen").get("config_file"),
-        prefix=lambda wildcards: wildcards.sample
-    threads: pipeline_cpu_count()
-    shell:
-        "fastq_screen  "
-        "{params.params} "
-        "--conf {params.config_file} "
-        "--threads {threads} "
-        "{input[0]} "
-        "&& find ./ -name {params.prefix}*_screen.txt -type f -print0 | xargs -0 -I file mv " \
-        "file {output.txt} ;"
-        "find ./ -name {params.prefix}*_screen.png -type f -print0 | xargs -0 -I file mv " \
-        "file {output.png} ;"
-        "find ./ -name {params.prefix}*_screen.html -type f -print0 | xargs -0 -I file mv " \
-        "file {output.html} ;"
-        "find ./ -name {params.prefix}*.tagged_filter.fastq -type f -print0 | xargs -0 -I file mv " \
-        "file {output.filtered_fastq} "
-
-
+# rule fastq_screen:
+#     input:
+#         "reads/trimmed/{sample}-R1-trimmed.fq.gz"
+#     output:
+#         png="qc/fastqscreen/trimmed_{sample}.fastq_screen.png",
+#         txt="qc/fastqscreen/trimmed_{sample}.fastq_screen.txt",
+#         html="qc/fastqscreen/trimmed_{sample}.fastq_screen.html",
+#         filtered_fastq="qc/fastqscreen/trimmed_{sample}.fastq_screen.filtered.fastq"
+#     conda:
+#         "../envs/fastq_screen.yaml"
+#     params:
+#         params=config.get("rules").get("fastq_screen").get("params"),
+#         config_file=config.get("rules").get("fastq_screen").get("config_file"),
+#         prefix=lambda wildcards: wildcards.sample
+#     threads: pipeline_cpu_count()
+#     shell:
+#         "fastq_screen  "
+#         "{params.params} "
+#         "--conf {params.config_file} "
+#         "--threads {threads} "
+#         "{input[0]} "
+#         "&& find ./ -name {params.prefix}*_screen.txt -type f -print0 | xargs -0 -I file mv " \
+#         "file {output.txt} ;"
+#         "find ./ -name {params.prefix}*_screen.png -type f -print0 | xargs -0 -I file mv " \
+#         "file {output.png} ;"
+#         "find ./ -name {params.prefix}*_screen.html -type f -print0 | xargs -0 -I file mv " \
+#         "file {output.html} ;"
+#         "find ./ -name {params.prefix}*.tagged_filter.fastq -type f -print0 | xargs -0 -I file mv " \
+#         "file {output.filtered_fastq} "
+#
+#
