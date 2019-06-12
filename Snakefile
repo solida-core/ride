@@ -28,7 +28,9 @@ rule all:
         expand("star/{sample.sample}/{sample.sample}.Aligned.sortedByCoord.out.bam", sample=samples.reset_index().itertuples()),
         # Rseqc
         expand("rseqc/{sample.sample}/{sample.sample}.saturation.pdf", sample=samples.reset_index().itertuples()),
-        "qc/multiqc.html"
+        "qc/multiqc.html",
+        expand("star/{sample.sample}/count/{sample.sample}_featurecounts.cnt",sample=samples.reset_index().itertuples()),
+        expand("star/{sample.sample}/count/{sample.sample}_HTSeqcounts.cnt",sample=samples.reset_index().itertuples()),
 
 
 include_prefix="rules"
@@ -41,5 +43,16 @@ include:
     include_prefix + "/rseqc.smk"
 include:
     include_prefix + "/qc.smk"
+if config.get("read_type")=="se":
+    include:
+        include_prefix + "/trimming_se.smk"
+    include:
+        include_prefix + "/qc_se.smk"
+else:
+    include:
+        include_prefix + "/trimming_pe.smk"
+    include:
+        include_prefix + "/qc_pe.smk"
+
 include:
-    include_prefix + "/trimming.smk"
+    include_prefix + "/reads_feature_count.smk"

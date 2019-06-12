@@ -3,13 +3,28 @@ rule kallisto_build_index:
         resolve_single_filepath(*references_abs_path(ref='transcriptome_reference'), config.get("transcriptome_fasta"))
     output: "kallisto/index/transcriptome.kidx.transcripts"
     conda:
-        "../envs/kallisto_build_index.yaml"
+        "../envs/kallisto.yaml"
     shell:
         "kallisto index -i {output} {input}"
 
+
+
+
+
+def fastq_input(r1):
+    if config.get("read_type")=="se":
+        return r1
+    else:
+        r2=r1.replace("-R1-", "-R2-")
+        reads=[r1,r2]
+        return " ".join(reads)
+
+
+
+
 rule kallisto_quant:
     input:
-        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
+        fastq_input("reads/trimmed/{sample}-R1-trimmed.fq.gz"),
         index=rules.kallisto_build_index.output
     output:
         "kallisto/{sample}/abundance.h5",
@@ -17,19 +32,16 @@ rule kallisto_quant:
         "kallisto/{sample}/run_info.json"
     params:
         outdir="kallisto/{sample}",
-        params=config.get("rules").get("kallisto").get("arguments")
+        params=config.get("rules").get("kallisto").get("arguments" if config.get("read_type"=="pe") else "arguments_se"),
+        #read_type=config.get("rules").get("kallisto").get("read_type")
     conda:
-        "../envs/kallisto_quant.yaml"
+        "../envs/kallisto.yaml"
     threads: pipeline_cpu_count()
     log:
         "logs/kallisto/{sample}.kallisto_quant.log"
     shell:
         "kallisto quant "
         "-i {input.index} "
-        "--single "
-        "-b 30 "
-        "-l 280 "
-        "-s 80 "
         "-o {params.outdir} "
         "{params.params} "
         "-t {threads} "
@@ -41,8 +53,8 @@ rule kallisto_quant:
 
 rule sleuth_run:
    input:
-       expand("kallisto/{sample}/abundance.h5", sample=samples.reset_index().itertuples()),
-       expand("kallisto/{sample}/abundance.tsv", sample=samples.reset_index().itertuples())
+       expand("kallisto/{sample.sample}/abundance.h5", sample=samples.reset_index().itertuples()),
+       expand("kallisto/{sample.sample}/abundance.tsv", sample=samples.reset_index().itertuples())
    output:
        dir="kallisto",
        gene_table="kallisto/DEGS/gene_table.txt",

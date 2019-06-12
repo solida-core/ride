@@ -20,9 +20,18 @@ rule star_build_index:
         "--sjdbOverhang 100"
 
 
+def fastq_input(r1):
+    if config.get("read_type")=="se":
+        return r1
+    else:
+        r2=r1.replace("-R1-", "-R2-")
+        reads=[r1,r2]
+        return " ".join(reads)
+
+
 rule star_map:
     input:
-        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
+        fastq_input("reads/trimmed/{sample}-R1-trimmed.fq.gz"),
         length=rules.star_build_index.output.length
     output:
         out1="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam",
@@ -54,23 +63,6 @@ rule star_map:
         "--outFileNamePrefix {params.out_basename} "
         "2> {log} "
 
-rule featureCounts_run:
-    input:
-        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
-        bam="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
-    output:
-        "star/{sample}/count/{sample}_counts.cnt"
-    conda:
-        "../envs/featureCounts.yaml"
-    params:
-        cmd="featureCounts",
-        gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
-                                    config.get("genes_gtf")),
-        gtf_feature_type=config.get("rules").get("featureCounts_run").get("gtf_feature_type"),
-        gtf_attribute_type=config.get("rules").get("featureCounts_run").get("gtf_attribute_type"),
-    threads: pipeline_cpu_count()
-    script:
-        "scripts/featureCounts_script.py"
 
 
 rule samtools_index:

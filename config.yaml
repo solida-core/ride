@@ -32,7 +32,10 @@ rules:
         gtf_attribute_type: "gene_id"
     kallisto:
         arguments: ""
+        arguments_se: "--single -b 30 -l 280 -s 80 "
     trim_galore_pe:
+        arguments: "-q 20"
+    trim_galore_se:
         arguments: "-q 20"
     fastq_screen:
         params: "--force --aligner bowtie2 --subset 100000 --nohits"
@@ -40,6 +43,9 @@ rules:
 
 wrappers:
     fastqc: "fastqc_wrapper"
-    trim_galore: "trim_galore_se_wrapper"
-
+    trim_galore_se: "trim_galore_se_wrapper"
+    trim_galore_pe: "trim_galore_pe_wrapper"
 samples: samples.tsv
+
+
+read_type: "pe"
