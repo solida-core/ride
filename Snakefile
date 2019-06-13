@@ -12,12 +12,8 @@ samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
 ## ---------- ##
 
 
-
-
-
 include:
     "rules/functions.py"
-
 
 rule all:
     input:
@@ -34,25 +30,29 @@ rule all:
 
 
 include_prefix="rules"
-
-include:
-    include_prefix + "/kallisto.smk"
-include:
-    include_prefix + "/star2.smk"
 include:
     include_prefix + "/rseqc.smk"
-include:
-    include_prefix + "/qc.smk"
 if config.get("read_type")=="se":
     include:
         include_prefix + "/trimming_se.smk"
     include:
         include_prefix + "/qc_se.smk"
+    include:
+        include_prefix + "/reads_feature_count.smk"
+    include:
+        include_prefix + "/kallisto.smk"
+    include:
+        include_prefix + "/star2.smk"
+
 else:
     include:
-        include_prefix + "/trimming_pe.smk"
+        include_prefix + "/pe/trimming_pe.smk"
     include:
-        include_prefix + "/qc_pe.smk"
+        include_prefix + "/pe/qc_pe.smk"
+    include:
+        include_prefix + "/pe/kallisto_pe.smk"
+    include:
+        include_prefix + "/pe/star2_pe.smk"
+    include:
+        include_prefix + "/pe/reads_feature_count_pe.smk"
 
-include:
-    include_prefix + "/reads_feature_count.smk"

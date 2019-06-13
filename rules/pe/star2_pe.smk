@@ -20,19 +20,11 @@ rule star_build_index:
         "--sjdbOverhang 100"
 
 
-def fastq_input(r1):
-    if config.get("read_type")=="se":
-        return r1
-    else:
-        r2=r1.replace("-R1-", "-R2-")
-        reads=[r1,r2]
-        return " ".join(reads)
-
 
 rule star_map:
     input:
         "reads/trimmed/{sample}-R1-trimmed.fq.gz",
-        #fastq_input("reads/trimmed/{sample}-R1-trimmed.fq.gz"),
+        "reads/trimmed/{sample}-R2-trimmed.fq.gz",
         length=rules.star_build_index.output.length
     output:
         out1="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam",
@@ -56,7 +48,7 @@ rule star_map:
             "--runMode alignReads "
             "--genomeDir {params.genomedir} "
             r" --outSAMattrRGline  ID:{params.sample} SM:{params.sample} PL:{params.platform}  PU:{params.platform} CN:{params.center} "
-            "--readFilesIn {input[0]} "
+            "--readFilesIn {input[0]} {input[1]} "
             "--readFilesCommand zcat "
             "--outStd Log "
             "--outSAMunmapped Within "
