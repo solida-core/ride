@@ -7,7 +7,7 @@ rule star_build_index:
     conda:
         "../envs/star2.yaml"
     params:
-        gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'), config.get("genes_gtf")),
+        gtf=resolve_single_filepath(*references_abs_path(ref='references'), config.get("genes_gtf")),
         genomeDir='star/index'
     threads: pipeline_cpu_count()
     shell:

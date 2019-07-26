@@ -11,7 +11,7 @@ rule featureCounts_run:
         "../envs/featureCounts.yaml"
     params:
         cmd="featureCounts",
-        gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
+        gtf=resolve_single_filepath(*references_abs_path(ref='references'),
                                     config.get("genes_gtf")),
         gtf_feature_type=config.get("rules").get("featureCounts_run").get("gtf_feature_type"),
         gtf_attribute_type=config.get("rules").get("featureCounts_run").get("gtf_attribute_type"),
@@ -32,7 +32,7 @@ rule HTSeq_run:
     log:
         "star/{sample}/log/{sample}_htseq_count.log"
     params:
-         gtf=resolve_single_filepath(*references_abs_path(ref='genes_reference'),
+         gtf=resolve_single_filepath(*references_abs_path(ref='references'),
                                     config.get("genes_gtf")),
          strand=config['strand'],
     shell:
