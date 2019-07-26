@@ -1,8 +1,8 @@
 
 rule multiqc:
     input:
-         expand("qc/fastqc/untrimmed_{sample.sample}.html", sample=samples.reset_index().itertuples()),
-         expand("qc/fastqc/trimmed_{sample.sample}.html", sample=samples.reset_index().itertuples()),
+         expand("qc/fastqc/untrimmed_{sample.sample}_fastqc.zip", sample=samples.reset_index().itertuples()),
+         expand("qc/fastqc/trimmed_{sample.sample}_fastqc.zip", sample=samples.reset_index().itertuples()),
          # expand("qc/fastqcscreen/trimmed_{sample.sample}.fastq_screen.txt", sample=samples.reset_index().itertuples()),
          expand("reads/trimmed/{sample.sample}-R1.fq.gz_trimming_report.txt", sample=samples.reset_index().itertuples()),
          expand("rseqc/{sample.sample}/{sample.sample}.bam_stat.txt", sample=samples.reset_index().itertuples()),
