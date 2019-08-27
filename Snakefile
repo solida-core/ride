@@ -27,11 +27,13 @@ rule all:
         "qc/multiqc.html",
         expand("star/{sample.sample}/count/{sample.sample}_featurecounts.cnt",sample=samples.reset_index().itertuples()),
         expand("star/{sample.sample}/count/{sample.sample}_HTSeqcounts.cnt",sample=samples.reset_index().itertuples()),
-
+        "results/Heatmap_Most_Var.png"
 
 include_prefix="rules"
 include:
     include_prefix + "/rseqc.smk"
+include:
+    include_prefix + "/plots.smk"
 if config.get("read_type")=="se":
     include:
         include_prefix + "/trimming_se.smk"

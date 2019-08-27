@@ -17,7 +17,8 @@ rule kallisto_quant:
     output:
         "kallisto/{sample}/abundance.h5",
         "kallisto/{sample}/abundance.tsv",
-        "kallisto/{sample}/run_info.json"
+        "kallisto/{sample}/run_info.json",
+        touch("results/tmp/{sample}.ready.for.plots")
     params:
         outdir="kallisto/{sample}",
         params=config.get("rules").get("kallisto").get("arguments" if config.get("read_type"=="pe") else "arguments_se"),

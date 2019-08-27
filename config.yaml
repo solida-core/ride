@@ -4,6 +4,7 @@ references:
     release: "hg19"
 genome_fasta: "ucsc.hg19.fasta"
 genes_gtf: "Annotation/Genes/genes.gtf"
+tx2gene_hsa: "rna/tx2gene_hsa.RData"
 
 rseqc_reference:
     basepath: "path_to_references_data"

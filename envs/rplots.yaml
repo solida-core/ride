@@ -1,0 +1,12 @@
+channels:
+  - r
+  - bioconda
+dependencies:
+  - r-pheatmap
+  - bioconductor-tximport
+  - bioconductor-genefilter
+  - bioconductor-deseq2
+  - r-gplots
+  - r-rcolorbrewer
+  - r-ggplot2
+  - r-dplyr

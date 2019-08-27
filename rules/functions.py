@@ -1,6 +1,6 @@
 import multiprocessing
 import os.path
-
+import os
 
 def cpu_count():
     return multiprocessing.cpu_count()
@@ -31,3 +31,6 @@ def get_references_label(ref='references'):
     genome = references['release']
 
     return '_'.join([provider, genome])
+
+def get_cwd():
+    return os.getcwd()
