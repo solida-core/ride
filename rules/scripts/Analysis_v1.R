@@ -19,6 +19,7 @@ library("gplots")
 library("RColorBrewer")
 library("ggplot2")
 library("dplyr")
+library("rhdf5")
 
 #setwd("/home/matteo/Scrivania/analysis")
 setwd(snakemake@params[["current_dir"]])
@@ -27,7 +28,9 @@ setwd(snakemake@params[["current_dir"]])
 load(snakemake@params[["txgenes"]])
 # File list
 files <- file.path("kallisto", dir("kallisto"), "abundance.tsv")
-
+ok=grep("index",files, invert = T)
+files=files[ok]
+length(files)
 names(files) <- gsub(".*/(.*)/.*", "\\1", files)
 
 # Load and summarize at gene level
@@ -75,7 +78,9 @@ vsd.filt <- varFilter(assay(vsd),
 dim(vsd.filt)
 
 #heatName_1 <- "Heatmap_Most_Var.png"
-heatName_1 <- snakemake@output[["heatmap"]]
+#heatName_1 <- snakemake@output[["heatmap"]]
+heatName_1 <- file.path(snakemake@params[["current_dir"]],snakemake@output[["heatmap"]])
+
 pheatmap(vsd.filt, # most variable
 		 color = greenred(75),
 		 #breaks = c(min(mat, na.rm = TRUE), seq(-3, 3, 6 / (pheatmap_n_colors - 2)), max(mat, na.rm = TRUE)),
@@ -85,13 +90,13 @@ pheatmap(vsd.filt, # most variable
 		 cluster_cols = TRUE,
 		 #annotation = group_names,
 		 #fontsize_row = 6,
-		 #fontsize_col = 6,
+		 fontsize_col = 6,
 		 scale = "row",
 		 show_colnames = TRUE,
-		 show_rownames = FALSE#,
+		 show_rownames = FALSE,
 		 #legend_breaks=c(-3,0,3),
 		 #legend_labels=c("< -3","0","> 3"),
-		 #filename=heatName_1
+		 filename=heatName_1
 		 )
 
 # PCA plot
@@ -108,9 +113,9 @@ percentVar <- round(100 * attr(data, "percentVar"))
 
 #figName_3 <- "PCA.png"
 figName_3 <- snakemake@output[["pca"]]
-#png(filename=figName_3)
-my_label=rep('',192)
-my_label[names(files) %in% c("SAMPLE-IN-FC19-0319-R0001","UNDETERMINED")]="OK"
+png(filename=figName_3)
+my_label=rep('',1)
+#my_label[names(files) %in% c("SAMPLE-IN-FC19-0319-R0001","UNDETERMINED")]="OK"
 
 ggplot(data, aes(PC1, PC2, color="red")) +
 	   geom_point(size=3) +

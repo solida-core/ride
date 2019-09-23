@@ -10,3 +10,5 @@ dependencies:
   - r-rcolorbrewer
   - r-ggplot2
   - r-dplyr
+  - bioconductor-rhdf5
+  - r-hexbin
