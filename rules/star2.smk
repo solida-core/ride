@@ -32,7 +32,6 @@ def fastq_input(r1):
 rule star_map:
     input:
         "reads/trimmed/{sample}-R1-trimmed.fq.gz",
-        #fastq_input("reads/trimmed/{sample}-R1-trimmed.fq.gz"),
         length=rules.star_build_index.output.length
     output:
         out1="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam",
@@ -48,24 +47,21 @@ rule star_map:
     threads: pipeline_cpu_count()
     log:
         "logs/star/{sample}/{sample}_star_map.log"
-    run:
-        print(snakemake.input[0])
-
-        shell(
-            "STAR "
-            "--runMode alignReads "
-            "--genomeDir {params.genomedir} "
-            r" --outSAMattrRGline  ID:{params.sample} SM:{params.sample} PL:{params.platform}  PU:{params.platform} CN:{params.center} "
-            "--readFilesIn {input[0]} "
-            "--readFilesCommand zcat "
-            "--outStd Log "
-            "--outSAMunmapped Within "
-            "--outSAMtype BAM SortedByCoordinate "
-            "--outWigType wiggle "
-            "--outWigStrand Stranded "
-            "--runThreadN {threads} "
-            "--outFileNamePrefix {params.out_basename} "
-            "2> {log} ")
+    shell:
+        "STAR "
+        "--runMode alignReads "
+        "--genomeDir {params.genomedir} "
+       r" --outSAMattrRGline  ID:{params.sample} SM:{params.sample} PL:{params.platform}  PU:{params.platform} CN:{params.center} "
+        "--readFilesIn {input[0]} "
+        "--readFilesCommand zcat "
+        "--outStd Log "
+        "--outSAMunmapped Within "
+        "--outSAMtype BAM SortedByCoordinate "
+        "--outWigType wiggle "
+        "--outWigStrand Stranded "
+        "--runThreadN {threads} "
+        "--outFileNamePrefix {params.out_basename} "
+        "2> {log} "
 
 
 

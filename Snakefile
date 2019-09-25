@@ -9,7 +9,7 @@ min_version("5.1.2")
 
 ## USER FILES ##
 samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
-units = pd.read_csv("units.tsv", index_col=["unit"], dtype=str, sep="\t")
+units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 ## ---------- ##
 
 
@@ -45,6 +45,8 @@ include:
     include_prefix + "/plots.smk"
 include:
     include_prefix + "/concatenate_fq.smk"
+include:
+    include_prefix + "/bbmap.smk"
 if config.get("read_type")=="se":
     include:
         include_prefix + "/trimming_se.smk"

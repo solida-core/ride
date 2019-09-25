@@ -46,7 +46,8 @@ wrappers:
     fastqc: "fastqc_wrapper"
     trim_galore_se: "trim_galore_se_wrapper"
     trim_galore_pe: "trim_galore_pe_wrapper"
-samples: samples.tsv
 
+samples: samples.tsv
+units: units.tsv
 
 read_type: "pe"
