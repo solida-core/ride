@@ -9,11 +9,19 @@ min_version("5.1.2")
 
 ## USER FILES ##
 samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
+units = pd.read_csv("units.tsv", index_col=["unit"], dtype=str, sep="\t")
 ## ---------- ##
 
 
 include:
     "rules/functions.py"
+
+
+
+# rule fq:
+#     input:
+#         expand("reads/untrimmed/merged/{sample.sample}-R1.fq.gz",sample=samples.reset_index().itertuples()),
+#         expand("reads/untrimmed/merged/{sample.sample}-R2.fq.gz",sample=samples.reset_index().itertuples())
 
 rule all:
     input:
@@ -27,13 +35,16 @@ rule all:
         "qc/multiqc.html",
         expand("star/{sample.sample}/count/{sample.sample}_featurecounts.cnt",sample=samples.reset_index().itertuples()),
         expand("star/{sample.sample}/count/{sample.sample}_HTSeqcounts.cnt",sample=samples.reset_index().itertuples()),
-        "results/Heatmap_Most_Var.png"
+        "results/Heatmap_Most_Var.png",
+        expand("qc/bbmap_qchist/{sample.sample}-R1.fq.gz.qchist",sample=samples.reset_index().itertuples()),
 
 include_prefix="rules"
 include:
     include_prefix + "/rseqc.smk"
 include:
     include_prefix + "/plots.smk"
+include:
+    include_prefix + "/concatenate_fq.smk"
 if config.get("read_type")=="se":
     include:
         include_prefix + "/trimming_se.smk"

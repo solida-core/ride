@@ -1,19 +1,19 @@
-def get_fastq(wildcards,samples,read_pair='fq'):
-    return samples.loc[wildcards.sample,
-                     [read_pair]].dropna()[0]
-
-rule pre_rename_fastq_se:
-    input:
-        r1=lambda wildcards: get_fastq(wildcards, samples, read_pair="fq1")
-    output:
-        r1="reads/untrimmed/{sample}-R1.fq.gz"
-    shell:
-        "ln -s {input.r1} {output.r1}"
+# def get_fastq(wildcards,samples,read_pair='fq'):
+#     return samples.loc[wildcards.sample,
+#                      [read_pair]].dropna()[0]
+#
+# rule pre_rename_fastq_se:
+#     input:
+#         r1=lambda wildcards: get_fastq(wildcards, samples, read_pair="fq1")
+#     output:
+#         r1="reads/untrimmed/{sample}-R1.fq.gz"
+#     shell:
+#         "ln -s {input.r1} {output.r1}"
 
 
 rule trim_galore_se:
     input:
-        "reads/untrimmed/{sample}-R1.fq.gz"
+        "reads/untrimmed/merged/{sample}-R1.fq.gz"
     output:
         temp("reads/trimmed/{sample}_trimmed.fq.gz"),
         "reads/trimmed/{sample}.fq.gz_trimming_report.txt"

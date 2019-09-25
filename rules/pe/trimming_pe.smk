@@ -16,7 +16,7 @@ rule pre_rename_fastq_pe:
 
 rule trim_galore_pe:
     input:
-        ["reads/untrimmed/{sample}-R1.fq.gz", "reads/untrimmed/{sample}-R2.fq.gz"]
+        ["reads/untrimmed/merged/{sample}-R1.fq.gz", "reads/untrimmed/merged/{sample}-R2.fq.gz"]
     output:
         temp("reads/trimmed/{sample}-R1_val_1.fq.gz"),
         "reads/trimmed/{sample}-R1.fq.gz_trimming_report.txt",

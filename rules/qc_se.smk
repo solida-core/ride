@@ -35,7 +35,7 @@ rule multiqc:
 
 rule fastqc:
     input:
-       "reads/untrimmed/{sample}-R1.fq.gz"
+       "reads/untrimmed/merged/{sample}-R1.fq.gz"
     output:
         html="qc/fastqc/untrimmed_{sample}.html",
         zip="qc/fastqc/untrimmed_{sample}_fastqc.zip"
