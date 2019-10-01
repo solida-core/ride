@@ -12,3 +12,4 @@ dependencies:
   - r-dplyr
   - bioconductor-rhdf5
   - r-hexbin
+  - r-stringr
