@@ -61,13 +61,13 @@ if config.get("read_type")=="se":
 
 else:
     include:
-        include_prefix + "/pe/trimming_pe.smk"
+        include_prefix + "/trimming_pe.smk"
     include:
-        include_prefix + "/pe/qc_pe.smk"
+        include_prefix + "/qc_pe.smk"
     include:
-        include_prefix + "/pe/kallisto_pe.smk"
+        include_prefix + "/kallisto_pe.smk"
     include:
-        include_prefix + "/pe/star2_pe.smk"
+        include_prefix + "/star2_pe.smk"
     include:
-        include_prefix + "/pe/reads_feature_count_pe.smk"
+        include_prefix + "/reads_feature_count_pe.smk"
 
