@@ -50,7 +50,7 @@ rule fastqc_R1:
 
 rule fastqc_R2:
     input:
-        "reads/untrimmed/{sample}-R2.fq.gz"
+        "reads/untrimmed/merged/{sample}-R2.fq.gz"
     output:
         html="qc/fastqc/untrimmed_{sample}-R2.html",
         zip="qc/fastqc/untrimmed_{sample}-R2_fastqc.zip"
