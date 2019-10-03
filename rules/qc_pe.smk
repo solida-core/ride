@@ -1,10 +1,10 @@
 
 rule multiqc:
     input:
-        expand("qc/fastqc/untrimmed_{sample.sample}-R1.html", sample=samples.reset_index().itertuples()),
-        expand("qc/fastqc/untrimmed_{sample.sample}-R2.html", sample=samples.reset_index().itertuples()),
-        expand("qc/fastqc/trimmed_{sample.sample}-R1.html", sample=samples.reset_index().itertuples()),
-        expand("qc/fastqc/trimmed_{sample.sample}-R2.html", sample=samples.reset_index().itertuples()),
+        expand("qc/fastqc/untrimmed_{sample.sample}-R1_fastqc.zip", sample=samples.reset_index().itertuples()),
+        expand("qc/fastqc/untrimmed_{sample.sample}-R2_fastqc.zip", sample=samples.reset_index().itertuples()),
+        expand("qc/fastqc/trimmed_{sample.sample}-R1_fastqc.zip", sample=samples.reset_index().itertuples()),
+        expand("qc/fastqc/trimmed_{sample.sample}-R2_fastqc.zip", sample=samples.reset_index().itertuples()),
          # expand("qc/fastqcscreen/trimmed_{sample.sample}.fastq_screen.txt", sample=samples.reset_index().itertuples()),
         expand("reads/trimmed/{sample.sample}-R1.fq.gz_trimming_report.txt", sample=samples.reset_index().itertuples()),
         expand("reads/trimmed/{sample.sample}-R2.fq.gz_trimming_report.txt", sample=samples.reset_index().itertuples()),
@@ -17,7 +17,8 @@ rule multiqc:
         expand("rseqc/{sample.sample}/{sample.sample}.infer_experiment.txt", sample=samples.reset_index().itertuples()),
         expand("rseqc/{sample.sample}/{sample.sample}.pos.DupRate.xls", sample=samples.reset_index().itertuples()),
         expand("star/{sample.sample}/{sample.sample}.Log.final.out", sample=samples.reset_index().itertuples()),
-        expand("logs/kallisto/{sample.sample}.kallisto_quant.log", sample=samples.reset_index().itertuples())
+        expand("logs/kallisto/{sample.sample}.kallisto_quant.log", sample=samples.reset_index().itertuples()),
+        "qc/bbmap_qchist/"
     output:
         "qc/multiqc.html"
     params:

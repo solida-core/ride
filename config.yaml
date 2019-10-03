@@ -32,7 +32,7 @@ rules:
         gtf_feature_type: "exon"
         gtf_attribute_type: "gene_id"
     kallisto:
-        arguments: ""
+        arguments_pe: ""
         arguments_se: "--single -b 30 -l 280 -s 80 "
     trim_galore_pe:
         arguments: "-q 20"

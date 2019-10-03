@@ -21,7 +21,7 @@ rule kallisto_quant:
         touch("results/tmp/{sample}.ready.for.plots")
     params:
         outdir="kallisto/{sample}",
-        params=config.get("rules").get("kallisto").get("arguments" if config.get("read_type"=="pe") else "arguments_se"),
+        params=config.get("rules").get("kallisto").get("arguments_pe" if config.get("read_type")=="pe" else "arguments_se"),
         #read_type=config.get("rules").get("kallisto").get("read_type")
     conda:
         "../envs/kallisto.yaml"
