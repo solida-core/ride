@@ -1,18 +1,3 @@
-def get_fastq(wildcards,samples,read_pair='fq'):
-    return samples.loc[wildcards.sample,
-                     [read_pair]].dropna()[0]
-
-rule pre_rename_fastq_pe:
-    input:
-        r1=lambda wildcards: get_fastq(wildcards, samples, read_pair="fq1"),
-        r2=lambda wildcards: get_fastq(wildcards, samples, read_pair="fq2")
-    output:
-        r1="reads/untrimmed/{sample}-R1.fq.gz",
-        r2="reads/untrimmed/{sample}-R2.fq.gz"
-    shell:
-        "ln -s {input.r1} {output.r1} &&"
-        "ln -s {input.r2} {output.r2}"
-
 
 rule trim_galore_pe:
     input:

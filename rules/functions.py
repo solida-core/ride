@@ -32,5 +32,9 @@ def get_references_label(ref='references'):
 
     return '_'.join([provider, genome])
 
+def get_fastq(wildcards,samples,read_pair='fq'):
+    return samples.loc[wildcards.sample,
+                     [read_pair]].dropna()[0]
+
 def get_cwd():
     return os.getcwd()
