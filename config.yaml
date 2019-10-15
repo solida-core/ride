@@ -49,5 +49,6 @@ wrappers:
 
 samples: samples.tsv
 units: units.tsv
-
+reheader: reheader.tsv
+internal_sid: "LIMS"
 read_type: "pe"
