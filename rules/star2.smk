@@ -51,7 +51,7 @@ rule star_map:
         "STAR "
         "--runMode alignReads "
         "--genomeDir {params.genomedir} "
-       r" --outSAMattrRGline  ID:{params.sample} SM:{params.sample} PL:{params.platform}  PU:{params.platform} CN:{params.center} "
+        r" --outSAMattrRGline  ID:{params.sample} SM:{params.sample} PL:{params.platform}  PU:{params.platform} CN:{params.center} "
         "--readFilesIn {input[0]} "
         "--readFilesCommand zcat "
         "--outStd Log "

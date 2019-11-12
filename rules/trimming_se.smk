@@ -1,22 +1,24 @@
-# def get_fastq(wildcards,samples,read_pair='fq'):
-#     return samples.loc[wildcards.sample,
-#                      [read_pair]].dropna()[0]
-#
-# rule pre_rename_fastq_se:
-#     input:
-#         r1=lambda wildcards: get_fastq(wildcards, samples, read_pair="fq1")
-#     output:
-#         r1="reads/untrimmed/{sample}-R1.fq.gz"
-#     shell:
-#         "ln -s {input.r1} {output.r1}"
+def get_fastq(wildcards,samples,read_pair='fq'):
+    return samples.loc[wildcards.sample,
+                     [read_pair]].dropna()[0]
+
+rule pre_rename_fastq_se:
+    input:
+        r1=lambda wildcards: get_fastq(wildcards, samples, read_pair="fq1")
+    output:
+        r1="reads/untrimmed/{sample}-R1.fq.gz"
+    shell:
+        "ln -s {input.r1} {output.r1}"
+
+
 
 
 rule trim_galore_se:
     input:
         "reads/untrimmed/merged/{sample}-R1.fq.gz"
     output:
-        temp("reads/trimmed/{sample}_trimmed.fq.gz"),
-        "reads/trimmed/{sample}.fq.gz_trimming_report.txt"
+        "reads/trimmed/{sample}-R1_trimmed.fq.gz",
+        "reads/trimmed/{sample}-R1.fq.gz_trimming_report.txt"
     params:
         extra=config.get("rules").get("trim_galore_se").get("arguments")
     log:
@@ -28,7 +30,7 @@ rule trim_galore_se:
 
 rule post_rename_fastq_se:
     input:
-        r1="reads/trimmed/{sample}_trimmed.fq.gz"
+        r1="reads/trimmed/{sample}-R1_trimmed.fq.gz"
     output:
         r1="reads/trimmed/{sample}-R1-trimmed.fq.gz"
     shell:
