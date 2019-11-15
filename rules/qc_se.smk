@@ -15,7 +15,8 @@ rule multiqc:
         expand("rseqc/{sample.sample}/{sample.sample}.pos.DupRate.xls", sample=samples.reset_index().itertuples()),
         expand("star/{sample.sample}/{sample.sample}.Log.final.out", sample=samples.reset_index().itertuples()),
         expand("logs/kallisto/{sample.sample}.kallisto_quant.log", sample=samples.reset_index().itertuples()),
-        expand("qc/bbmap_qchist/{sample.sample}-R1.fq.gz.qchist", sample=samples.reset_index().itertuples())
+        expand("qc/bbmap_qchist/{sample.sample}-R1.fq.gz.qchist", sample=samples.reset_index().itertuples()),
+        expand("logs/bbduk/{sample}.log", sample=samples.reset_index().itertuples())
     output:
         "qc/multiqc.html"
     params:
@@ -25,6 +26,7 @@ rule multiqc:
         star="star/",
         kallisto="logs/kallisto/",
         bbmap="qc/bbmap_qchist/",
+        bbduk="logs/bbduk/",
         params=config.get("rules").get("multiqc").get("arguments"),
         outdir="qc",
         outname="multiqc.html"
@@ -40,6 +42,7 @@ rule multiqc:
         "{params.star} "
         "{params.kallisto} "
         "{params.bbmap} "
+        "{params.bbduk} "
         "{params.params} "
         "-o {params.outdir} "
         "-n {params.outname} "

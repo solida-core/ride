@@ -69,7 +69,8 @@ if config.get("read_type")=="se":
         include_prefix + "/kallisto.smk"
     include:
         include_prefix + "/star2.smk"
-
+    include:
+        include_prefix + "/bbduk_se.smk"
 else:
     include:
         include_prefix + "/trimming_pe.smk"
@@ -81,4 +82,5 @@ else:
         include_prefix + "/star2_pe.smk"
     include:
         include_prefix + "/reads_feature_count_pe.smk"
-
+    include:
+        include_prefix + "/bbduk_pe.smk"

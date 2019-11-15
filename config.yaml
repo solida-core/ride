@@ -41,7 +41,10 @@ rules:
     fastq_screen:
         params: "--force --aligner bowtie2 --subset 100000 --nohits"
         config_file: "../data/fastq_screen.config"
-
+    bbduk_se:
+        ref:##Path to rRNA fasta file
+    bbduk_pe:
+        ref:##Path to reference file
 wrappers:
     fastqc: "fastqc_wrapper"
     trim_galore_se: "trim_galore_se_wrapper"
