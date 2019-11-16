@@ -5,10 +5,10 @@ rule bbduk_se:
        nonribo="reads/bbduk/{sample}.fa",
        stats="logs/bbduk/{sample}.log"
     params:
-       ref="config.get("rules").get("bbduk_se").get("ref")"
+       ref=resolve_single_filepath(*references_abs_path(ref="bbduk_reference"), config.get("bbduk_se"))
     shell:
        "bbduk.sh "
        "in={input} "
        "out={output.nonribo} "
-       "ref={ref} "
+       "ref={params.ref} "
        "stats={output.stats}"

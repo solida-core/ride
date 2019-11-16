@@ -19,6 +19,10 @@ transcriptome_reference:
     release: "GRCh38"
 transcriptome_fasta: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
 
+bbduk_reference:
+    bbduk_se:"Path to rRNA fasta file"
+    bbduk_pe:"Path to rRNA fasta file"
+		       
 strand: "reverse"
 
 rules:
@@ -41,10 +45,6 @@ rules:
     fastq_screen:
         params: "--force --aligner bowtie2 --subset 100000 --nohits"
         config_file: "../data/fastq_screen.config"
-    bbduk_se:
-        ref:##Path to rRNA fasta file
-    bbduk_pe:
-        ref:##Path to reference file
 wrappers:
     fastqc: "fastqc_wrapper"
     trim_galore_se: "trim_galore_se_wrapper"

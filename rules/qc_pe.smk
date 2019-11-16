@@ -20,7 +20,7 @@ rule multiqc:
         expand("logs/kallisto/{sample.sample}.kallisto_quant.log", sample=samples.reset_index().itertuples()),
         expand("qc/bbmap_qchist/{sample.sample}-R1.fq.gz.qchist", sample=samples.reset_index().itertuples()),
         expand("qc/bbmap_qchist/{sample.sample}-R2.fq.gz.qchist", sample=samples.reset_index().itertuples()),
-        expand("logs/bbduk/{sample}.log", sample=samples.reset_index().itertuples())
+        expand("logs/bbduk/{sample.sample}.log", sample=samples.reset_index().itertuples())
     output:
         "qc/multiqc.html"
     params:
