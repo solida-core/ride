@@ -20,8 +20,11 @@ transcriptome_reference:
 transcriptome_fasta: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
 
 bbduk_reference:
-    bbduk_se: "Path to rRNA fasta file"
-    bbduk_pe: "Path to rRNA fasta file"
+    basepath: "path_to_references_data"
+    provider: "bbduk"
+    release: "hg19"
+bbduk_se: "Path to rRNA fasta file"
+bbduk_pe: "Path to rRNA fasta file"
 		       
 strand: "reverse"
 
