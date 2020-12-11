@@ -1,5 +1,4 @@
-Data from 1000 Genomes TSI
-
+Data from 
 
 Reads from Sample NA20805 were splitted in 3 parts to generate different unit combinations.
 
