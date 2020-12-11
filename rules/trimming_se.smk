@@ -11,8 +11,6 @@ rule pre_rename_fastq_se:
         "ln -s {input.r1} {output.r1}"
 
 
-
-
 rule trim_galore_se:
     input:
         "reads/untrimmed/merged/{sample}-R1.fq.gz"
@@ -20,13 +18,26 @@ rule trim_galore_se:
         "reads/trimmed/{sample}-R1_trimmed.fq.gz",
         "reads/trimmed/{sample}-R1.fq.gz_trimming_report.txt"
     params:
-        extra=config.get("rules").get("trim_galore_se").get("arguments")
+        extra=config.get("rules").get("trim_galore_se").get("arguments"),
+        outdir="reads/trimmed/"
     log:
         "logs/trim_galore/{sample}.log"
     benchmark:
         "benchmarks/trim_galore/{sample}.txt"
-    wrapper:
-        config.get("wrappers").get("trim_galore_se")
+    conda:
+        "../envs/trim_galore.yaml"
+    threads: (conservative_cpu_count(reserve_cores=2, max_cores=99))/2 if (conservative_cpu_count(reserve_cores=2, max_cores=99)) >2 else 1
+    shell:
+        "mkdir -p qc/fastqc; "
+        "trim_galore "
+        "{params.extra} "
+        "--cores {threads} "
+        "-o {params.outdir} "
+        "{input} "
+        ">& {log}"
+
+
+
 
 rule post_rename_fastq_se:
     input:

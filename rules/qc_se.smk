@@ -1,8 +1,8 @@
 
 rule multiqc:
     input:
-        expand("qc/fastqc/untrimmed_{sample.sample}_fastqc.zip", sample=samples.reset_index().itertuples()),
-        expand("qc/fastqc/trimmed_{sample.sample}_fastqc.zip", sample=samples.reset_index().itertuples()),
+#        expand("qc/fastqc/untrimmed_{sample.sample}_fastqc.zip", sample=samples.reset_index().itertuples()),
+#        expand("qc/fastqc/trimmed_{sample.sample}_fastqc.zip", sample=samples.reset_index().itertuples()),
         # expand("qc/fastqcscreen/trimmed_{sample.sample}.fastq_screen.txt", sample=samples.reset_index().itertuples()),
         expand("reads/trimmed/{sample.sample}-R1.fq.gz_trimming_report.txt", sample=samples.reset_index().itertuples()),
         expand("rseqc/{sample.sample}/{sample.sample}.bam_stat.txt", sample=samples.reset_index().itertuples()),
@@ -22,7 +22,7 @@ rule multiqc:
         fastqc="qc/fastqc/",
         trimming="reads/trimmed/",
         rseqc="rseqc/",
-        star="star/",
+        star=expand("star/{sample.sample}/{sample.sample}.Log.final.out", sample=samples.reset_index().itertuples()),
         kallisto="logs/kallisto/",
         bbmap="qc/bbmap_qchist/",
         params=config.get("rules").get("multiqc").get("arguments"),
@@ -45,29 +45,6 @@ rule multiqc:
         "-n {params.outname} "
         ">& {log}"
 
-rule fastqc:
-    input:
-       "reads/untrimmed/merged/{sample}-R1.fq.gz"
-    output:
-        html="qc/fastqc/untrimmed_{sample}-R1.html",
-        zip="qc/fastqc/untrimmed_{sample}-R1_fastqc.zip"
-    log:
-        "logs/fastqc/untrimmed/{sample}-R1.log"
-    params: ""
-    wrapper:
-        config.get("wrappers").get("fastqc")
-
-rule fastqc_trimmed:
-    input:
-       "reads/trimmed/{sample}-R1-trimmed.fq.gz"
-    output:
-        html="qc/fastqc/trimmed_{sample}-R1.html",
-        zip="qc/fastqc/trimmed_{sample}-R1_fastqc.zip"
-    log:
-        "logs/fastqc/trimmed/{sample}-R1.log"
-    params: ""
-    wrapper:
-        config.get("wrappers").get("fastqc")
 
 
 # rule fastq_screen:

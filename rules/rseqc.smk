@@ -139,7 +139,7 @@ rule rseqc_RPKM_saturation:
         bam="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam",
         bai="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam.bai"
     output:
-        out1="rseqc/{sample}/{sample}.saturation.pdf"
+        out="rseqc/{sample}/{sample}.saturation.pdf"
     params:
         out_basename="rseqc/{sample}/{sample}",
         ref=resolve_single_filepath(*references_abs_path(ref="rseqc_reference"), config.get("refseq"))

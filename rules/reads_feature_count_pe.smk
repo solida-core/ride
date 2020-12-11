@@ -17,7 +17,7 @@ rule featureCounts_run:
         gtf_attribute_type=config.get("rules").get("featureCounts_run").get("gtf_attribute_type"),
     threads: pipeline_cpu_count()
     script:
-        "../scripts/featureCounts_script.py"
+        "scripts/featureCounts_script.py"
 
 
 rule HTSeq_run:
@@ -28,7 +28,7 @@ rule HTSeq_run:
     output:
         "star/{sample}/count/{sample}_HTSeqcounts.cnt"
     conda:
-        "envs/htseq.yaml"
+        "../envs/htseq.yaml"
     log:
         "star/{sample}/log/{sample}_htseq_count.log"
     params:

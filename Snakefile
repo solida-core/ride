@@ -14,35 +14,30 @@ units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 reheader = pd.read_csv(config["reheader"],index_col="Client", dtype=str, sep="\t")
 reheader = reheader[reheader["LIMS"].isin(samples.index.values)]
 ## ---------- ##
-
+units_se=units[units["fq2"].isna()]
+units_pe=units[units["fq2"].notna()]
+##############################
 
 include:
     "rules/functions.py"
 
 
-
-# rule fq:
-#     input:
-#         expand("reads/untrimmed/merged/{sample.sample}-R1.fq.gz",sample=samples.reset_index().itertuples()),
-#         expand("reads/untrimmed/merged/{sample.sample}-R2.fq.gz",sample=samples.reset_index().itertuples())
-
 rule all:
     input:
         # Kallisto+Sleuth workflow
-#        "kallisto/DEGS/gene_table.txt",
         expand("kallisto/{sample.sample}/abundance.tsv", sample=samples.reset_index().itertuples()),
         # Star
         expand("star/{sample.sample}/{sample.sample}.Aligned.sortedByCoord.out.bam", sample=samples.reset_index().itertuples()),
         # Rseqc
-        expand("rseqc/{sample.sample}/{sample.sample}.saturation.pdf", sample=samples.reset_index().itertuples()),
+#        expand("rseqc/{sample.sample}/{sample.sample}.saturation.pdf", sample=samples.reset_index().itertuples()),
         "qc/multiqc.html",
-        expand("star/{sample.sample}/count/{sample.sample}_featurecounts.cnt",sample=samples.reset_index().itertuples()),
+#         expand("star/{sample.sample}/count/{sample.sample}_featurecounts.cnt",sample=samples.reset_index().itertuples()),
         expand("star/{sample.sample}/count/{sample.sample}_HTSeqcounts.cnt",sample=samples.reset_index().itertuples()),
-        "results/Heatmap_Most_Var.png",
+#         "results/Heatmap_Most_Var.png",
         expand("qc/bbmap_qchist/{sample.sample}-R1.fq.gz.qchist",sample=samples.reset_index().itertuples()),
-        expand("delivery/abundance/{Client.Client}.tsv",Client=reheader.reset_index().itertuples()),
-        expand("delivery/bams/{Client.Client}.bam",Client=reheader.reset_index().itertuples()),
-        expand("delivery/bams/{Client.Client}.bam.bai",Client=reheader.reset_index().itertuples())
+#         expand("delivery/abundance/{Client.Client}.tsv",Client=reheader.reset_index().itertuples()),
+#         expand("delivery/bams/{Client.Client}.bam",Client=reheader.reset_index().itertuples()),
+#         expand("delivery/bams/{Client.Client}.bam.bai",Client=reheader.reset_index().itertuples())
 
 
 
@@ -50,14 +45,14 @@ rule all:
 include_prefix="rules"
 include:
     include_prefix + "/rseqc.smk"
-include:
-    include_prefix + "/plots.smk"
+# include:
+#     include_prefix + "/plots.smk"
 include:
     include_prefix + "/concatenate_fq.smk"
 include:
     include_prefix + "/bbmap.smk"
-include:
-    include_prefix + "/delivery.smk"
+# include:
+#     include_prefix + "/delivery.smk"
 if config.get("read_type")=="se":
     include:
         include_prefix + "/trimming_se.smk"

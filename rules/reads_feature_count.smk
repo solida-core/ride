@@ -9,7 +9,7 @@ def fastq_input(r1):
 
 rule featureCounts_run:
     input:
-        fastq_input("reads/trimmed/{sample}-R1-trimmed.fq.gz"),
+        "reads/trimmed/{sample}-R1-trimmed.fq.gz",
         bam="star/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
     output:
         "star/{sample}/count/{sample}_featurecounts.cnt"

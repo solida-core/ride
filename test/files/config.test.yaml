@@ -1,25 +1,29 @@
-samples: samples.tsv
-units: units.tsv
-reheader: reheader.tsv
+# This file should contain everything to configure the workflow on a global scale.
+# In case of sample based data, it should be complemented by a samples.tsv file that contains
+# one row per sample. It can be parsed easily via pandas.
+
+samples: ../files/samples.test.tsv
+units: ../files/units.test.tsv
+reheader: ../files/reheader.test.tsv
 internal_sid: "LIMS"
 read_type: "pe"
 
 references:
-    basepath: "path_to_references_data"
+    basepath: "$TEST_ROOT/data/references"
     provider: "ucsc"
     release: "hg19"
 genome_fasta: "ucsc.hg19.fasta"
-genes_gtf: "Annotation/Genes/genes.gtf"
+genes_gtf: "Annotation/Genes/genes_chr22.gtf"
 
 rseqc_reference:
-    basepath: "path_to_references_data"
+    basepath: "$TEST_ROOT/data/references"
     provider: "rseqc"
     release: "hg19"
 housekeeping: "hg19.HouseKeepingGenes.bed"
 refseq: "hg19_RefSeq.bed"
 
 transcriptome_reference:
-    basepath: "path_to_references_data"
+    basepath: "$TEST_ROOT/data/references"
     provider: "ensembl"
     release: "GRCh38"
 transcriptome_fasta: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
@@ -42,3 +46,10 @@ rules:
     fastq_screen:
         params: "--force --aligner bowtie2 --subset 100000 --nohits"
         config_file: "../data/fastq_screen.config"
+
+
+
+wrappers:
+    fastqc: "0.68.0/bio/fastqc"
+#    trim_galore_se: "0.68.0/bio/trim_galore/se"
+#    trim_galore_pe: "0.68.0/bio/trim_galore/pe"
