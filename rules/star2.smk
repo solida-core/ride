@@ -9,7 +9,7 @@ rule star_build_index:
     params:
         gtf=resolve_single_filepath(*references_abs_path(ref='references'), config.get("genes_gtf")),
         genomeDir='star/index'
-    threads: pipeline_cpu_count()
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         "STAR "
         "--runMode genomeGenerate "
@@ -44,7 +44,7 @@ rule star_map:
         platform='platform',
         center='center',
         out_basename="star/{sample}/{sample}."
-    threads: pipeline_cpu_count()
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     log:
         "logs/star/{sample}/{sample}_star_map.log"
     shell:
