@@ -24,7 +24,7 @@ rule kallisto_quant:
         #read_type=config.get("rules").get("kallisto").get("read_type")
     conda:
         "../envs/kallisto.yaml"
-    threads: pipeline_cpu_count()
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     log:
         "logs/kallisto/{sample}.kallisto_quant.log"
     shell:

@@ -21,7 +21,7 @@ rule featureCounts_run:
                                     config.get("genes_gtf")),
         gtf_feature_type=config.get("rules").get("featureCounts_run").get("gtf_feature_type"),
         gtf_attribute_type=config.get("rules").get("featureCounts_run").get("gtf_attribute_type"),
-    threads: pipeline_cpu_count()
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     script:
         "scripts/featureCounts_script.py"
 
