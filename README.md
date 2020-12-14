@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/solida-core/ride.svg?branch=master)](https://travis-ci.com/solida-core/ride)
+
 # RiDE 
 **RiDE** (RNA Differential Expression) is a pipeline for **RNA-seq** data analysis.
 

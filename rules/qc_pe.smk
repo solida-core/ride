@@ -34,8 +34,8 @@ rule multiqc:
         outname="multiqc.html"
     conda:
         "../envs/multiqc.yaml"
-#    log:
-#        "logs/multiqc/multiqc.log"
+    log:
+        "logs/multiqc/multiqc.log"
     shell:
         "multiqc "
         "{params.fastqc} "
@@ -47,7 +47,7 @@ rule multiqc:
         "{params.params} "
         "-o {params.outdir} "
         "-n {params.outname} "
-#        ">& {log}"
+        ">& {log}"
 
 #rule fastqc_R1:
 #    input:
