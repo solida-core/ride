@@ -2,4 +2,4 @@ channels:
   - bioconda
 dependencies:
   - samtools=1.8
-  - openssl=1.0
+  - openssl=1.1
