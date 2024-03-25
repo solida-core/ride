@@ -7,3 +7,4 @@ dependencies:
 - snakemake==8.10.0
 - drmaa==0.7.9
 - snakemake-executor-plugin-drmaa==0.1.4
+- snakemake-executor-plugin-cluster-generic==1.0.9
