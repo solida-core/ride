@@ -1,4 +1,5 @@
 channels:
   - anaconda
 dependencies:
-  - trim-galore=0.6.6
+  - trim-galore=0.6.10
+  - openssl=1.1.1
