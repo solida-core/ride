@@ -2,3 +2,4 @@ channels:
   - bioconda
 dependencies:
   - rseqc==5.0.3
+  - python==3.9
