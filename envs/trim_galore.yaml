@@ -1,5 +1,6 @@
 channels:
-  - anaconda
+  - bioconda
+  - cctbx202208
 dependencies:
   - trim-galore=0.6.10
-  - openssl=1.1.1
+  - openssl=1.1.1q
