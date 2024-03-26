@@ -1,7 +1,7 @@
 def get_unit_fastqs(wildcards, samples, label='units',read_pair='fq'):
     for unit_set in samples.loc[wildcards.sample,[label]]:
         print(wildcards.sample)
-    return [expand_filepath(units.loc[x,[read_pair]].dropna()[0]) for x in unit_set.split(',')]
+    return [expand_filepath(units.loc[x,[read_pair]].dropna().iloc(0)) for x in unit_set.split(',')]
 
 rule fastq_merge_r1:
     input:
