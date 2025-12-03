@@ -37,7 +37,7 @@ rule kallisto_quant_pe:
         json=resolve_results_filepath("kallisto","{sample}/run_info.json")
     params:
         outdir=resolve_results_filepath("kallisto", "{sample}"),
-        boot=config["kallisto"]["bootstrap"]
+        boot=config["kallisto"]["boot"]
     log:
         resolve_logs_filepath("kallisto", "{sample}.kallisto.pe.log")
     threads:
@@ -71,7 +71,7 @@ rule kallisto_quant_se:
         outdir=resolve_results_filepath("kallisto", "{sample}"),
         frag_len = config["kallisto"]["frag_len"],
         frag_sd = config["kallisto"]["frag_sd"],
-        boot=config["kallisto"]["bootstrap"]
+        boot=config["kallisto"]["boot"]
     log:
         resolve_logs_filepath("kallisto", "{sample}.kallisto.se.log")
     threads:
