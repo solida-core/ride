@@ -1,0 +1,50 @@
+samples: config/samples.tsv
+units: config/units.tsv
+reheader: config/reheader.tsv
+
+paths:
+    workdir: "/path/to/workdir"
+    results_dir: "/path/to/results_dir"
+
+
+resources:
+    genome_references:
+        basepath: "path_to_references_data"
+        provider: "ucsc"
+        release: "hg19"
+        genome_fasta: "ucsc.hg19.fasta"
+        genes_gtf: "Annotation/Genes/genes.gtf"
+
+    rseqc_reference:
+        basepath: "path_to_references_data"
+        provider: "rseqc"
+        release: "hg19"
+        housekeeping: "hg19.HouseKeepingGenes.bed"
+        refseq: "hg19_RefSeq.bed"
+
+    transcriptome_reference:
+        basepath: "path_to_references_data"
+        provider: "ensembl"
+        release: "GRCh38"
+        transcriptome_fasta: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
+
+
+params:
+    internal_sid: "LIMS"
+    read_type: "pe"
+    strand: "reverse"
+    multiqc:
+        arguments: "--force "
+    featureCounts_run:
+        gtf_feature_type: "exon"
+        gtf_attribute_type: "gene_id"
+    kallisto:
+        arguments_pe: ""
+        arguments_se: "--single -b 30 -l 280 -s 80 "
+    trim_galore_pe:
+        arguments: "--paired -q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
+    trim_galore_se:
+        arguments: "-q 20 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
+    fastq_screen:
+        params: "--force --aligner bowtie2 --subset 100000 --nohits"
+        config_file: "../data/fastq_screen.config"
