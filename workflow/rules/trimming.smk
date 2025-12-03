@@ -57,9 +57,9 @@ rule trim_se:
     input:
         rules.fastq_merge_se.output
     output:
-        fastq = resolve_results_filepath("reads", "trimmed/{sample}.SE.trimmed.fq.gz"),
-        html = resolve_results_filepath("qc", "trimming/{sample}.fastp.se.html"),
-        json = resolve_results_filepath("qc", "trimming/{sample}.fastp.se.json")
+        fastq = resolve_results_filepath("reads", "trimmed/se/{sample}.trimmed.fq.gz"),
+        html = resolve_results_filepath("qc", "trimming/se/{sample}.fastp.se.html"),
+        json = resolve_results_filepath("qc", "trimming/se/{sample}.fastp.se.json")
     params:
         quality=config["trimming"]["quality"],
         min_length=config["trimming"]["min_length"],

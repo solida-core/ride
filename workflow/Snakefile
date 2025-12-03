@@ -22,13 +22,16 @@ rule all:
         expand(resolve_results_filepath("reads","trimmed/{sample}-R2.trimmed.fq.gz"),sample=SAMPLES),
 
         # Single-end trimmed (only if present)
-        expand(resolve_results_filepath("reads","trimmed/{sample}.SE.trimmed.fq.gz"),sample=SAMPLES),
+        expand(resolve_results_filepath("reads","trimmed/se/{sample}.trimmed.fq.gz"),sample=SAMPLES),
 
         # Kallisto quantification outputs
         expand(resolve_results_filepath("kallisto","{sample}/abundance.h5"),sample=SAMPLES),
         expand(resolve_results_filepath("kallisto","{sample}/abundance.tsv"),sample=SAMPLES),
         expand(resolve_results_filepath("kallisto","{sample}/run_info.json"),sample=SAMPLES),
 
+        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.h5"), sample=SAMPLES),
+        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.tsv"),sample=SAMPLES),
+        expand(resolve_results_filepath("kallisto","{sample}/se/run_info.json"),sample=SAMPLES),
 
 
        

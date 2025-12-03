@@ -64,11 +64,11 @@ rule kallisto_quant_se:
         index = rules.kallisto_index.output.idx,
         fastq = rules.trim_se.output.fastq
     output:
-        h5=resolve_results_filepath("kallisto", "{sample}/abundance.h5"),
-        tsv=resolve_results_filepath("kallisto","{sample}/abundance.tsv"),
-        json=resolve_results_filepath("kallisto","{sample}/run_info.json")
+        h5=resolve_results_filepath("kallisto", "{sample}/se/abundance.h5"),
+        tsv=resolve_results_filepath("kallisto","{sample}/se/abundance.tsv"),
+        json=resolve_results_filepath("kallisto","{sample}/se/run_info.json")
     params:
-        outdir=resolve_results_filepath("kallisto", "{sample}"),
+        outdir=resolve_results_filepath("kallisto", "{sample}/se"),
         frag_len = config["kallisto"]["frag_len"],
         frag_sd = config["kallisto"]["frag_sd"],
         boot=config["kallisto"]["boot"]
