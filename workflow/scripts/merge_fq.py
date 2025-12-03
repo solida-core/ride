@@ -3,11 +3,11 @@ import shutil
 import os
 
 inputs = list(snakemake.input)
-output = snakemake.output[0]
+output = snakemake.output.fq
+outdir = snakemake.output.dir
 logfile = snakemake.log[0] if snakemake.log else None
 
 # Ensure output directory exists
-outdir = os.path.dirname(output)
 os.makedirs(outdir, exist_ok=True)
 
 # Ensure log directory exists
