@@ -1,0 +1,174 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "RiDE workflow configuration schema"
+description: "Schema for validating the config.yaml used by the RiDE Snakemake workflow"
+type: object
+
+required:
+  - samples
+  - units
+  - reheader
+  - paths
+  - resources
+  - trimming
+  - kallisto
+  - salmon
+
+properties:
+
+  ###########################################################################
+  # BASIC INPUT FILES
+  ###########################################################################
+  samples:
+    type: string
+    description: "Path to the samples TSV file"
+
+  units:
+    type: string
+    description: "Path to the units TSV file"
+
+  reheader:
+    type: string
+    description: "Path to the reheader TSV file"
+
+
+  ###########################################################################
+  # PATH CONFIGURATION
+  ###########################################################################
+  paths:
+    type: object
+    required:
+      - results_dir
+      - workdir
+    properties:
+      results_dir:
+        type: string
+        description: "Directory for workflow results"
+      workdir:
+        type: string
+        description: "Base working directory"
+
+
+  ###########################################################################
+  # RESOURCES (GENOME / TRANSCRIPTOME / RSEQC)
+  ###########################################################################
+  resources:
+    type: object
+    required:
+      - genome
+      - transcriptome
+      - rseqc
+
+    properties:
+
+      genome:
+        type: object
+        required:
+          - basepath
+          - provider
+          - release
+          - fasta
+          - gtf
+        properties:
+          basepath:
+            type: string
+          provider:
+            type: string
+          release:
+            type: string
+          fasta:
+            type: string
+          gtf:
+            type: string
+
+      transcriptome:
+        type: object
+        required:
+          - basepath
+          - provider
+          - release
+          - cdna
+        properties:
+          basepath:
+            type: string
+          provider:
+            type: string
+          release:
+            type: string
+          cdna:
+            type: string
+
+      rseqc:
+        type: object
+        required:
+          - basepath
+          - housekeeping
+          - refseq
+        properties:
+          basepath:
+            type: string
+          housekeeping:
+            type: string
+          refseq:
+            type: string
+
+
+  ###########################################################################
+  # TRIMMING CONFIGURATION (FASTP)
+  ###########################################################################
+  trimming:
+    type: object
+    required:
+      - quality
+      - min_length
+      - trim_poly_g
+      - trim_poly_x
+      - detect_adapter
+    properties:
+      quality:
+        type: integer
+        minimum: 0
+      min_length:
+        type: integer
+        minimum: 0
+      trim_poly_g:
+        type: boolean
+      trim_poly_x:
+        type: boolean
+      detect_adapter:
+        type: boolean
+
+
+  ###########################################################################
+  # KALLISTO PARAMETERS
+  ###########################################################################
+  kallisto:
+    type: object
+    required:
+      - index_name
+      - frag_len
+      - frag_sd
+      - boot
+    properties:
+      index_name:
+        type: string
+      frag_len:
+        type: integer
+        minimum: 1
+      frag_sd:
+        type: integer
+        minimum: 1
+      boot:
+        type: integer
+        minimum: 1
+
+
+  ###########################################################################
+  # SALMON PARAMETERS
+  ###########################################################################
+  salmon:
+    type: object
+    required:
+      - index_dir
+    properties:
+      index_dir:
+        type: string
