@@ -33,11 +33,11 @@ def resolve_benchmarks_filepath(dirname, filename):
     return resolve_single_filepath(path, filename)
 
 def resolve_envs_filepath(filename):
-    path = os.path.join(config.get('paths').get('workdir'), 'workflow', 'envs')
+    path = os.path.join(config.get('paths').get('workdir'), '..', 'envs')
     return resolve_single_filepath(path, filename)
 
 def resolve_scripts_filepath(filename):
-    path = os.path.join(config.get('paths').get('workdir'), 'workflow', 'scripts')
+    path = os.path.join(config.get('paths').get('workdir'), '..', 'scripts')
     return resolve_single_filepath(path, filename)
 
 def ref_path(section, field):
