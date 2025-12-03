@@ -29,9 +29,9 @@ rule all:
         expand(resolve_results_filepath("kallisto","{sample}/abundance.tsv"),sample=SAMPLES),
         expand(resolve_results_filepath("kallisto","{sample}/run_info.json"),sample=SAMPLES),
 
-        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.h5"), sample=SAMPLES),
-        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.tsv"),sample=SAMPLES),
-        expand(resolve_results_filepath("kallisto","{sample}/se/run_info.json"),sample=SAMPLES),
+        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.se.h5"), sample=SAMPLES),
+        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.se.tsv"),sample=SAMPLES),
+        expand(resolve_results_filepath("kallisto","{sample}/se/run_info.se.json"),sample=SAMPLES),
 
 
        

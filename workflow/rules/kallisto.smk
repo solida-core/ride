@@ -64,9 +64,9 @@ rule kallisto_quant_se:
         index = rules.kallisto_index.output.idx,
         fastq = rules.trim_se.output.fastq
     output:
-        h5=resolve_results_filepath("kallisto", "{sample}/se/abundance.h5"),
-        tsv=resolve_results_filepath("kallisto","{sample}/se/abundance.tsv"),
-        json=resolve_results_filepath("kallisto","{sample}/se/run_info.json")
+        h5=resolve_results_filepath("kallisto", "{sample}/se/abundance.se.h5"),
+        tsv=resolve_results_filepath("kallisto","{sample}/se/abundance.se.tsv"),
+        json=resolve_results_filepath("kallisto","{sample}/se/run_info.se.json")
     params:
         outdir=resolve_results_filepath("kallisto", "{sample}/se"),
         frag_len = config["kallisto"]["frag_len"],
