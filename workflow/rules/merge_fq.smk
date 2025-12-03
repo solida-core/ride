@@ -7,6 +7,8 @@ rule fastq_merge_pe_r1:
             "reads",
             "untrimmed/{sample}-R1.fq.gz"
         )
+    log:
+        resolve_logs_filepath("merge_fq","{sample}-R1.merge.log")
     script:
         resolve_scripts_filepath("merge_fq.py")
 
@@ -19,6 +21,8 @@ rule fastq_merge_pe_r2:
             "reads",
             "untrimmed/{sample}-R2.fq.gz"
         )
+    log:
+        resolve_logs_filepath("merge_fq","{sample}-R2.merge.log")
     script:
         resolve_scripts_filepath("merge_fq.py")
 
@@ -31,6 +35,8 @@ rule fastq_merge_se:
             "reads",
             "untrimmed/se/{sample}.fq.gz"
         )
+    log:
+        resolve_logs_filepath("merge_fq","se/{sample}.merge.log")
     script:
         resolve_scripts_filepath("merge_fq.py")
 
