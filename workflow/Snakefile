@@ -22,7 +22,7 @@ rule all:
         expand(resolve_results_filepath("reads","trimmed/{sample}-R2.trimmed.fq.gz"),sample=SAMPLES),
 
         # Single-end trimmed (only if present)
-        expand(resolve_results_filepath("reads","trimmed/{sample}.trimmed.fq.gz"),sample=SAMPLES),
+        expand(resolve_results_filepath("reads","trimmed/{sample}.SE.trimmed.fq.gz"),sample=SAMPLES),
 
         # Kallisto quantification outputs
         expand(resolve_results_filepath("kallisto","{sample}/abundance.h5"),sample=SAMPLES),
