@@ -40,16 +40,45 @@ def resolve_scripts_filepath(filename):
     path = os.path.join(config.get('paths').get('workdir'), 'workflow', 'scripts')
     return resolve_single_filepath(path, filename)
 
-def temp_path(path=""):
-    default_path = os.path.join(config.get('paths').get('results_dir'), 'tmp')
-    if path:
-        try:
-            os.makedirs(path)
-        except OSError as e:
-            if e.errno != errno.EEXIST:
-                return default_path
-        return path
-    return default_path
+def ref_path(section, field):
+    """
+    Return the absolute path to a reference file defined in config.yaml.
+    Path structure:
+        <basepath>/<provider>/<release>/<file>
+    """
+    info = config["resources"][section]
+    base = info["basepath"]
+    provider = info.get("provider", "")
+    release = info.get("release", "")
+    filename = info[field]
+
+    # Build structured path: base/provider/release/filename
+    refdir = os.path.join(base, provider, release)
+
+    return os.path.join(refdir, filename)
+
+def temp_path(path=None):
+    """
+    Return a valid temporary directory path.
+    """
+
+    # Determine default temporary directory
+    results_dir = config["paths"]["results_dir"]
+    default_path = os.path.join(results_dir, "tmp")
+
+    # If no explicit path is provided, return the default temp directory
+    if not path:
+        os.makedirs(default_path, exist_ok=True)
+        return os.path.abspath(default_path)
+
+    # Use custom path
+    try:
+        os.makedirs(path, exist_ok=True)
+        return os.path.abspath(path)
+    except Exception:
+        # Fallback to default
+        os.makedirs(default_path, exist_ok=True)
+        return os.path.abspath(default_path)
 
 def expand_filepath(filepath):
     filepath = os.path.expandvars(os.path.expanduser(filepath))
@@ -73,10 +102,61 @@ def get_fastq(wildcards, units):
 def get_a_fastq(wildcards, units, fq="fq1"):
     return expand_filepath(units.loc[wildcards.unit, [fq]].dropna()[0])
 
-def get_unit_fastqs(wildcards, samples, label='units',read_pair='fq'):
-    for unit_set in samples.loc[wildcards.sample,[label]]:
-        print(wildcards.sample)
-    return [expand_filepath(units.loc[x,[read_pair]].dropna()[0]) for x in unit_set.split(',')]
+def get_sample_units(sample, layout="pe"):
+    """
+    Return the list of unit IDs (index values) for a given sample and layout.
+    layout: "pe" or "se".
+    """
+    df = units_pe if layout == "pe" else units_se
+    return df[df["sample"] == sample].index.tolist()
+
+def get_unit_fastqs_pe(wildcards, read_pair="fq1"):
+    """
+    Return list of PE fastq files (fq1 or fq2) for a given sample.
+    """
+    unit_ids = get_sample_units(wildcards.sample, layout="pe")
+    fastqs = []
+    for u in unit_ids:
+        val = units.loc[u, read_pair]
+        if pd.notna(val):
+            fastqs.append(expand_filepath(val))
+    return fastqs
+
+
+def get_unit_fastqs_se(wildcards, read_pair="fq1"):
+    """
+    Return list of SE fastq files (only fq1) for a given sample.
+    """
+    unit_ids = get_sample_units(wildcards.sample, layout="se")
+    fastqs = []
+    for u in unit_ids:
+        val = units.loc[u, read_pair]
+        if pd.notna(val):
+            fastqs.append(expand_filepath(val))
+    return fastqs
+
+
+def get_unit_fastqs(wildcards, samples_df, label="units", read_pair="fq1"):
+    """
+    Return a list of FASTQ files for a given sample and a given read pair (fq1 or fq2).
+    Units that do not contain the requested read (e.g., SE units when requesting fq2)
+    are automatically skipped.
+    """
+
+    # Retrieve the comma-separated list of unit IDs for this sample
+    units_str = samples_df.loc[wildcards.sample, label]
+    unit_ids = units_str.split(",")
+
+    fastqs = []
+    for u in unit_ids:
+        # Retrieve the FASTQ path for the requested read (fq1 or fq2)
+        val = units.loc[u, read_pair]
+
+        # Skip units that do not have this read (e.g., SE entries when read_pair == fq2)
+        if pd.notna(val):
+            fastqs.append(expand_filepath(val))
+
+    return fastqs
 
 
 def cpu_count():

@@ -1,4 +1,4 @@
 channels:
   - bioconda
 dependencies:
-  - star=2.5.3a
+  - fastp=1.0.1

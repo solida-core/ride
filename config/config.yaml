@@ -3,48 +3,41 @@ units: config/units.tsv
 reheader: config/reheader.tsv
 
 paths:
-    workdir: "/path/to/workdir"
-    results_dir: "/path/to/results_dir"
-
+  results_dir: "results"
+  workdir: "."
 
 resources:
-    genome_references:
-        basepath: "path_to_references_data"
-        provider: "ucsc"
-        release: "hg19"
-        genome_fasta: "ucsc.hg19.fasta"
-        genes_gtf: "Annotation/Genes/genes.gtf"
 
-    rseqc_reference:
-        basepath: "path_to_references_data"
-        provider: "rseqc"
-        release: "hg19"
-        housekeeping: "hg19.HouseKeepingGenes.bed"
-        refseq: "hg19_RefSeq.bed"
-
-    transcriptome_reference:
-        basepath: "path_to_references_data"
+    genome:
+        basepath: "/path/to/refdata"
         provider: "ensembl"
         release: "GRCh38"
-        transcriptome_fasta: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
+        fasta: "Homo_sapiens.GRCh38.dna.primary_assembly.fa"
+        gtf: "Homo_sapiens.GRCh38.115.gtf"
 
+    transcriptome:
+        basepath: "/path/to/refdata"
+        provider: "ensembl"
+        release: "GRCh38"
+        cdna: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
 
-params:
-    internal_sid: "LIMS"
-    read_type: "pe"
-    strand: "reverse"
-    multiqc:
-        arguments: "--force "
-    featureCounts_run:
-        gtf_feature_type: "exon"
-        gtf_attribute_type: "gene_id"
-    kallisto:
-        arguments_pe: ""
-        arguments_se: "--single -b 30 -l 280 -s 80 "
-    trim_galore_pe:
-        arguments: "--paired -q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
-    trim_galore_se:
-        arguments: "-q 20 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
-    fastq_screen:
-        params: "--force --aligner bowtie2 --subset 100000 --nohits"
-        config_file: "../data/fastq_screen.config"
+    rseqc:
+        basepath: "/path/to/refdata/rseqc"
+        housekeeping: "hg38.HouseKeepingGenes.bed"
+        refseq: "hg38_RefSeq.bed"
+
+trimming:
+  quality: 20
+  min_length: 20
+  trim_poly_g: true
+  trim_poly_x: true
+  detect_adapter: true
+
+kallisto:
+  index_name: "kallisto_index.idx"
+  frag_len: 280
+  frag_sd: 80
+  boot: 100
+
+salmon:
+  index_dir: "salmon_index"

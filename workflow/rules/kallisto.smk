@@ -1,51 +1,101 @@
-rule kallisto_build_index:
+rule kallisto_index:
+    """
+    Build kallisto index from transcriptome reference FASTA.
+    """
     input:
-        resolve_single_filepath(*references_abs_path(ref='transcriptome_reference'), config.get("transcriptome_fasta"))
-    output: "kallisto/index/transcriptome.kidx.transcripts"
-    conda:
-        "../envs/kallisto.yaml"
-    shell:
-        "kallisto index -i {output} {input}"
-
-
-
-
-
-def fastq_input(r1):
-    if config.get("read_type")=="se":
-        return r1
-    else:
-        r2=r1.replace("-R1-", "-R2-")
-        reads=[r1,r2]
-        return " ".join(reads)
-
-
-
-
-rule kallisto_quant:
-    input:
-        fastq_input("reads/trimmed/{sample}-R1-trimmed.fq.gz"),
-        index=rules.kallisto_build_index.output
+        fasta=ref_path("transcriptome", "cdna")
     output:
-        "kallisto/{sample}/abundance.h5",
-        "kallisto/{sample}/abundance.tsv",
-        "kallisto/{sample}/run_info.json",
-        touch("results/tmp/{sample}.ready.for.plots")
-    params:
-        outdir="kallisto/{sample}",
-        params=config.get("rules").get("kallisto").get("arguments" if config.get("read_type")=="pe" else "arguments_se"),
-        #read_type=config.get("rules").get("kallisto").get("read_type")
-    conda:
-        "../envs/kallisto.yaml"
-    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+        idx=resolve_results_filepath("kallisto", f"index/{config.get('kallisto').get('index_name')}")
     log:
-        "logs/kallisto/{sample}.kallisto_quant.log"
+        resolve_logs_filepath("kallisto","kallisto_index.log")
+    threads:
+        conservative_cpu_count()
+    conda:
+        resolve_envs_filepath("kallisto.yaml")
+    resources:
+        tmpdir=temp_path()
     shell:
-        "kallisto quant "
-        "-i {input.index} "
-        "-o {params.outdir} "
-        "{params.params} "
-        "-t {threads} "
-        "{input[0]} "
-        ">& {log}"
+        r"""
+        mkdir -p $(dirname {output.idx})
+        kallisto index \
+            -i {output.idx} \
+            {input.fasta} \
+            > {log} 2>&1
+        """
+
+rule kallisto_quant_pe:
+    """
+    Quantify expression for paired-end libraries with Kallisto.
+    """
+    input:
+        index=rules.kallisto_index.output.idx,
+        r1=rules.trim_pe.output.r1,
+        r2=rules.trim_pe.output.r2
+    output:
+        h5=resolve_results_filepath("kallisto", "{sample}/abundance.h5"),
+        tsv=resolve_results_filepath("kallisto","{sample}/abundance.tsv"),
+        json=resolve_results_filepath("kallisto","{sample}/run_info.json")
+    params:
+        outdir=resolve_results_filepath("kallisto", "{sample}"),
+        boot=config["kallisto"]["bootstrap"]
+    log:
+        resolve_logs_filepath("kallisto", "{sample}.kallisto.pe.log")
+    threads:
+        conservative_cpu_count()
+    conda:
+        resolve_envs_filepath("kallisto.yaml")
+    shell:
+        r"""
+        mkdir -p {params.outdir}
+        kallisto quant \
+            -i {input.index} \
+            -o {params.outdir} \
+            -b {params.boot} \
+            -t {threads} \
+            {input.r1} {input.r2} \
+            > {log} 2>&1
+        """
+
+rule kallisto_quant_se:
+    """
+    Quantify expression for single-end libraries with Kallisto.
+    """
+    input:
+        index = rules.kallisto_index.output.idx,
+        fastq = rules.trim_se.output.fastq
+    output:
+        h5=resolve_results_filepath("kallisto", "{sample}/abundance.h5"),
+        tsv=resolve_results_filepath("kallisto","{sample}/abundance.tsv"),
+        json=resolve_results_filepath("kallisto","{sample}/run_info.json")
+    params:
+        outdir=resolve_results_filepath("kallisto", "{sample}"),
+        frag_len = config["kallisto"]["frag_len"],
+        frag_sd = config["kallisto"]["frag_sd"],
+        boot=config["kallisto"]["bootstrap"]
+    log:
+        resolve_logs_filepath("kallisto", "{sample}.kallisto.se.log")
+    threads:
+        conservative_cpu_count()
+    conda:
+        resolve_envs_filepath("kallisto.yaml")
+    shell:
+        r"""
+        mkdir -p {params.outdir}
+        kallisto quant \
+            -i {input.index} \
+            --single \
+            -b {params.boot} \
+            -l {params.frag_len} \
+            -s {params.frag_sd} \
+            -o {params.outdir} \
+            -t {threads} \
+            {input.fastq} \
+            > {log} 2>&1
+        """
+
+
+
+
+
+
 
