@@ -17,12 +17,12 @@ SAMPLES = samples["sample"].tolist()
 
 rule all:
     input:
-        # # Paired-end trimmed
-        # expand(resolve_results_filepath("reads","trimmed/{sample}-R1.trimmed.fq.gz"),sample=SAMPLES),
-        # expand(resolve_results_filepath("reads","trimmed/{sample}-R2.trimmed.fq.gz"),sample=SAMPLES),
-        #
-        # # Single-end trimmed (only if present)
-        # expand(resolve_results_filepath("reads","trimmed/se/{sample}.trimmed.fq.gz"),sample=SAMPLES),
+        # Paired-end trimmed
+        expand(resolve_results_filepath("reads","trimmed/{sample}-R1.trimmed.fq.gz"),sample=SAMPLES),
+        expand(resolve_results_filepath("reads","trimmed/{sample}-R2.trimmed.fq.gz"),sample=SAMPLES),
+
+        # Single-end trimmed (only if present)
+        expand(resolve_results_filepath("reads","trimmed/se/{sample}.trimmed.fq.gz"),sample=SAMPLES),
 
         # Kallisto quantification outputs
         expand(resolve_results_filepath("kallisto","{sample}/abundance.h5"),sample=SAMPLES),
