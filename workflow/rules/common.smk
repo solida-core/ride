@@ -34,6 +34,12 @@ units["fq2"] = units["fq2"].replace({"": pd.NA, " ": pd.NA})
 units_se=units[units["fq2"].isna()].copy()
 units_pe=units[units["fq2"].notna()].copy()
 
+# List of samples – already loaded in common.smk
+SAMPLES = samples["sample"].tolist()
+# Extract sample lists for PE and SE
+SAMPLES_PE = units_pe["sample"].unique().tolist()
+SAMPLES_SE = units_se["sample"].unique().tolist()
+
 def resolve_single_filepath(basepath, filename):
     return os.path.join(basepath, filename)
 

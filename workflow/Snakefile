@@ -13,11 +13,8 @@ include: "rules/trimming.smk"
 include: "rules/kallisto.smk"
 include: "rules/quality_check.smk"
 
-# List of samples – already loaded in common.smk
-SAMPLES = samples["sample"].tolist()
-# Extract sample lists for PE and SE
-SAMPLES_PE = units_pe["sample"].unique().tolist()
-SAMPLES_SE = units_se["sample"].unique().tolist()
+
+
 
 rule all:
     input:
