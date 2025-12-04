@@ -10,18 +10,33 @@ rule trim_pe:
         r1 = rules.fastq_merge_pe_r1.output,
         r2 = rules.fastq_merge_pe_r2.output
     output:
-        r1 = resolve_results_filepath("reads", "trimmed/{sample}-R1.trimmed.fq.gz"),
-        r2 = resolve_results_filepath("reads", "trimmed/{sample}-R2.trimmed.fq.gz"),
-        html = resolve_results_filepath("qc", "trimming/{sample}.fastp.pe.html"),
-        json = resolve_results_filepath("qc", "trimming/{sample}.fastp.pe.json")
+        r1 = resolve_results_filepath(
+            "reads",
+            "trimmed/{sample}-R1.trimmed.fq.gz"
+        ),
+        r2 = resolve_results_filepath(
+            "reads",
+            "trimmed/{sample}-R2.trimmed.fq.gz"
+        ),
+        html = resolve_results_filepath(
+            "qc",
+            "trimming/{sample}.fastp.pe.html"
+        ),
+        json = resolve_results_filepath(
+            "qc",
+            "trimming/{sample}.fastp.pe.json"
+        )
     params:
         quality = config["trimming"]["quality"],
-        min_length=config["trimming"]["min_length"],
-        trim_poly_g="--trim_poly_g" if config["trimming"]["trim_poly_g"] else "",
-        trim_poly_x="--trim_poly_x" if config["trimming"]["trim_poly_x"] else "",
-        detect_adapter="--detect_adapter_for_pe" if config["trimming"]["detect_adapter"] else ""
+        min_length = config["trimming"]["min_length"],
+        trim_poly_g = "--trim_poly_g" if config["trimming"]["trim_poly_g"] else "",
+        trim_poly_x = "--trim_poly_x" if config["trimming"]["trim_poly_x"] else "",
+        detect_adapter = "--detect_adapter_for_pe" if config["trimming"]["detect_adapter"] else ""
     log:
-        resolve_logs_filepath("trimming", "{sample}.fastp.pe.log")
+        resolve_logs_filepath(
+            "trimming",
+            "{sample}.fastp.pe.log"
+        )
     threads:
         conservative_cpu_count()
     conda:
@@ -43,7 +58,7 @@ rule trim_pe:
             {params.detect_adapter} \
             --html {output.html} \
             --json {output.json} \
-            > {log} 2>&1
+            > {log}
         """
 
 rule trim_se:
@@ -57,17 +72,29 @@ rule trim_se:
     input:
         rules.fastq_merge_se.output
     output:
-        fastq = resolve_results_filepath("reads", "trimmed/se/{sample}.trimmed.fq.gz"),
-        html = resolve_results_filepath("qc", "trimming/se/{sample}.fastp.se.html"),
-        json = resolve_results_filepath("qc", "trimming/se/{sample}.fastp.se.json")
+        fastq = resolve_results_filepath(
+            "reads",
+            "trimmed/se/{sample}.trimmed.fq.gz"
+        ),
+        html = resolve_results_filepath(
+            "qc",
+            "trimming/se/{sample}.fastp.se.html"
+        ),
+        json = resolve_results_filepath(
+            "qc",
+            "trimming/se/{sample}.fastp.se.json"
+        )
     params:
-        quality=config["trimming"]["quality"],
-        min_length=config["trimming"]["min_length"],
-        trim_poly_g="--trim_poly_g" if config["trimming"]["trim_poly_g"] else "",
-        trim_poly_x="--trim_poly_x" if config["trimming"]["trim_poly_x"] else "",
-        detect_adapter="--detect_adapter_for_se" if config["trimming"]["detect_adapter"] else ""
+        quality = config["trimming"]["quality"],
+        min_length = config["trimming"]["min_length"],
+        trim_poly_g = "--trim_poly_g" if config["trimming"]["trim_poly_g"] else "",
+        trim_poly_x = "--trim_poly_x" if config["trimming"]["trim_poly_x"] else "",
+        detect_adapter = "--detect_adapter_for_se" if config["trimming"]["detect_adapter"] else ""
     log:
-        resolve_logs_filepath("trimming", "{sample}.fastp.se.log")
+        resolve_logs_filepath(
+            "trimming",
+            "{sample}.fastp.se.log"
+        )
     threads:
         conservative_cpu_count()
     conda:
@@ -87,5 +114,5 @@ rule trim_se:
             {params.detect_adapter} \
             --html {output.html} \
             --json {output.json} \
-            > {log} 2>&1
+            > {log}
        """

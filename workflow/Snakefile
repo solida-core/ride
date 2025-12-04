@@ -14,25 +14,73 @@ include: "rules/kallisto.smk"
 
 # List of samples – already loaded in common.smk
 SAMPLES = samples["sample"].tolist()
+# Extract sample lists for PE and SE
+SAMPLES_PE = units_pe["sample"].unique().tolist()
+SAMPLES_SE = units_se["sample"].unique().tolist()
 
 rule all:
     input:
         # Paired-end trimmed
-        expand(resolve_results_filepath("reads","trimmed/{sample}-R1.trimmed.fq.gz"),sample=SAMPLES),
-        expand(resolve_results_filepath("reads","trimmed/{sample}-R2.trimmed.fq.gz"),sample=SAMPLES),
+        expand(
+            resolve_results_filepath("reads", "trimmed/{sample}-R1.trimmed.fq.gz"),
+            sample=SAMPLES_PE
+        ),
+
+        expand(
+            resolve_results_filepath("reads", "trimmed/{sample}-R2.trimmed.fq.gz"),
+            sample=SAMPLES_PE
+        ),
 
         # Single-end trimmed (only if present)
-        expand(resolve_results_filepath("reads","trimmed/se/{sample}.trimmed.fq.gz"),sample=SAMPLES),
+        expand(
+            resolve_results_filepath("reads", "trimmed/se/{sample}.trimmed.fq.gz"),
+            sample=SAMPLES_SE
+        ),
 
         # Kallisto quantification outputs
-        expand(resolve_results_filepath("kallisto","{sample}/abundance.h5"),sample=SAMPLES),
-        expand(resolve_results_filepath("kallisto","{sample}/abundance.tsv"),sample=SAMPLES),
-        expand(resolve_results_filepath("kallisto","{sample}/run_info.json"),sample=SAMPLES),
+        expand(
+            resolve_results_filepath("kallisto", "{sample}/abundance.h5"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath("kallisto", "{sample}/abundance.tsv"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath("kallisto", "{sample}/run_info.json"),
+            sample=SAMPLES_PE
+        ),
 
-        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.se.h5"), sample=SAMPLES),
-        expand(resolve_results_filepath("kallisto","{sample}/se/abundance.se.tsv"),sample=SAMPLES),
-        expand(resolve_results_filepath("kallisto","{sample}/se/run_info.se.json"),sample=SAMPLES),
+        expand(
+            resolve_results_filepath("kallisto", "{sample}/se/abundance.se.h5"),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath("kallisto", "{sample}/se/abundance.se.tsv"),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath("kallisto", "{sample}/se/run_info.se.json"),
+            sample=SAMPLES_SE),
 
+        # fastqc PE
+        expand(
+            resolve_results_filepath("qc","fastqc/{sample}_R1_fastqc.zip"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath("qc","fastqc/{sample}_R2_fastqc.zip"),
+            sample=SAMPLES_PE
+        ),
+
+        # fastqc SE
+        expand(
+            resolve_results_filepath("qc","fastqc/se/{sample}_SE_fastqc.zip"),
+            sample=SAMPLES_SE
+        ),
+
+        # multiqc final report
+        resolve_results_filepath("qc","multiqc/multiqc_report.html")
 
        
 
