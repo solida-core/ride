@@ -4,11 +4,11 @@ import os
 
 inputs = list(snakemake.input)
 output = snakemake.output.fq
-outdir = snakemake.output.dir
+outdir = os.path.dirname(snakemake.output.fq)
 logfile = snakemake.log[0] if snakemake.log else None
 
 # Ensure output directory exists
-# os.makedirs(outdir, exist_ok=True)
+os.makedirs(outdir, exist_ok=True)
 
 # Ensure log directory exists
 if logfile:
