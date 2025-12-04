@@ -16,6 +16,7 @@ if logfile:
 
 def log(msg):
     """Write msg to log file."""
+    print(msg)
     if logfile:
         with open(logfile, "a") as lf:
             lf.write(msg + "\n")

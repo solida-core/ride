@@ -44,6 +44,8 @@ rule kallisto_quant_pe:
         conservative_cpu_count()
     conda:
         resolve_envs_filepath("kallisto.yaml")
+    resources:
+        tmpdir=temp_path()
     shell:
         r"""
         mkdir -p {params.outdir}
@@ -78,6 +80,8 @@ rule kallisto_quant_se:
         conservative_cpu_count()
     conda:
         resolve_envs_filepath("kallisto.yaml")
+    resources:
+        tmpdir=temp_path()
     shell:
         r"""
         mkdir -p {params.outdir}

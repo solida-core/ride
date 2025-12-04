@@ -9,6 +9,10 @@ rule fastq_merge_pe_r1:
         )
     log:
         resolve_logs_filepath("merge_fq","{sample}-R1.merge.log")
+    threads:
+        conservative_cpu_count()
+    resources:
+        tmpdir=temp_path()
     script:
         resolve_scripts_filepath("merge_fq.py")
 
@@ -23,6 +27,10 @@ rule fastq_merge_pe_r2:
         )
     log:
         resolve_logs_filepath("merge_fq","{sample}-R2.merge.log")
+    threads:
+        conservative_cpu_count()
+    resources:
+        tmpdir=temp_path()
     script:
         resolve_scripts_filepath("merge_fq.py")
 
@@ -37,6 +45,10 @@ rule fastq_merge_se:
         )
     log:
         resolve_logs_filepath("merge_fq","se/{sample}.merge.log")
+    threads:
+        conservative_cpu_count()
+    resources:
+        tmpdir=temp_path()
     script:
         resolve_scripts_filepath("merge_fq.py")
 
