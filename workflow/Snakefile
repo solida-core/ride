@@ -11,6 +11,7 @@ include: "rules/common.smk"
 include: "rules/merge_fq.smk"
 include: "rules/trimming.smk"
 include: "rules/kallisto.smk"
+include: "rules/quality_check.smk"
 
 # List of samples – already loaded in common.smk
 SAMPLES = samples["sample"].tolist()
