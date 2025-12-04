@@ -10,12 +10,28 @@ report: "../report/workflow.rst"
 
 validate(config, schema="../schemas/config.schema.yaml")
 
-samples = pd.read_csv(config.get("samples"), sep='\t')
-units = pd.read_csv(config.get("units"), sep='\t')
-reheader = pd.read_csv(config.get("reheader"), sep='\t')
+samples = pd.read_csv(config.get("samples"),
+    sep='\t',
+    dtype=str,
+    keep_default_na=True,
+    na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
+)
+units = pd.read_csv(config.get("units"),
+    sep='\t',
+    dtype=str,
+    keep_default_na=True,
+    na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
+)
+reheader = pd.read_csv(config.get("reheader"),
+    sep='\t',
+    dtype=str,
+    keep_default_na=True,
+    na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
+)
 
-units_se=units[units["fq2"].isna()]
-units_pe=units[units["fq2"].notna()]
+units["fq2"] = units["fq2"].replace({"": pd.NA, " ": pd.NA})
+units_se=units[units["fq2"].isna()].copy()
+units_pe=units[units["fq2"].notna()].copy()
 
 def resolve_single_filepath(basepath, filename):
     return os.path.join(basepath, filename)
