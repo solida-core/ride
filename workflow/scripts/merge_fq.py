@@ -28,7 +28,7 @@ for f in inputs:
     log(f" - {f}")
 
 if len(inputs) > 1:
-    cmd = ["cat"] + inputs
+    cmd = ["cat", "-V"] + inputs
     log("Merging files via: " + " ".join(cmd))
     with open(output, "wb") as fout:
         run(cmd, stdout=fout, check=True)
