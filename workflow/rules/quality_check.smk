@@ -8,19 +8,19 @@ rule fastqc_pe:
     output:
         html_r1 = resolve_results_filepath(
             "qc",
-            "fastqc/{sample}_R1_fastqc.html"
+            "fastqc/{sample}-R1.trimmed_fastqc.html"
         ),
         zip_r1  = resolve_results_filepath(
             "qc",
-            "fastqc/{sample}_R1_fastqc.zip"
+            "fastqc/{sample}-R1.trimmed_fastqc.zip"
         ),
         html_r2 = resolve_results_filepath(
             "qc",
-            "fastqc/{sample}_R2_fastqc.html"
+            "fastqc/{sample}-R1.trimmed_fastqc.html"
         ),
         zip_r2  = resolve_results_filepath(
             "qc",
-            "fastqc/{sample}_R2_fastqc.zip"
+            "fastqc/{sample}-R1.trimmed_fastqc.zip"
         )
     params:
         outdir = resolve_results_filepath(
@@ -59,11 +59,11 @@ rule fastqc_se:
     output:
         html = resolve_results_filepath(
             "qc",
-            "fastqc/se/{sample}_SE_fastqc.html"
+            "fastqc/se/{sample}.trimmed_fastqc.html"
         ),
         zip  = resolve_results_filepath(
             "qc",
-            "fastqc/se/{sample}_SE_fastqc.zip"
+            "fastqc/se/{sample}.trimmed_fastqc.zip"
         )
     params:
         outdir=resolve_results_filepath(
@@ -95,9 +95,9 @@ rule multiqc:
     Run MultiQC on all QC outputs (FastQC + Fastp + Salmon/Kallisto).
     """
     input:
-        expand(resolve_results_filepath("qc", "fastqc/{sample}_R1_fastqc.zip"), sample=SAMPLES_PE),
-        expand(resolve_results_filepath("qc", "fastqc/{sample}_R2_fastqc.zip"), sample=SAMPLES_PE),
-        expand(resolve_results_filepath("qc", "fastqc/se/{sample}_SE_fastqc.zip"), sample=SAMPLES_SE),
+        expand(resolve_results_filepath("qc", "fastqc/{sample}-R1.trimmed_fastqc.zip"), sample=SAMPLES_PE),
+        expand(resolve_results_filepath("qc", "fastqc/{sample}-R2.trimmed_fastqc.zip"), sample=SAMPLES_PE),
+        expand(resolve_results_filepath("qc", "fastqc/se/{sample}.trimmed_fastqc.zip"), sample=SAMPLES_SE),
 
         expand(resolve_results_filepath("qc","trimming/{sample}.fastp.pe.json"), sample=SAMPLES_PE),
         expand(resolve_results_filepath("qc","trimming/se/{sample}.fastp.se.json"), sample=SAMPLES_SE)
