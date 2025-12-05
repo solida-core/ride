@@ -44,22 +44,20 @@ rule trim_pe:
     resources:
         tmpdir=temp_path()
     shell:
-        r"""
-        fastp \
-            -i {input.r1} \
-            -I {input.r2} \
-            -o {output.r1} \
-            -O {output.r2} \
-            --thread {threads} \
-            --qualified_quality_phred {params.quality} \
-            --length_required {params.min_length} \
-            {params.trim_poly_g} \
-            {params.trim_poly_x} \
-            {params.detect_adapter} \
-            --html {output.html} \
-            --json {output.json} \
-            > {log}
-        """
+        "fastp "
+        "-i {input.r1} "
+        "-I {input.r2} "
+        "-o {output.r1} "
+        "-O {output.r2} "
+        "--thread {threads} "
+        "--qualified_quality_phred {params.quality} "
+        "--length_required {params.min_length} "
+        "{params.trim_poly_g} "
+        "{params.trim_poly_x} "
+        "{params.detect_adapter} "
+        "--html {output.html} "
+        "--json {output.json} "
+        ">& {log} "
 
 rule trim_se:
     """
@@ -102,17 +100,15 @@ rule trim_se:
     resources:
         tmpdir=temp_path()
     shell:
-        r"""
-        fastp \
-            -i {input} \
-            -o {output.fastq} \
-            --thread {threads} \
-            --qualified_quality_phred {params.quality} \
-            --length_required {params.min_length} \
-            {params.trim_poly_g} \
-            {params.trim_poly_x} \
-            {params.detect_adapter} \
-            --html {output.html} \
-            --json {output.json} \
-            > {log}
-       """
+        "fastp "
+        "-i {input} "
+        "-o {output.fastq} "
+        "--thread {threads} "
+        "--qualified_quality_phred {params.quality} "
+        "--length_required {params.min_length} "
+        "{params.trim_poly_g} "
+        "{params.trim_poly_x} "
+        "{params.detect_adapter} "
+        "--html {output.html} "
+        "--json {output.json} "
+        ">& {log} "

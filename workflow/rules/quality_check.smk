@@ -16,11 +16,11 @@ rule fastqc_pe:
         ),
         html_r2 = resolve_results_filepath(
             "qc",
-            "fastqc/{sample}-R1.trimmed_fastqc.html"
+            "fastqc/{sample}-R2.trimmed_fastqc.html"
         ),
         zip_r2  = resolve_results_filepath(
             "qc",
-            "fastqc/{sample}-R1.trimmed_fastqc.zip"
+            "fastqc/{sample}-R2.trimmed_fastqc.zip"
         )
     params:
         outdir = resolve_results_filepath(
@@ -39,15 +39,12 @@ rule fastqc_pe:
     resources:
         tmpdir=temp_path()
     shell:
-        r"""
-        mkdir -p {params.outdir}
-        
-        fastqc \
-            --threads {threads} \
-            --outdir {params.outdir} \
-            {input.r1} {input.r2} \
-            > {log} 
-        """
+        # "mkdir -p {params.outdir} ; "
+        "fastqc "
+        "--threads {threads} "
+        "--outdir {params.outdir} "
+        "{input.r1} {input.r2} "
+        ">& {log} "
 
 
 rule fastqc_se:
@@ -79,15 +76,12 @@ rule fastqc_se:
     resources:
         tmpdir=temp_path()
     shell:
-        r"""
-        mkdir -p {params.outdir}
-        
-        fastqc \
-            --threads {threads} \
-            --outdir {params.outdir} \
-            {input.fq} \
-            > {log} 
-        """
+        # "mkdir -p {params.outdir} ; "
+        "fastqc "
+        "--threads {threads} "
+        "--outdir {params.outdir} "
+        "{input.fq} "
+        ">& {log} "
 
 
 rule multiqc:
@@ -107,7 +101,8 @@ rule multiqc:
     params:
         outdir = resolve_results_filepath("qc", "multiqc"),
         fastqc = resolve_results_filepath("qc", "fastqc"),
-        trimming =  resolve_results_filepath("qc", "trimming")
+        trimming =  resolve_results_filepath("qc", "trimming"),
+        qcdir = resolve_results_filepath("qc", "")
     log:
         resolve_logs_filepath("multiqc", "multiqc.log")
     threads:
@@ -115,13 +110,10 @@ rule multiqc:
     conda:
         resolve_envs_filepath("quality_check.yaml")
     shell:
-        r"""
-        mkdir -p {params.outdir}
-
-        multiqc \
-            {params.fastqc} \
-            {params.trimming} \ 
-            -o {params.outdir} \
-            > {log} 
-        """
+        # "mkdir -p {params.outdir} ; "
+        "multiqc "
+        "{params.fastqc} "
+        "{params.trimming} "
+        "-o {params.outdir} "
+        ">& {log} "
 

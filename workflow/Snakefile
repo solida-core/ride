@@ -63,11 +63,11 @@ rule all:
 
         # fastqc PE
         expand(
-            resolve_results_filepath("qc","fastqc/{sample}_R1_fastqc.zip"),
+            resolve_results_filepath("qc","fastqc/{sample}-R1.trimmed_fastqc.zip"),
             sample=SAMPLES_PE
         ),
         expand(
-            resolve_results_filepath("qc","fastqc/{sample}_R2_fastqc.zip"),
+            resolve_results_filepath("qc","fastqc/{sample}-R2.trimmed_fastqc.zip"),
             sample=SAMPLES_PE
         ),
 

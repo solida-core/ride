@@ -19,7 +19,7 @@ rule kallisto_index:
         "kallisto index "
         "-i {output.idx} "
         "{input.fasta} "
-        "> {log} "
+        ">& {log} "
 
 rule kallisto_quant_pe:
     """
@@ -45,17 +45,13 @@ rule kallisto_quant_pe:
     resources:
         tmpdir=temp_path()
     shell:
-        r"""
-         mkdir -p {params.outdir} 
-          
-        kallisto quant \
-            -i {input.index} \
-            -o {params.outdir} \ 
-            -b {params.boot} \
-            -t {threads} \
-            {input.r1} {input.r2} \
-            > {log} 
-        """
+        "kallisto quant "
+        "-i {input.index} "
+        "-o {params.outdir} "
+        "-b {params.boot} "
+        " -t {threads} "
+        " {input.r1} {input.r2} "
+        ">& {log} "
 
 
 rule kallisto_quant_se:
@@ -83,20 +79,17 @@ rule kallisto_quant_se:
     resources:
         tmpdir=temp_path()
     shell:
-        r"""
-        mkdir -p {params.outdir}
+        "kallisto quant "
+        "-i {input.index} "
+        "--single "
+        "-b {params.boot} "
+        "-l {params.frag_len} "
+        "-s {params.frag_sd} "
+        "-o {params.outdir} "
+        "-t {threads} "
+        "{input.fastq} "
+        ">& {log} "
 
-        kallisto quant \
-            -i {input.index} \
-            --single \
-            -b {params.boot} \
-            -l {params.frag_len} \
-            -s {params.frag_sd} \
-            -o {params.outdir} \
-            -t {threads} \
-            {input.fastq} \
-            > {log} 
-        """
 
 
 
