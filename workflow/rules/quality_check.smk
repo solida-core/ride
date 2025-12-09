@@ -1,3 +1,5 @@
+from workflow.rules.common import resolve_logs_filepath
+
 rule fastqc_pe:
     """
     Run FastQC on paired-end trimmed reads.
@@ -76,7 +78,6 @@ rule fastqc_se:
     resources:
         tmpdir=temp_path()
     shell:
-        # "mkdir -p {params.outdir} ; "
         "fastqc "
         "--threads {threads} "
         "--outdir {params.outdir} "
@@ -94,7 +95,10 @@ rule multiqc:
         expand(resolve_results_filepath("qc", "fastqc/se/{sample}.trimmed_fastqc.zip"), sample=SAMPLES_SE),
 
         expand(resolve_results_filepath("qc","trimming/{sample}.fastp.pe.json"), sample=SAMPLES_PE),
-        expand(resolve_results_filepath("qc","trimming/se/{sample}.fastp.se.json"), sample=SAMPLES_SE)
+        expand(resolve_results_filepath("qc","trimming/se/{sample}.fastp.se.json"), sample=SAMPLES_SE),
+
+        expand(resolve_logs_filepath("kallisto", "{sample}.kallisto.pe.log"), sample=SAMPLES_PE),
+        expand(resolve_logs_filepath("kallisto","{sample}.kallisto.se.log"), sample=SAMPLES_SE)
     output:
         html = resolve_results_filepath("qc", "multiqc/multiqc_report.html"),
         data = directory(resolve_results_filepath("qc", "multiqc/multiqc_data"))
@@ -102,7 +106,7 @@ rule multiqc:
         outdir = resolve_results_filepath("qc", "multiqc"),
         fastqc = resolve_results_filepath("qc", "fastqc"),
         trimming =  resolve_results_filepath("qc", "trimming"),
-        qcdir = resolve_results_filepath("qc", "")
+        kallisto = resolve_logs_filepath("kallisto", "")
     log:
         resolve_logs_filepath("multiqc", "multiqc.log")
     threads:
@@ -110,10 +114,10 @@ rule multiqc:
     conda:
         resolve_envs_filepath("quality_check.yaml")
     shell:
-        # "mkdir -p {params.outdir} ; "
         "multiqc "
-        "{params.fastqc} "
+        "{params.kallisto} "
         "{params.trimming} "
+        "{params.fastqc} "
         "-o {params.outdir} "
         ">& {log} "
 
