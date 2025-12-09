@@ -163,12 +163,19 @@ properties:
 
 
   ###########################################################################
-  # SALMON PARAMETERS
+  # STAR PARAMETERS
   ###########################################################################
   salmon:
     type: object
     required:
       - index_dir
+      - sjdb_overhang
+      - extra_params
     properties:
       index_dir:
+        type: string
+      sjdb_overhang:
+        type: integer
+        minimun: 1
+      extra_params:
         type: string

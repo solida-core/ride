@@ -1,5 +1,3 @@
-from workflow.rules.common import resolve_logs_filepath
-
 rule fastqc_pe:
     """
     Run FastQC on paired-end trimmed reads.

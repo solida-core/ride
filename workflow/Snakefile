@@ -1,7 +1,5 @@
 from snakemake.utils import min_version
 
-from workflow.rules.common import expand_filepath, SAMPLES_PE
-
 ##### set minimum snakemake version #####
 min_version("8.10.0")
 
@@ -13,8 +11,8 @@ include: "rules/common.smk"
 include: "rules/merge_fq.smk"
 include: "rules/trimming.smk"
 include: "rules/kallisto.smk"
+include: "rules/align.smk"
 include: "rules/quality_check.smk"
-
 
 
 
