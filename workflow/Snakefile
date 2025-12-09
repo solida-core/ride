@@ -1,5 +1,7 @@
 from snakemake.utils import min_version
 
+from workflow.rules.common import expand_filepath, SAMPLES_PE
+
 ##### set minimum snakemake version #####
 min_version("8.10.0")
 
@@ -59,7 +61,18 @@ rule all:
         ),
         expand(
             resolve_results_filepath("kallisto", "{sample}/se/run_info.se.json"),
-            sample=SAMPLES_SE),
+            sample=SAMPLES_SE
+        ),
+
+
+        expand(
+            resolve_results_filepath("star","{sample}/{sample}.bam.bai"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath("star","{sample}/se/{sample}.bam.bai"),
+            sample=SAMPLES_SE
+        ),
 
         # fastqc PE
         expand(

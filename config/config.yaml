@@ -7,7 +7,6 @@ paths:
   workdir: "."
 
 resources:
-
     genome:
         basepath: "/path/to/refdata"
         provider: "ensembl"
@@ -39,5 +38,7 @@ kallisto:
   frag_sd: 80
   boot: 100
 
-salmon:
-  index_dir: "salmon_index"
+star:
+  index_dir: "index"
+  sjdb_overhang: 100
+  extra_params: "" # "--quantMode GeneCounts "
