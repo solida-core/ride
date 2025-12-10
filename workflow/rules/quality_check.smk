@@ -32,6 +32,11 @@ rule fastqc_pe:
             "fastqc",
             "{sample}.fastqc.pe.log"
         )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "fastqc",
+            "{sample}.fastqc.pe.txt"
+        )
     threads:
         conservative_cpu_count()
     conda:
@@ -68,7 +73,15 @@ rule fastqc_se:
             "fastqc/se"
         )
     log:
-        resolve_logs_filepath("fastqc", "{sample}.fastqc.se.log")
+        resolve_logs_filepath(
+            "fastqc",
+            "{sample}.fastqc.se.log"
+        )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "fastqc",
+            "{sample}.fastqc.se.txt"
+        )
     threads:
         conservative_cpu_count()
     conda:
@@ -88,23 +101,93 @@ rule multiqc:
     Run MultiQC on all QC outputs (FastQC + Fastp + Salmon/Kallisto).
     """
     input:
-        expand(resolve_results_filepath("qc", "fastqc/{sample}-R1.trimmed_fastqc.zip"), sample=SAMPLES_PE),
-        expand(resolve_results_filepath("qc", "fastqc/{sample}-R2.trimmed_fastqc.zip"), sample=SAMPLES_PE),
-        expand(resolve_results_filepath("qc", "fastqc/se/{sample}.trimmed_fastqc.zip"), sample=SAMPLES_SE),
+        # FastQC
+        expand(
+            resolve_results_filepath(
+                "qc",
+                "fastqc/{sample}-R1.trimmed_fastqc.zip"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "qc",
+                "fastqc/{sample}-R2.trimmed_fastqc.zip"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "qc",
+                "fastqc/se/{sample}.trimmed_fastqc.zip"),
+            sample=SAMPLES_SE
+        ),
 
-        expand(resolve_results_filepath("qc","trimming/{sample}.fastp.pe.json"), sample=SAMPLES_PE),
-        expand(resolve_results_filepath("qc","trimming/se/{sample}.fastp.se.json"), sample=SAMPLES_SE),
+        # Trimmimg - Fastp
+        expand(
+            resolve_results_filepath(
+                "qc",
+                "trimming/{sample}.fastp.pe.json"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "qc",
+                "trimming/se/{sample}.fastp.se.json"),
+            sample=SAMPLES_SE
+        ),
 
-        expand(resolve_logs_filepath("kallisto", "{sample}.kallisto.pe.log"), sample=SAMPLES_PE),
-        expand(resolve_logs_filepath("kallisto","{sample}.kallisto.se.log"), sample=SAMPLES_SE)
+        # Kallisto
+        expand(
+            resolve_logs_filepath(
+                "kallisto",
+                "{sample}.kallisto.pe.log"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_logs_filepath(
+                "kallisto",
+                "{sample}.kallisto.se.log"),
+            sample=SAMPLES_SE
+        ),
+
+        # Star
+        expand(
+            resolve_results_filepath(
+                "star",
+                "{sample}/{sample}.pe.Log.final.out"),
+            sample=SAMPLES_SE
+        )
     output:
-        html = resolve_results_filepath("qc", "multiqc/multiqc_report.html"),
-        data = directory(resolve_results_filepath("qc", "multiqc/multiqc_data"))
+        html = resolve_results_filepath(
+            "qc",
+            "multiqc/multiqc_report.html"
+        ),
+        data = directory(
+            resolve_results_filepath(
+                "qc",
+                "multiqc/multiqc_data"
+            )
+        )
     params:
-        outdir = resolve_results_filepath("qc", "multiqc"),
-        fastqc = resolve_results_filepath("qc", "fastqc"),
-        trimming =  resolve_results_filepath("qc", "trimming"),
-        kallisto = resolve_logs_filepath("kallisto", "")
+        outdir = resolve_results_filepath(
+            "qc",
+            "multiqc"
+        ),
+        fastqc = resolve_results_filepath(
+            "qc",
+            "fastqc"
+        ),
+        trimming =  resolve_results_filepath(
+            "qc",
+            "trimming"
+        ),
+        kallisto = resolve_logs_filepath(
+            "kallisto",
+            ""
+        ),
+        star = resolve_logs_filepath(
+            "star",
+            ""
+        ),
     log:
         resolve_logs_filepath("multiqc", "multiqc.log")
     threads:
@@ -113,6 +196,7 @@ rule multiqc:
         resolve_envs_filepath("quality_check.yaml")
     shell:
         "multiqc "
+        "{params.star} "
         "{params.kallisto} "
         "{params.trimming} "
         "{params.fastqc} "
