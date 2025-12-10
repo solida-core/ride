@@ -36,7 +36,7 @@ Options:
                         • name  → RUNS_DIR/<name>/
                         • path  → used as-is
     -P PROFILE        Snakemake profile directory (e.g. profiles/slurm)
-    -p PARAMETERS     Additional Snakemake parameters to pass verbatim
+    -p PARAMETERS     Additional Snakemake parameters
 "
 # ======================================================================================================================
 

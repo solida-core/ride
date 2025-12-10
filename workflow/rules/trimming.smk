@@ -37,6 +37,11 @@ rule trim_pe:
             "trimming",
             "{sample}.fastp.pe.log"
         )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "trimming",
+            "{sample}.fastp.pe.txt"
+        )
     threads:
         conservative_cpu_count()
     conda:
@@ -92,6 +97,11 @@ rule trim_se:
         resolve_logs_filepath(
             "trimming",
             "{sample}.fastp.se.log"
+        )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "trimming",
+            "{sample}.fastp.se.txt"
         )
     threads:
         conservative_cpu_count()

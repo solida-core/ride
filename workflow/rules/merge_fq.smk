@@ -11,6 +11,11 @@ rule fastq_merge_pe_r1:
             "merge_fq",
             "{sample}-R1.merge.log"
         )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "merge_fq",
+            "{sample}-R1.merge.txt"
+        )
     threads:
         conservative_cpu_count()
     resources:
@@ -31,6 +36,11 @@ rule fastq_merge_pe_r2:
         resolve_logs_filepath(
             "merge_fq",
             "{sample}-R2.merge.log"
+        )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "merge_fq",
+            "{sample}-R2.merge.txt"
         )
     threads:
         conservative_cpu_count()
@@ -54,6 +64,11 @@ rule fastq_merge_se:
         resolve_logs_filepath(
             "merge_fq",
             "se/{sample}.merge.log"
+        )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "merge_fq",
+            "se/{sample}.merge.txt"
         )
     threads:
         conservative_cpu_count()

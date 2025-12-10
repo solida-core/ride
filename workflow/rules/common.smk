@@ -125,7 +125,6 @@ except pd.errors.EmptyDataError:
     reheader = None
 
 
-
 ###############################################
 # 5) Split SE / PE and sample lists
 ###############################################
@@ -150,6 +149,9 @@ def resolve_results_filepath(dirname, filename):
 
 def resolve_logs_filepath(dirname, filename):
     return os.path.join("logs", dirname, filename)
+
+def resolve_qc_filepath(dirname, filename):
+    return os.path.join("qc", dirname, filename)
 
 def resolve_benchmarks_filepath(dirname, filename):
     return os.path.join("benchmarks", dirname, filename)

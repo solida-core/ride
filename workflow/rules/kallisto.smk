@@ -5,9 +5,19 @@ rule kallisto_index:
     input:
         fasta=ref_path("transcriptome", "cdna")
     output:
-        idx=resolve_results_filepath("kallisto", f"index/{config.get('kallisto').get('index_name')}")
+        idx=resolve_results_filepath(
+            "kallisto",
+            f"index/{config.get('kallisto').get('index_name')}"
+        )
     log:
-        resolve_logs_filepath("kallisto","kallisto_index.log")
+        resolve_logs_filepath(
+            "kallisto",
+            "kallisto_index.log")
+    benchmark:
+        resolve_benchmarks_filepath(
+            "kallisto",
+            "kallisto_index.txt"
+        )
     threads:
         conservative_cpu_count()
     conda:
@@ -30,14 +40,34 @@ rule kallisto_quant_pe:
         r1=rules.trim_pe.output.r1,
         r2=rules.trim_pe.output.r2
     output:
-        h5=resolve_results_filepath("kallisto", "{sample}/abundance.h5"),
-        tsv=resolve_results_filepath("kallisto","{sample}/abundance.tsv"),
-        json=resolve_results_filepath("kallisto","{sample}/run_info.json")
+        h5=resolve_results_filepath(
+            "kallisto",
+            "{sample}/abundance.h5"
+        ),
+        tsv=resolve_results_filepath(
+            "kallisto",
+            "{sample}/abundance.tsv"
+        ),
+        json=resolve_results_filepath(
+            "kallisto",
+            "{sample}/run_info.json"
+        )
     params:
-        outdir=resolve_results_filepath("kallisto", "{sample}"),
+        outdir=resolve_results_filepath(
+            "kallisto",
+            "{sample}"
+        ),
         boot=config["kallisto"]["boot"]
     log:
-        resolve_logs_filepath("kallisto", "{sample}.kallisto.pe.log")
+        resolve_logs_filepath(
+            "kallisto",
+            "{sample}.kallisto.pe.log"
+        )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "kallisto",
+            "{sample}.kallisto.pe.txt"
+        )
     threads:
         conservative_cpu_count()
     conda:
@@ -62,16 +92,35 @@ rule kallisto_quant_se:
         index = rules.kallisto_index.output.idx,
         fastq = rules.trim_se.output.fastq
     output:
-        h5=resolve_results_filepath("kallisto", "{sample}/se/abundance.se.h5"),
-        tsv=resolve_results_filepath("kallisto","{sample}/se/abundance.se.tsv"),
-        json=resolve_results_filepath("kallisto","{sample}/se/run_info.se.json")
+        h5  = resolve_results_filepath(
+            "kallisto",
+            "{sample}/se/abundance.se.h5"
+        ),
+        tsv = resolve_results_filepath(
+            "kallisto",
+            "{sample}/se/abundance.se.tsv"
+        ),
+        json= resolve_results_filepath(
+            "kallisto",
+            "{sample}/se/run_info.se.json")
     params:
-        outdir=resolve_results_filepath("kallisto", "{sample}/se"),
-        frag_len = config["kallisto"]["frag_len"],
+        outdir  = resolve_results_filepath(
+            "kallisto",
+            "{sample}/se"
+        ),
+        frag_len= config["kallisto"]["frag_len"],
         frag_sd = config["kallisto"]["frag_sd"],
-        boot=config["kallisto"]["boot"]
+        boot    = config["kallisto"]["boot"]
     log:
-        resolve_logs_filepath("kallisto", "{sample}.kallisto.se.log")
+        resolve_logs_filepath(
+            "kallisto",
+            "{sample}.kallisto.se.log"
+        )
+    benchmark:
+        resolve_benchmarks_filepath(
+            "kallisto",
+            "{sample}.kallisto.se.txt"
+        )
     threads:
         conservative_cpu_count()
     conda:
