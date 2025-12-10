@@ -1,0 +1,22 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+
+type: object
+description: "Validation schema for samples.tsv, defining the list of samples and their associated sequencing units."
+
+properties:
+
+  sample:
+    description: "Sample identifier. Must match the sample IDs referenced in units.tsv."
+    type: array
+    items:
+      type: string
+
+  units:
+    description: "Comma-separated list of unit identifiers (as defined in units.tsv) associated with this sample."
+    type: array
+    items:
+      type: string
+
+required:
+  - sample
+  - units

@@ -1,0 +1,23 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+
+type: object
+description: "Validation schema for reheader.tsv, defining optional mappings between sample IDs and user-defined sample names."
+
+properties:
+
+  sample_id:
+    description: "Original sample identifier, typically matching the 'sample' column in samples.tsv."
+    type: array
+    items:
+      type: string
+
+  sample_name:
+    description: "User-defined or alternative sample name to be used for reporting or output file labeling."
+    type: array
+    items:
+      type: string
+
+required:
+  - sample_id
+  - sample_name
+

@@ -4,7 +4,6 @@ reheader: config/reheader.tsv
 
 paths:
   results_dir: "results"
-  workdir: "."
 
 resources:
     genome:

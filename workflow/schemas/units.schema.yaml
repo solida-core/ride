@@ -1,0 +1,34 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+description: "Validation schema for units.tsv, defining sequencing units associated with each sample."
+
+properties:
+
+  sample:
+    description: "Sample identifier to which the sequencing unit belongs (e.g., ERS179576)."
+    type: array
+    items:
+      type: string
+
+  unit:
+    description: "Unique identifier for the sequencing unit (run/lane), e.g., HSQ1008_141.L005.ERS179576."
+    type: array
+    items:
+      type: string
+
+  fq1:
+    description: "Path to the FASTQ R1 file. Mandatory for both single-end and paired-end units."
+    type: array
+    items:
+      type: string
+
+  fq2:
+    description: "Path to the FASTQ R2 file. Present only for paired-end units; may be empty for single-end units."
+    type: array
+    items:
+      type: string
+
+required:
+  - sample
+  - unit
+  - fq1

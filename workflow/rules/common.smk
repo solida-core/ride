@@ -92,23 +92,38 @@ def safe_read_tsv(path, required_columns=None, allow_empty=False):
 
 
 ###############################################
-# 4) Load input tables
+# Load input tables
 ###############################################
-samples = safe_read_tsv(
+
+samples = pd.read_table(
     config["samples"],
-    required_columns=["sample", "units"]
-)
+    dtype=str,
+    keep_default_na=True,
+    na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
+).set_index("sample", drop=False)
 
-units = safe_read_tsv(
+validate(samples.to_dict(orient="list"), schema="../schemas/samples.schema.yaml")
+
+
+units = pd.read_table(
     config["units"],
-    required_columns=["sample", "unit", "fq1", "fq2"]
-)
+    dtype=str,
+    keep_default_na=True,
+    na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
+).set_index("unit", drop=False)
 
-reheader = safe_read_tsv(
-    config["reheader"],
-    required_columns=["sample_id", "sample_name"],
-    allow_empty=True
-)
+validate(units.to_dict(orient="list"), schema="../schemas/units.schema.yaml")
+
+
+try:
+    reheader = pd.read_table(
+        config["reheader"],
+        dtype=str
+    )
+    validate(reheader.to_dict(orient="list"), schema="../schemas/reheader.schema.yaml")
+except pd.errors.EmptyDataError:
+    reheader = None
+
 
 
 ###############################################
@@ -131,24 +146,20 @@ def resolve_single_filepath(basepath, filename):
     return os.path.join(basepath, filename)
 
 def resolve_results_filepath(dirname, filename):
-    base = config["paths"]["results_dir"]
-    return os.path.join(base, dirname, filename)
+    return os.path.join("results", dirname, filename)
 
 def resolve_logs_filepath(dirname, filename):
-    base = config["paths"]["results_dir"]
-    return os.path.join(base, "logs", dirname, filename)
+    return os.path.join("logs", dirname, filename)
 
 def resolve_benchmarks_filepath(dirname, filename):
-    base = config["paths"]["results_dir"]
-    return os.path.join(base, "benchmarks", dirname, filename)
+    return os.path.join("benchmarks", dirname, filename)
 
 def resolve_envs_filepath(filename):
-    base = config["paths"]["workdir"]
-    return os.path.join(base, "..", "envs", filename)
+    return os.path.join(workflow.basedir, "envs", filename)
 
 def resolve_scripts_filepath(filename):
-    base = config["paths"]["workdir"]
-    return os.path.join(base, "..", "scripts", filename)
+    return os.path.join(workflow.basedir, "scripts", filename)
+
 
 
 ###############################################
