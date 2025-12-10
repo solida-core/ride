@@ -19,7 +19,7 @@ rule star_index:
     threads:
         conservative_cpu_count()
     conda:
-        resolve_envs_filepath("star.yaml")
+        resolve_envs_filepath("align.yaml")
     resources:
         tmpdir = temp_path()
     shell:
@@ -51,7 +51,7 @@ rule star_align_pe:
     threads:
         conservative_cpu_count()
     conda:
-        resolve_envs_filepath("star.yaml")
+        resolve_envs_filepath("align.yaml")
     resources:
         tmpdir = temp_path()
     shell:
@@ -64,7 +64,7 @@ rule star_align_pe:
         "--outSAMtype BAM SortedByCoordinate "
         "--outSAMunmapped Within "
         "{params.extra} "
-        ">& {log} "
+        ">& {log} ; "
         "mv  {params.outprefix}Aligned.sortedByCoord.out.bam {output.bam}"
 
 rule star_align_se:
@@ -84,7 +84,7 @@ rule star_align_se:
     threads:
         conservative_cpu_count()
     conda:
-        resolve_envs_filepath("star.yaml")
+        resolve_envs_filepath("align.yaml")
     resources:
         tmpdir = temp_path()
     shell:
@@ -98,7 +98,7 @@ rule star_align_se:
         "--outSAMunmapped Within "
         "--quantMode GeneCounts "
         "{params.extra} "
-        ">& {log} "
+        ">& {log} ; "
         "mv  {params.outprefix}Aligned.sortedByCoord.out.bam {output.bam}"
 
 rule index_bam_pe:
@@ -107,7 +107,7 @@ rule index_bam_pe:
     output:
         bai = resolve_results_filepath("star", "{sample}/{sample}.bam.bai")
     conda:
-        resolve_envs_filepath("samtools.yaml")
+        resolve_envs_filepath("align.yaml")
     log:
         resolve_logs_filepath("star", "{sample}.index.pe.log")
     shell:
@@ -122,7 +122,7 @@ rule index_bam_se:
     output:
         bai = resolve_results_filepath("star", "{sample}/se/{sample}.bam.bai")
     conda:
-        resolve_envs_filepath("samtools.yaml")
+        resolve_envs_filepath("align.yaml")
     log:
         resolve_logs_filepath("star", "{sample}.index.se.log")
     shell:

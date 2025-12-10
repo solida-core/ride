@@ -49,6 +49,14 @@ def safe_read_tsv(path, required_columns=None, allow_empty=False):
             keep_default_na=True,
             na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
         )
+    except EmptyDataError:
+        # File exists but has no content or header
+        if allow_empty:
+            print(f"[WARNING] {filename} is empty or has no parsable content → returning None")
+            return None
+        else:
+            print(f"\n[ERROR] {filename} is empty or has no columns: {path}\n", file=sys.stderr)
+            sys.exit(1)
     except Exception as e:
         print(f"\n[ERROR] Could not read {filename}: {path}", file=sys.stderr)
         print(f"Details: {e}\n", file=sys.stderr)
@@ -135,12 +143,12 @@ def resolve_benchmarks_filepath(dirname, filename):
     return os.path.join(base, "benchmarks", dirname, filename)
 
 def resolve_envs_filepath(filename):
-    workdir = config["paths"]["workdir"]
-    return os.path.join(workdir, "..", "envs", filename)
+    base = config["paths"]["workdir"]
+    return os.path.join(base, "..", "envs", filename)
 
 def resolve_scripts_filepath(filename):
-    workdir = config["paths"]["workdir"]
-    return os.path.join(workdir, "..", "scripts", filename)
+    base = config["paths"]["workdir"]
+    return os.path.join(base, "..", "scripts", filename)
 
 
 ###############################################

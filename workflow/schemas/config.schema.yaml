@@ -11,7 +11,7 @@ required:
   - resources
   - trimming
   - kallisto
-  - salmon
+  - star
 
 properties:
 
@@ -165,7 +165,7 @@ properties:
   ###########################################################################
   # STAR PARAMETERS
   ###########################################################################
-  salmon:
+  star:
     type: object
     required:
       - index_dir
