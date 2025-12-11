@@ -1,10 +1,13 @@
 name: ride
 channels:
-  - bioconda
-  - conda-forge
-  - defaults
+    - bioconda
+    - conda-forge
+    - anaconda
+    - defaults
 dependencies:
-  - snakemake==9.14.3
-  - snakedeploy==0.10.3
-  - snakemake-executor-plugin-drmaa==0.1.5
-  - mamba
+    - conda==24.7.1
+    - python==3.12.7
+    - drmaa==0.7.9
+    - snakemake==8.24.1
+    - snakemake-executor-plugin-drmaa==0.1.5
+

@@ -13,7 +13,7 @@ from snakemake.utils import validate
 ###############################################
 # 2) Validate config schema
 ###############################################
-report: "../report/workflow.rst"
+report: "../report/workflow.arst"
 validate(config, schema="../schemas/config.schema.yaml")
 
 

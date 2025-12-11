@@ -154,6 +154,12 @@ rule multiqc:
             resolve_results_filepath(
                 "star",
                 "{sample}/{sample}.pe.Log.final.out"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "star",
+                "{sample}/se/{sample}.se.Log.final.out"),
             sample=SAMPLES_SE
         )
     output:
@@ -189,7 +195,10 @@ rule multiqc:
             ""
         ),
     log:
-        resolve_logs_filepath("multiqc", "multiqc.log")
+        resolve_logs_filepath(
+            "multiqc",
+            "multiqc.log"
+        )
     threads:
         conservative_cpu_count()
     conda:

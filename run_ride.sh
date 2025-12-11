@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # ====================================================
-# RIDE Snakemake launcher
+# RiDE Snakemake launcher
 #
 # author: "Rossano Atzeni"
 # pipeline: "RIDE RNA-Seq"
 # version: "1.0.0"
-#description: "Differential expression workflow"
+# description: "Differential expression workflow"
 # ====================================================
 
 set -euo pipefail
@@ -191,16 +191,13 @@ snakemake \
     --snakefile "$SNAKEFILE_PATH" \
     --directory "$RUN_DIR_PATH" \
     --use-conda \
-    --conda-frontend mamba \
     --configfile "$CONFIG_USED" \
-    --summary "$RUN_DIR_PATH/summary.tsv" \
+    --summary  \
     --report "$RUN_DIR_PATH/report.html" \
-    --report-after-run \
     --printshellcmds \
     --restart-times 3 \
     --keep-going \
     --rerun-incomplete \
-    --delete-temp-output \
     $PROFILE_FLAG \
     --jobname "${ENV_NAME}.{rulename}.{jobid}.sh" \
     $DRYRUN_FLAG \
