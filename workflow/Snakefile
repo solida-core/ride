@@ -62,7 +62,7 @@ rule all:
             sample=SAMPLES_SE
         ),
 
-
+        # Alignment - STAR
         expand(
             resolve_results_filepath("star","{sample}/{sample}.bam.bai"),
             sample=SAMPLES_PE
@@ -71,8 +71,20 @@ rule all:
             resolve_results_filepath("star","{sample}/se/{sample}.bam.bai"),
             sample=SAMPLES_SE
         ),
+        expand(
+            resolve_results_filepath(
+                "star",
+                "{sample}/{sample}.pe.Log.final.out"),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "star",
+                "{sample}/se/{sample}.se.Log.final.out"),
+            sample=SAMPLES_SE
+        ),
 
-        # fastqc PE
+        # FastQC PE
         expand(
             resolve_results_filepath("qc","fastqc/{sample}-R1.trimmed_fastqc.zip"),
             sample=SAMPLES_PE
@@ -82,13 +94,13 @@ rule all:
             sample=SAMPLES_PE
         ),
 
-        # fastqc SE
+        # FastQC SE
         expand(
             resolve_results_filepath("qc","fastqc/se/{sample}_SE_fastqc.zip"),
             sample=SAMPLES_SE
         ),
 
-        # multiqc final report
+        # MultiQC final report
         resolve_results_filepath("qc","multiqc/multiqc_report.html")
 
        

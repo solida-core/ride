@@ -182,8 +182,7 @@ def ref_path(section, field):
 # 8) Temporary path handling
 ###############################################
 def temp_path(path=None):
-    results_dir = config["paths"]["results_dir"]
-    default_path = os.path.join(results_dir, "tmp")
+    default_path = os.path.join("tmp")
 
     if path is None:
         os.makedirs(default_path, exist_ok=True)

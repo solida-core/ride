@@ -21,6 +21,13 @@ RUNS_DIR="runs"
 # Default config file
 DEFAULT_CONFIG_FILE="config/config.yaml"
 
+SNAKE_FILE="workflow/Snakefile"
+CONFIG_FILE="$DEFAULT_CONFIG_FILE"
+RUN_DIR=""
+SM_PARAMETERS=""
+DRYRUN_FLAG=""
+PROFILE=""
+
 
 # ======================================================================================================================
 usage="$(basename "$0") [-h] [-n] [-s SNAKEFILE] [-c CONFIG_FILE] [-w WORKDIR] [-P PROFILE] [-p \"snakemake parameters\"]
@@ -29,23 +36,16 @@ Launch the RIDE Snakemake workflow.
 Options:
     -h                Show this help message and exit
     -n                Dry-run mode (equivalent to --dry-run)
-    -s SNAKEFILE      Optional Snakefile (default: workflow/Snakefile)
-    -c CONFIG_FILE    Config file to use (default: config/config.yaml)
+    -s SNAKEFILE      Optional Snakefile (default: ${SNAKE_FILE})
+    -c CONFIG_FILE    Config file to use (default: ${CONFIG_FILE})
     -w WORKDIR        Run directory:
-                        • empty → RUNS_DIR/<timestamp>/
-                        • name  → RUNS_DIR/<name>/
+                        • empty → ${RUNS_DIR}/<timestamp>/
+                        • name  → ${RUNS_DIR}/<name>/
                         • path  → used as-is
-    -P PROFILE        Snakemake profile directory (e.g. profiles/slurm)
+    -P PROFILE        Snakemake profile (e.g. drmaa)
     -p PARAMETERS     Additional Snakemake parameters
 "
 # ======================================================================================================================
-
-SNAKE_FILE="workflow/Snakefile"
-CONFIG_FILE="$DEFAULT_CONFIG_FILE"
-RUN_DIR=""
-SM_PARAMETERS=""
-DRYRUN_FLAG=""
-PROFILE=""
 
 # ======================
 # Parse CLI arguments

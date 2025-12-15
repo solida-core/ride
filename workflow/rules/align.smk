@@ -67,6 +67,10 @@ rule star_align_pe:
         bam = resolve_results_filepath(
             "star",
             "{sample}/{sample}.bam"
+        ),
+        qc  = resolve_results_filepath(
+                "star",
+                "{sample}/{sample}.pe.Log.final.out"
         )
     params:
         outprefix = resolve_results_filepath(
@@ -114,6 +118,10 @@ rule star_align_se:
         bam = resolve_results_filepath(
             "star",
             "{sample}/se/{sample}.bam"
+        ),
+        qc  = resolve_results_filepath(
+            "star",
+            "{sample}/se/{sample}.se.Log.final.out"
         )
     params:
         outprefix = resolve_results_filepath(

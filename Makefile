@@ -56,7 +56,7 @@ install: check
 	@echo "Installing environment '$(ENV_NAME)'"
 
 	@if [ -n "$(prefix)" ]; then \
-		ENV_PREFIX="$(prefix)/$(ENV_NAME)"; \
+		ENV_PREFIX="$(prefix)"; \
 	else \
 		ENV_PREFIX="$$HOME/.conda/envs/$(ENV_NAME)"; \
 	fi; \
