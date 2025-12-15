@@ -161,7 +161,136 @@ rule multiqc:
                 "star",
                 "{sample}/se/{sample}.se.Log.final.out"),
             sample=SAMPLES_SE
+        ),
+
+        # RSeQC
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.infer_experiment.txt"
+            ),
+            sample = SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.infer_experiment.txt"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.read_distribution.txt"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.read_distribution.txt"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.geneBodyCoverage.txt"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.geneBodyCoverage.txt"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.bam_stat.txt"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.bam_stat.txt"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.junction_annotation.txt"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.junction_annotation.txt"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.junctionSaturation_plot.r"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.se.junctionSaturation_plot.r"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.GC.xls"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.GC.xls"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.pos.DupRate.xls"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.pos.DupRate.xls"
+            ),
+            sample=SAMPLES_SE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/{sample}.pe.saturation.pdf"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "rseqc",
+                "{sample}/se/{sample}.se.saturation.pdf"
+            ),
+            sample=SAMPLES_SE
         )
+
     output:
         html = resolve_results_filepath(
             "qc",
@@ -190,10 +319,14 @@ rule multiqc:
             "kallisto",
             ""
         ),
-        star = resolve_logs_filepath(
-            "star",
+        rseqc = resolve_results_filepath(
+            "rseqc",
             ""
         ),
+        star = resolve_results_filepath(
+            "star",
+            ""
+        )
     log:
         resolve_logs_filepath(
             "multiqc",
@@ -205,6 +338,7 @@ rule multiqc:
         resolve_envs_filepath("quality_check.yaml")
     shell:
         "multiqc "
+        "{params.rseqc} "
         "{params.star} "
         "{params.kallisto} "
         "{params.trimming} "

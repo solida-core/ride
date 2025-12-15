@@ -53,6 +53,27 @@ make help
 
 ---
 
+## ⚙️ Configuration
+
+Before running the pipeline, you must edit the configuration files to match your dataset,
+reference genomes, and analysis parameters.
+
+At minimum, you should review:
+
+- config/config.yaml
+
+- config/samples.tsv
+
+- config/units.tsv
+
+- config/reheader.tsv (optional but recommended)
+
+📁 Configuration details
+
+See [config/README.md](config/README.md) for a detailed description of all configuration files and their expected formats.
+
+---
+
 ## 🚀 Running the Pipeline
 
 Launch the workflow with:

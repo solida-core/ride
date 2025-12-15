@@ -201,8 +201,12 @@ snakemake \
     $PROFILE_FLAG \
     --jobname "${ENV_NAME}.{rulename}.{jobid}.sh" \
     $DRYRUN_FLAG \
-    $SM_PARAMETERS
+    $SM_PARAMETERS || exit 1
 
+snakemake \
+    --snakefile "$SNAKEFILE_PATH" \
+    --directory "$RUN_DIR_PATH" \
+    --report "$RUN_DIR_PATH/report.html" \
 
 echo ""
 echo "RIDE pipeline completed."

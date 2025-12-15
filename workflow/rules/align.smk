@@ -76,8 +76,7 @@ rule star_align_pe:
         outprefix = resolve_results_filepath(
             "star",
             "{sample}/{sample}.pe."
-        ),
-        extra     = config["star"].get("extra_params", "")
+        )
     log:
         resolve_logs_filepath(
             "star",
@@ -103,7 +102,7 @@ rule star_align_pe:
         "--outFileNamePrefix {params.outprefix} "
         "--outSAMtype BAM SortedByCoordinate "
         "--outSAMunmapped Within "
-        "{params.extra} "
+        "--quantMode GeneCounts "
         ">& {log} ; "
         "mv  {params.outprefix}Aligned.sortedByCoord.out.bam {output.bam}"
 
@@ -127,8 +126,7 @@ rule star_align_se:
         outprefix = resolve_results_filepath(
             "star",
             "{sample}/se/{sample}.se."
-        ),
-        extra     = config["star"].get("extra_params", "")
+        )
     log:
         resolve_logs_filepath(
             "star",
@@ -154,7 +152,6 @@ rule star_align_se:
         "--outSAMtype BAM SortedByCoordinate "
         "--outSAMunmapped Within "
         "--quantMode GeneCounts "
-        "{params.extra} "
         ">& {log} ; "
         "mv  {params.outprefix}Aligned.sortedByCoord.out.bam {output.bam}"
 
