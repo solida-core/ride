@@ -1,0 +1,178 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "RiDE workflow configuration schema"
+description: "Schema for validating the config.yaml used by the RiDE Snakemake workflow"
+type: object
+
+required:
+  - samples
+  - units
+  - reheader
+  - resources
+  - trimming
+  - kallisto
+  - star
+
+properties:
+
+  samples:
+    type: string
+    description: "Path to the samples TSV file"
+
+  units:
+    type: string
+    description: "Path to the units TSV file"
+
+  reheader:
+    type: string
+    description: "Path to the reheader TSV file"
+
+
+  resources:
+    type: object
+    description: "Reference genome, transcriptome, and annotation resource definitions."
+
+    required:
+      - genome
+      - transcriptome
+      - rseqc
+
+    properties:
+
+      genome:
+        type: object
+        description: "Configuration block for genomic reference resources (used by STAR and RSeQC)."
+        required:
+          - basepath
+          - provider
+          - release
+          - fasta
+          - gtf
+        properties:
+          basepath:
+            type: string
+            description: "Base directory containing the genome reference."
+          provider:
+            type: string
+            description: "Reference data provider (e.g., ensembl, ucsc)."
+          release:
+            type: string
+            description: "Genome version or release identifier."
+          fasta:
+            type: string
+            description: "Filename of the genome FASTA file."
+          gtf:
+            type: string
+            description: "Filename of the genome GTF annotation file."
+
+      transcriptome:
+        type: object
+        description: "Configuration block for transcriptome-level references used by Kallisto and Salmon."
+        required:
+          - basepath
+          - provider
+          - release
+          - cdna
+        properties:
+          basepath:
+            type: string
+            description: "Base directory containing transcriptome files."
+          provider:
+            type: string
+            description: "Reference data provider (e.g., ensembl)."
+          release:
+            type: string
+            description: "Transcriptome release (e.g., GRCh38)."
+          cdna:
+            type: string
+            description: "Filename of the transcriptome cDNA FASTA file."
+
+      rseqc:
+        type: object
+        description: "Reference files required by RSeQC for QC metrics."
+        required:
+          - basepath
+          - housekeeping
+          - refseq
+        properties:
+          basepath:
+            type: string
+            description: "Base directory containing RSeQC reference BED files."
+          housekeeping:
+            type: string
+            description: "BED file describing housekeeping genes."
+          refseq:
+            type: string
+            description: "BED file containing RefSeq gene annotations."
+
+    trimming:
+      type: object
+      description: "Parameters for read trimming performed with fastp."
+      required:
+        - quality
+        - min_length
+        - trim_poly_g
+        - trim_poly_x
+        - detect_adapter
+      properties:
+        quality:
+          type: integer
+          minimum: 0
+          description: "Minimum quality threshold used by fastp (--qualified_quality_phred)."
+        min_length:
+          type: integer
+          minimum: 0
+          description: "Minimum read length to retain after trimming."
+        trim_poly_g:
+          type: boolean
+          description: "Enable trimming of poly-G tails (recommended for NovaSeq)."
+        trim_poly_x:
+          type: boolean
+          description: "Enable trimming of poly-X artifacts."
+        detect_adapter:
+          type: boolean
+          description: "Enable automatic adapter detection by fastp."
+
+    kallisto:
+      type: object
+      description: "Configuration parameters for running Kallisto quantification."
+      required:
+        - index_name
+        - frag_len
+        - frag_sd
+        - boot
+      properties:
+        index_name:
+          type: string
+          description: "Filename of the Kallisto index to be generated."
+        frag_len:
+          type: integer
+          minimum: 1
+          description: "Average fragment length for single-end quantification."
+        frag_sd:
+          type: integer
+          minimum: 1
+          description: "Standard deviation of fragment length for single-end quantification."
+        boot:
+          type: integer
+          minimum: 1
+          description: "Number of bootstrap samples (--bootstrap)."
+
+    star:
+      type: object
+      description: "Configuration block for STAR-based alignment and gene-count quantification."
+      required:
+        - index_dir
+        - sjdb_overhang
+        - extra_params
+      properties:
+        index_dir:
+          type: string
+          description: "Directory where STAR genome index will be stored or loaded from."
+        sjdb_overhang:
+          type: integer
+          minimum: 1
+          description: "Read length minus one (required for STAR index generation)."
+        extra_params:
+          type: string
+          description: "Additional STAR command-line arguments passed verbatim to the aligner."
+

@@ -1,53 +1,189 @@
-[![Build Status](https://travis-ci.com/solida-core/ride.svg?branch=master)](https://travis-ci.com/solida-core/ride)
+# RIDE – RNA-Seq Differential Expression Pipeline
 
-# RiDE 
-**RiDE** (RNA Differential Expression) is a pipeline for **RNA-seq** data analysis.
+RIDE is a reproducible and modular Snakemake pipeline for RNA-Seq differential expression analysis.  
+It performs trimming, alignment, quantification, QC, and DE analysis using STAR, kallisto, and DESeq2.  
+Each run is fully isolated and includes a snapshot of the configuration for complete traceability.
 
+---
 
-All **[solida-core](https://github.com/solida-core)** workflows follow GATK Best Practices for Germline Variant Discovery, with the incorporation of further improvements and refinements after their testing with real data in various [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it) research sequencing projects.
+## 📦 Requirements
 
-Pipelines are based on [Snakemake](https://snakemake.readthedocs.io/en/stable/), a workflow management system that provides all the features needed to create reproducible and scalable data analyses.
+- Conda / Miniconda
+- Snakemake ≥ 8.x
+- Bash shell (Linux/macOS)
 
-Software dependencies are specified into the `environment.yaml` file and directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow on a great number of different computing environments such as workstations, clusters and cloud environments.
+---
 
+## 📥 Clone the Repository
 
-### Pipeline Overview
-The pipeline workflow is composed by three major analysis sections:
- * [_Mapping_](docs/ride_workflow.md#mapping): paired-end reads in fastq format are aligned against a reference genome to produce a deduplicated and recalibrated BAM file. This section is executed by DiMA pipeline.
+Before installing the environment, clone the pipeline:
 
- * [_Variant Calling_](docs/diva_workflow.md#variant-calling): a joint call is performed from all project's bam files
- 
- * [_Annotation_](docs/diva_workflow.md#annotation): discovered variants are annotated and results are converted in a set of different output file formats enabling downstream analysis for all kind of users
- 
-Parallely, statistics collected during these steps are used to generate reports for [Quality Control](#quality-control).
+```bash
+git clone https://github.com/solida-core/ride.git
+cd ride
+````
 
-A complete view of the analysis workflow is provided by the pipeline's [graph](images/ride.png).
+---
 
+## 🔧 Setup
 
+Install the Conda environment:
 
-### Pipeline Handbook
-**RiDE** pipeline documentation can be found in the `docs/` directory:
+```bash
+make install
+```
+By default, the environment is created in the standard Conda locations (eg: $HOME/anaconda/envs/ride)
+You can specify a custom installation prefix using the prefix parameter:
 
+```bash
+make install prefix=/path/to/conda/envs/rna_seq_de_analysis
+```
 
-1. [Pipeline Structure:](https://github.com/solida-core/docs/blob/master/pipeline_structure.md)
-    * [Snakefile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#snakefile)
-    * [Configfile](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#configfile)
-    * [Rules](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#rules)
-    * [Envs](https://github.com/solida-core/docs/blob/master/pipeline_structure.md#envs)
-2. [Pipeline Workflow](docs/ride_workflow.md)
-3. [Required Files:]()
-    * [Reference files](docs/reference_files.md)
-    * [User files](docs/user_files.md)
-4. [Running the pipeline:]()
-    * [Manual Snakemake Usage](docs/ride_snakemake.md)
-    * [SOLIDA:]()
-        * [CLI - Command Line Interface](https://github.com/solida-core/solida/blob/master/README.md)
-        * [GUI - Graphical User Interface]()
+To update the environment:
 
+```bash
+make update
+```
 
+Show all available Make targets:
 
+```bash
+make help
+```
 
+---
 
+## ⚙️ Configuration
 
-### Contact us
-[support@solida-core](mailto:m.massidda@crs4.it) 
+Before running the pipeline, you must edit the configuration files to match your dataset,
+reference genomes, and analysis parameters.
+
+At minimum, you should review:
+
+- config/config.yaml
+
+- config/samples.tsv
+
+- config/units.tsv
+
+- config/reheader.tsv (optional but recommended)
+
+📁 Configuration details
+
+See [config/README.md](config/README.md) for a detailed description of all configuration files and their expected formats.
+
+---
+
+## 🚀 Running the Pipeline
+
+Launch the workflow with:
+
+```bash
+./run_ride.sh [options]
+```
+
+By default, each execution creates:
+
+```
+runs/<timestamp>/
+```
+
+### Available options
+
+```
+Usage: run_ride.sh [-h] [-n] [-s SNAKEFILE] [-c CONFIG_FILE] [-w WORKDIR] [-P PROFILE] [-p "PARAMS"]
+Launch the RIDE Snakemake workflow.
+
+Options:
+-h                Show this help message and exit
+-n                Run in dry-run mode (equivalent to --dry-run)
+-s SNAKEFILE      Snakefile to use (default: workflow/Snakefile)
+-c CONFIG_FILE    Configuration file (default: config/config.yaml)
+
+-w WORKDIR        Run directory:
+                    • empty  → runs/<timestamp>/
+                    • name   → runs/<name>/
+                    • path   → used exactly as provided
+
+-P PROFILE        Snakemake profile directory (e.g. profiles/slurm)
+-p PARAMS         Additional Snakemake parameters (passed verbatim)
+
+```
+
+### Examples
+
+```bash
+# Default run (creates runs/<timestamp>/)
+./run_ride.sh
+
+# Custom run name
+./run_ride.sh -w test_run
+
+# Use a different configuration file
+./run_ride.sh -c config/hg38.yaml -w experiment_A
+
+# Run with a Snakemake cluster profile
+./run_ride.sh -P slurm_profile
+
+# Pass extra Snakemake options
+./run_ride.sh -p "--cores 40 --latency-wait 60"
+````
+
+---
+
+## 🗂️ Project Structure
+
+```
+config/            # Configuration files
+workflow/          # Snakefile, rules, scripts, envs
+run_ride.sh        # Launcher
+Makefile           # Environment automation
+environment.yaml   # Conda environment
+runs/              # Output run directories
+```
+
+Each run directory contains a copy of the configuration and all workflow outputs:
+
+* logs
+* QC reports
+* STAR / kallisto outputs
+* DESeq2 results
+* `summary.tsv`
+* `report.html`
+
+---
+
+## 📊 Output Summary
+
+RIDE produces:
+
+* Trimmed reads and QC reports
+* STAR alignments
+* kallisto quantification
+* DESeq2 differential expression results
+* Snakemake HTML report
+* Execution summary table
+
+---
+
+## 🛠️ Makefile Targets
+
+```makefile
+make help        # Show help
+make install     # Install the Conda environment
+make update      # Recreate the environment
+make clean       # Remove the environment
+make run         # Execute the pipeline via the launcher
+```
+
+---
+
+## 👤 Author
+
+Maintained by Rossano Atzeni — CRS4 Bioinformatics Unit
+
+---
+
+## 📄 License
+
+Distributed under the MIT License (see `LICENSE`).
