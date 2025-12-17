@@ -17,7 +17,9 @@ resources:
         cdna: "Homo_sapiens.GRCh38.cdna.all.fa.gz"
 
     rseqc:
-        basepath: "/path/to/refdata/rseqc"
+        basepath: "/path/to/refdata"
+        provider: "rseqc"
+        release: "hg38"
         housekeeping: "hg38.HouseKeepingGenes.bed"
         refseq: "hg38_RefSeq.bed"
 

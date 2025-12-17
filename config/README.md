@@ -59,7 +59,9 @@ Used to build the kallisto index.
 
 ```yaml
 rseqc:
-  basepath: "/path/to/refdata/rseqc"
+  basepath: "/path/to/refdata"
+  provider: "rseqc"
+  release: "hg38"
   housekeeping: "hg38.HouseKeepingGenes.bed"
   refseq: "hg38_RefSeq.bed"
 ```

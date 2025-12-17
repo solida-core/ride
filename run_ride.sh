@@ -192,8 +192,6 @@ snakemake \
     --directory "$RUN_DIR_PATH" \
     --use-conda \
     --configfile "$CONFIG_USED" \
-    --summary  \
-    --report "$RUN_DIR_PATH/report.html" \
     --printshellcmds \
     --restart-times 3 \
     --keep-going \

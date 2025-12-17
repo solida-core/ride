@@ -40,7 +40,7 @@ rule rseqc_infer_experiment_se:
             "{sample}/se/{sample}.se.infer_experiment.txt"
         )
     params:
-        bed = ref_path("rseqc","bed")
+        bed = ref_path("rseqc","refseq")
     benchmark:
         resolve_benchmarks_filepath(
             "rseqc",
@@ -69,7 +69,7 @@ rule rseqc_read_distribution_pe:
             "{sample}/{sample}.pe.read_distribution.txt"
         )
     params:
-        bed = ref_path("rseqc","bed")
+        bed = ref_path("rseqc","refseq")
     benchmark:
         resolve_benchmarks_filepath(
             "rseqc",
@@ -98,7 +98,7 @@ rule rseqc_read_distribution_se:
             "{sample}/se/{sample}.se.read_distribution.txt"
         )
     params:
-        bed = ref_path("rseqc","bed")
+        bed = ref_path("rseqc","refseq")
     benchmark:
         resolve_benchmarks_filepath(
             "rseqc",
@@ -127,7 +127,7 @@ rule rseqc_geneBody_coverage_pe:
             "{sample}/{sample}.pe.geneBodyCoverage.txt"
         )
     params:
-        bed  = ref_path("rseqc", "bed"),
+        bed  = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
             "{sample}/{sample}.pe"
@@ -160,7 +160,7 @@ rule rseqc_geneBody_coverage_se:
             "{sample}/se/{sample}.se.geneBodyCoverage.txt"
         )
     params:
-        bed = ref_path("rseqc","bed"),
+        bed = ref_path("rseqc","refseq"),
         out_prefix=resolve_results_filepath(
             "rseqc",
             "{sample}/se/{sample}.se"
@@ -245,10 +245,10 @@ rule rseqc_junction_annotation_pe:
             "{sample}/{sample}.pe.junction_annotation.txt"
         )
     params:
-        bed = ref_path("rseqc", "bed"),
+        bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
-            "{sample}/{sample}.pe."
+            "{sample}/{sample}.pe"
         )
     benchmark:
         resolve_benchmarks_filepath(
@@ -279,7 +279,7 @@ rule rseqc_junction_annotation_se:
             "{sample}/se/{sample}.se.junction_annotation.txt"
         )
     params:
-        bed = ref_path("rseqc", "bed"),
+        bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
             "{sample}/se/{sample}.se"
@@ -313,7 +313,7 @@ rule rseqc_junction_saturation_pe:
             "{sample}/{sample}.pe.junctionSaturation_plot.r"
         )
     params:
-        bed = ref_path("rseqc", "bed"),
+        bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
             "{sample}/{sample}.pe"
@@ -353,7 +353,7 @@ rule rseqc_junction_saturation_se:
             "{sample}/{sample}.se.junctionSaturation_plot.r"
         )
     params:
-        bed = ref_path("rseqc", "bed"),
+        bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
             "{sample}/{sample}.se"
@@ -519,7 +519,7 @@ rule rseqc_rpkm_saturation_pe:
             "{sample}/{sample}.pe.saturation.pdf"
         )
     params:
-        bed = ref_path("rseqc", "bed"),
+        bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
             "{sample}/{sample}.pe"
@@ -540,7 +540,7 @@ rule rseqc_rpkm_saturation_pe:
         resolve_envs_filepath("rseqc.yaml")
     shell:
         "RPKM_saturation.py "
-        "-r {input.bed} "
+        "-r {params.bed} "
         "-i {input.bam} "
         "-o {params.out_prefix} "
         ">& {log} "
@@ -559,7 +559,7 @@ rule rseqc_rpkm_saturation_se:
             "{sample}/{sample}.se.saturation.pdf"
         )
     params:
-        bed = ref_path("rseqc", "bed"),
+        bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
             "{sample}/se/{sample}.se"
@@ -580,7 +580,7 @@ rule rseqc_rpkm_saturation_se:
         resolve_envs_filepath("rseqc.yaml")
     shell:
         "RPKM_saturation.py "
-        "-r {input.bed} "
+        "-r {params.bed} "
         "-i {input.bam} "
         "-o {params.out_prefix} "
         ">& {log} "

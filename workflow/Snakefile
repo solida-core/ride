@@ -1,7 +1,5 @@
 from snakemake.utils import min_version
 
-from workflow.rules.common import resolve_results_filepath, samples, SAMPLES_PE, expand_filepath
-
 ##### set minimum snakemake version #####
 min_version("8.10.0")
 

@@ -1,6 +1,3 @@
-###############################################
-# 1) Imports
-###############################################
 import os
 import sys
 import errno
@@ -11,85 +8,10 @@ from snakemake.utils import validate
 
 
 ###############################################
-# 2) Validate config schema
+# Validate config schema
 ###############################################
 report: "../report/workflow.rst"
 validate(config, schema="../schemas/config.schema.yaml")
-
-
-###############################################
-# 3) Safe TSV loading
-###############################################
-def safe_read_tsv(path, required_columns=None, allow_empty=False):
-    """
-    Safely read a TSV file with:
-      - existence check
-      - parsing check
-      - optional empty handling
-      - column validation
-
-        If allow_empty == True, empty file returns None.
-    """
-
-    # Expand env variables and ~
-    path = os.path.expandvars(os.path.expanduser(path))
-    filename = os.path.basename(path)
-
-    # Check file existence
-    if not os.path.isfile(path):
-        print(f"\n[ERROR] File not found: {path}\n", file=sys.stderr)
-        sys.exit(1)
-
-    # Try reading TSV
-    try:
-        df = pd.read_csv(
-            path,
-            sep="\t",
-            dtype=str,
-            keep_default_na=True,
-            na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
-        )
-    except EmptyDataError:
-        # File exists but has no content or header
-        if allow_empty:
-            print(f"[WARNING] {filename} is empty or has no parsable content → returning None")
-            return None
-        else:
-            print(f"\n[ERROR] {filename} is empty or has no columns: {path}\n", file=sys.stderr)
-            sys.exit(1)
-    except Exception as e:
-        print(f"\n[ERROR] Could not read {filename}: {path}", file=sys.stderr)
-        print(f"Details: {e}\n", file=sys.stderr)
-        sys.exit(1)
-
-    # Empty file handling
-    if df.empty:
-        if allow_empty:
-            print(f"[WARNING] {filename} is empty → returning None")
-            return None
-        else:
-            print(f"\n[ERROR] {filename} is empty: {path}\n", file=sys.stderr)
-            sys.exit(1)
-
-    # Require at least 2 columns
-    if df.shape[1] < 2:
-        print(f"\n[ERROR] {filename} contains fewer than 2 columns.\n", file=sys.stderr)
-        sys.exit(1)
-
-    # Validate required columns
-    if required_columns:
-        required_columns = set(required_columns)
-        missing = required_columns - set(df.columns)
-        if missing:
-            print(f"\n[ERROR] {filename} is missing required columns:", file=sys.stderr)
-            for col in missing:
-                print(f"  - {col}", file=sys.stderr)
-            sys.exit(1)
-
-    print(f"[OK] Loaded {filename}: {df.shape[0]} rows, {df.shape[1]} columns")
-    return df
-
-
 
 ###############################################
 # Load input tables
@@ -139,7 +61,7 @@ SAMPLES_SE  = units_se["sample"].unique().tolist()
 
 
 ###############################################
-# 6) Path resolvers
+# Path resolvers
 ###############################################
 def resolve_single_filepath(basepath, filename):
     return os.path.join(basepath, filename)
@@ -160,9 +82,8 @@ def resolve_scripts_filepath(filename):
     return os.path.join(workflow.basedir, "scripts", filename)
 
 
-
 ###############################################
-# 7) Reference resolver
+# Reference resolver
 ###############################################
 def ref_path(section, field):
     """
@@ -179,7 +100,7 @@ def ref_path(section, field):
 
 
 ###############################################
-# 8) Temporary path handling
+# Temporary path handling
 ###############################################
 def temp_path(path=None):
     default_path = os.path.join("tmp")
@@ -197,7 +118,7 @@ def temp_path(path=None):
 
 
 ###############################################
-# 9) FASTQ helpers
+# FASTQ helpers
 ###############################################
 def expand_filepath(filepath):
     filepath = os.path.expandvars(os.path.expanduser(filepath))
