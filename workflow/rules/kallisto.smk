@@ -94,15 +94,15 @@ rule kallisto_quant_se:
     output:
         h5  = resolve_results_filepath(
             "kallisto",
-            "{sample}/se/abundance.se.h5"
+            "{sample}/se/abundance.h5"
         ),
         tsv = resolve_results_filepath(
             "kallisto",
-            "{sample}/se/abundance.se.tsv"
+            "{sample}/se/abundance.tsv"
         ),
         json= resolve_results_filepath(
             "kallisto",
-            "{sample}/se/run_info.se.json")
+            "{sample}/se/run_info.json")
     params:
         outdir  = resolve_results_filepath(
             "kallisto",

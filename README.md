@@ -1,6 +1,6 @@
-# RIDE – RNA-Seq Differential Expression Pipeline
+# RiDE – RNA-Seq Differential Expression Pipeline
 
-RIDE is a reproducible and modular Snakemake pipeline for RNA-Seq differential expression analysis.  
+RiDE is a reproducible and modular Snakemake pipeline for RNA-Seq differential expression analysis.  
 It performs trimming, alignment, quantification, QC, and DE analysis using STAR, kallisto, and DESeq2.  
 Each run is fully isolated and includes a snapshot of the configuration for complete traceability.
 

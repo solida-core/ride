@@ -350,13 +350,13 @@ rule rseqc_junction_saturation_se:
     output:
         plot = resolve_results_filepath(
             "rseqc",
-            "{sample}/{sample}.se.junctionSaturation_plot.r"
+            "{sample}/se/{sample}.se.junctionSaturation_plot.r"
         )
     params:
         bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
-            "{sample}/{sample}.se"
+            "{sample}/se/{sample}.se"
         )
     log:
         resolve_logs_filepath(
@@ -556,7 +556,7 @@ rule rseqc_rpkm_saturation_se:
     output:
         pdf = resolve_results_filepath(
             "rseqc",
-            "{sample}/{sample}.se.saturation.pdf"
+            "{sample}/se/{sample}.se.saturation.pdf"
         )
     params:
         bed = ref_path("rseqc", "refseq"),

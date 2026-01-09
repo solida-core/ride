@@ -71,21 +71,21 @@ rule all:
         expand(
             resolve_results_filepath(
                 "kallisto",
-                "{sample}/se/abundance.se.h5"
+                "{sample}/se/abundance.h5"
             ),
             sample=SAMPLES_SE
         ),
         expand(
             resolve_results_filepath(
                 "kallisto",
-                "{sample}/se/abundance.se.tsv"
+                "{sample}/se/abundance.tsv"
             ),
             sample=SAMPLES_SE
         ),
         expand(
             resolve_results_filepath(
                 "kallisto",
-                "{sample}/se/run_info.se.json"
+                "{sample}/se/run_info.json"
             ),
             sample=SAMPLES_SE
         ),
@@ -201,7 +201,7 @@ rule all:
         expand(
             resolve_results_filepath(
                 "rseqc",
-                "{sample}/{sample}.se.junctionSaturation_plot.r"
+                "{sample}/se/{sample}.se.junctionSaturation_plot.r"
             ),
             sample = SAMPLES_SE
         ),
@@ -261,7 +261,7 @@ rule all:
 
         # FastQC SE
         expand(
-            resolve_results_filepath("qc","fastqc/se/{sample}_SE_fastqc.zip"),
+            resolve_results_filepath("qc","fastqc/se/{sample}.trimmed_fastqc.zip"),
             sample=SAMPLES_SE
         ),
 

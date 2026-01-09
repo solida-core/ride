@@ -19,6 +19,7 @@ validate(config, schema="../schemas/config.schema.yaml")
 
 samples = pd.read_table(
     config["samples"],
+    sep=r"\s+",
     dtype=str,
     keep_default_na=True,
     na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
@@ -29,10 +30,13 @@ validate(samples.to_dict(orient="list"), schema="../schemas/samples.schema.yaml"
 
 units = pd.read_table(
     config["units"],
+    sep=r"\s+",
     dtype=str,
     keep_default_na=True,
     na_values=["", " ", "NA", "NaN", "nan", "NONE", "None"]
 ).set_index("unit", drop=False)
+
+units = units.where(pd.notna(units), None)
 
 validate(units.to_dict(orient="list"), schema="../schemas/units.schema.yaml")
 
@@ -40,6 +44,7 @@ validate(units.to_dict(orient="list"), schema="../schemas/units.schema.yaml")
 try:
     reheader = pd.read_table(
         config["reheader"],
+        sep=r"\s+",
         dtype=str
     )
     validate(reheader.to_dict(orient="list"), schema="../schemas/reheader.schema.yaml")
