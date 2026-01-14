@@ -244,7 +244,7 @@ rule multiqc:
         expand(
             resolve_results_filepath(
                 "rseqc",
-                "{sample}/{sample}.se.junctionSaturation_plot.r"
+                "{sample}/se/{sample}.se.junctionSaturation_plot.r"
             ),
             sample=SAMPLES_SE
         ),

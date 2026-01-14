@@ -19,6 +19,28 @@ include: "rules/rseqc.smk"
 
 rule all:
     input:
+        # Merging
+        expand(
+            resolve_results_filepath(
+                "reads",
+                "untrimmed/{sample}-R1.fq.gz"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "reads",
+                "untrimmed/{sample}-R2.fq.gz"
+            ),
+            sample=SAMPLES_PE
+        ),
+        expand(
+            resolve_results_filepath(
+                "reads",
+                "untrimmed/se/{sample}.fq.gz"
+            ),
+            sample=SAMPLES_SE
+        ),
         # Paired-end trimmed
         expand(
             resolve_results_filepath(
@@ -71,21 +93,21 @@ rule all:
         expand(
             resolve_results_filepath(
                 "kallisto",
-                "{sample}/se/abundance.h5"
+                "se/{sample}/abundance.h5"
             ),
             sample=SAMPLES_SE
         ),
         expand(
             resolve_results_filepath(
                 "kallisto",
-                "{sample}/se/abundance.tsv"
+                "se/{sample}/abundance.tsv"
             ),
             sample=SAMPLES_SE
         ),
         expand(
             resolve_results_filepath(
                 "kallisto",
-                "{sample}/se/run_info.json"
+                "se/{sample}/run_info.json"
             ),
             sample=SAMPLES_SE
         ),
