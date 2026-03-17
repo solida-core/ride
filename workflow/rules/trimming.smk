@@ -92,7 +92,6 @@ rule trim_se:
         min_length = config["trimming"]["min_length"],
         trim_poly_g = "--trim_poly_g" if config["trimming"]["trim_poly_g"] else "",
         trim_poly_x = "--trim_poly_x" if config["trimming"]["trim_poly_x"] else "",
-        detect_adapter = "--detect_adapter_for_se" if config["trimming"]["detect_adapter"] else ""
     log:
         resolve_logs_filepath(
             "trimming",
@@ -118,7 +117,6 @@ rule trim_se:
         "--length_required {params.min_length} "
         "{params.trim_poly_g} "
         "{params.trim_poly_x} "
-        "{params.detect_adapter} "
         "--html {output.html} "
         "--json {output.json} "
         ">& {log} "

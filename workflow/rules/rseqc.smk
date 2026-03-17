@@ -44,7 +44,7 @@ rule rseqc_infer_experiment_se:
     benchmark:
         resolve_benchmarks_filepath(
             "rseqc",
-            "{sample}.rseqc.infer_experiment.pe.txt"
+            "{sample}.rseqc.infer_experiment.se.txt"
         )
     threads:
         conservative_cpu_count()
@@ -99,6 +99,11 @@ rule rseqc_read_distribution_se:
         )
     params:
         bed = ref_path("rseqc","refseq")
+    log:
+        resolve_logs_filepath(
+            "rseqc",
+            "{sample}.se.read_distribution.log"
+        )
     benchmark:
         resolve_benchmarks_filepath(
             "rseqc",
@@ -112,7 +117,8 @@ rule rseqc_read_distribution_se:
         "read_distribution.py "
         "-r {params.bed} "
         "-i {input.bam} "
-        ">& {output.txt} "
+        "> {output.txt} "
+        "2> {log} "
 
 rule rseqc_geneBody_coverage_pe:
     """
@@ -350,13 +356,13 @@ rule rseqc_junction_saturation_se:
     output:
         plot = resolve_results_filepath(
             "rseqc",
-            "{sample}/{sample}.se.junctionSaturation_plot.r"
+            "{sample}/se/{sample}.se.junctionSaturation_plot.r"
         )
     params:
         bed = ref_path("rseqc", "refseq"),
         out_prefix = resolve_results_filepath(
             "rseqc",
-            "{sample}/{sample}.se"
+            "{sample}/se/{sample}.se"
         )
     log:
         resolve_logs_filepath(
@@ -556,7 +562,7 @@ rule rseqc_rpkm_saturation_se:
     output:
         pdf = resolve_results_filepath(
             "rseqc",
-            "{sample}/{sample}.se.saturation.pdf"
+            "{sample}/se/{sample}.se.saturation.pdf"
         )
     params:
         bed = ref_path("rseqc", "refseq"),

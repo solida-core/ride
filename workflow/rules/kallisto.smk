@@ -52,6 +52,8 @@ rule kallisto_quant_pe:
             "kallisto",
             "{sample}/run_info.json"
         )
+    wildcard_constraints:
+        sample=r"[^/]+"
     params:
         outdir=resolve_results_filepath(
             "kallisto",
@@ -94,19 +96,21 @@ rule kallisto_quant_se:
     output:
         h5  = resolve_results_filepath(
             "kallisto",
-            "{sample}/se/abundance.se.h5"
+            "se/{sample}/abundance.h5"
         ),
         tsv = resolve_results_filepath(
             "kallisto",
-            "{sample}/se/abundance.se.tsv"
+            "se/{sample}/abundance.tsv"
         ),
         json= resolve_results_filepath(
             "kallisto",
-            "{sample}/se/run_info.se.json")
+            "se/{sample}/run_info.json")
+    wildcard_constraints:
+        sample=r"[^/]+"
     params:
         outdir  = resolve_results_filepath(
             "kallisto",
-            "{sample}/se"
+            "se/{sample}"
         ),
         frag_len= config["kallisto"]["frag_len"],
         frag_sd = config["kallisto"]["frag_sd"],

@@ -3,8 +3,10 @@ from snakemake.utils import min_version
 ##### set minimum snakemake version #####
 min_version("8.10.0")
 
+
 ##### setup report #####
 configfile: "config/config.yaml"
+
 
 ##### load rules #####
 include: "rules/common.smk"
@@ -16,262 +18,188 @@ include: "rules/quality_check.smk"
 include: "rules/rseqc.smk"
 
 
-
 rule all:
     input:
+        # Merging
+        expand(
+            resolve_results_filepath("reads", "untrimmed/{sample}-R1.fq.gz"),
+            sample=SAMPLES_PE,
+        ),
+        expand(
+            resolve_results_filepath("reads", "untrimmed/{sample}-R2.fq.gz"),
+            sample=SAMPLES_PE,
+        ),
+        expand(
+            resolve_results_filepath("reads", "untrimmed/se/{sample}.fq.gz"),
+            sample=SAMPLES_SE,
+        ),
         # Paired-end trimmed
         expand(
-            resolve_results_filepath(
-                "reads",
-                "trimmed/{sample}-R1.trimmed.fq.gz"
-            ),
-            sample=SAMPLES_PE
+            resolve_results_filepath("reads", "trimmed/{sample}-R1.trimmed.fq.gz"),
+            sample=SAMPLES_PE,
         ),
-
         expand(
-            resolve_results_filepath(
-                "reads",
-                "trimmed/{sample}-R2.trimmed.fq.gz"
-            ),
-            sample=SAMPLES_PE
+            resolve_results_filepath("reads", "trimmed/{sample}-R2.trimmed.fq.gz"),
+            sample=SAMPLES_PE,
         ),
-
         # Single-end trimmed (only if present)
         expand(
-            resolve_results_filepath(
-                "reads",
-                "trimmed/se/{sample}.trimmed.fq.gz"
-            ),
-            sample=SAMPLES_SE
+            resolve_results_filepath("reads", "trimmed/se/{sample}.trimmed.fq.gz"),
+            sample=SAMPLES_SE,
         ),
-
         # Kallisto quantification outputs
         expand(
-            resolve_results_filepath(
-                "kallisto",
-                "{sample}/abundance.h5"
-            ),
-            sample=SAMPLES_PE
+            resolve_results_filepath("kallisto", "{sample}/abundance.h5"),
+            sample=SAMPLES_PE,
         ),
         expand(
-            resolve_results_filepath(
-                "kallisto",
-                "{sample}/abundance.tsv"
-            ),
-            sample=SAMPLES_PE
+            resolve_results_filepath("kallisto", "{sample}/abundance.tsv"),
+            sample=SAMPLES_PE,
         ),
         expand(
-            resolve_results_filepath(
-                "kallisto",
-                "{sample}/run_info.json"
-            ),
-            sample=SAMPLES_PE
-        ),
-
-        expand(
-            resolve_results_filepath(
-                "kallisto",
-                "{sample}/se/abundance.se.h5"
-            ),
-            sample=SAMPLES_SE
+            resolve_results_filepath("kallisto", "{sample}/run_info.json"),
+            sample=SAMPLES_PE,
         ),
         expand(
-            resolve_results_filepath(
-                "kallisto",
-                "{sample}/se/abundance.se.tsv"
-            ),
-            sample=SAMPLES_SE
+            resolve_results_filepath("kallisto", "se/{sample}/abundance.h5"),
+            sample=SAMPLES_SE,
         ),
         expand(
-            resolve_results_filepath(
-                "kallisto",
-                "{sample}/se/run_info.se.json"
-            ),
-            sample=SAMPLES_SE
+            resolve_results_filepath("kallisto", "se/{sample}/abundance.tsv"),
+            sample=SAMPLES_SE,
         ),
-
+        expand(
+            resolve_results_filepath("kallisto", "se/{sample}/run_info.json"),
+            sample=SAMPLES_SE,
+        ),
+        
         # Alignment - STAR
         expand(
-            resolve_results_filepath(
-                "star",
-                "{sample}/{sample}.bam.bai"
-            ),
-            sample=SAMPLES_PE
+            resolve_results_filepath("star", "{sample}/{sample}.bam.bai"),
+            sample=SAMPLES_PE,
         ),
         expand(
-            resolve_results_filepath(
-                "star",
-                "{sample}/se/{sample}.bam.bai"
-            ),
-            sample=SAMPLES_SE
+            resolve_results_filepath("star", "{sample}/se/{sample}.bam.bai"),
+            sample=SAMPLES_SE,
         ),
         expand(
-            resolve_results_filepath(
-                "star",
-                "{sample}/{sample}.pe.Log.final.out"
-            ),
-            sample=SAMPLES_PE
+            resolve_results_filepath("star", "{sample}/{sample}.pe.Log.final.out"),
+            sample=SAMPLES_PE,
         ),
         expand(
-            resolve_results_filepath(
-                "star",
-                "{sample}/se/{sample}.se.Log.final.out"
-            ),
-            sample=SAMPLES_SE
+            resolve_results_filepath("star", "{sample}/se/{sample}.se.Log.final.out"),
+            sample=SAMPLES_SE,
         ),
-
         # RSeQC
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.infer_experiment.txt"
+                "rseqc", "{sample}/{sample}.pe.infer_experiment.txt"
             ),
-            sample = SAMPLES_PE
+            sample=SAMPLES_PE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.infer_experiment.txt"
+                "rseqc", "{sample}/se/{sample}.se.infer_experiment.txt"
             ),
-            sample = SAMPLES_SE
+            sample=SAMPLES_SE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.read_distribution.txt"
+                "rseqc", "{sample}/{sample}.pe.read_distribution.txt"
             ),
-            sample = SAMPLES_PE
+            sample=SAMPLES_PE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.read_distribution.txt"
+                "rseqc", "{sample}/se/{sample}.se.read_distribution.txt"
             ),
-            sample = SAMPLES_SE
+            sample=SAMPLES_SE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.geneBodyCoverage.txt"
+                "rseqc", "{sample}/{sample}.pe.geneBodyCoverage.txt"
             ),
-            sample = SAMPLES_PE
+            sample=SAMPLES_PE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.geneBodyCoverage.txt"
+                "rseqc", "{sample}/se/{sample}.se.geneBodyCoverage.txt"
             ),
-            sample = SAMPLES_SE
+            sample=SAMPLES_SE,
+        ),
+        expand(
+            resolve_results_filepath("rseqc", "{sample}/{sample}.pe.bam_stat.txt"),
+            sample=SAMPLES_PE,
+        ),
+        expand(
+            resolve_results_filepath("rseqc", "{sample}/se/{sample}.se.bam_stat.txt"),
+            sample=SAMPLES_SE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.bam_stat.txt"
+                "rseqc", "{sample}/{sample}.pe.junction_annotation.txt"
             ),
-            sample = SAMPLES_PE
+            sample=SAMPLES_PE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.bam_stat.txt"
+                "rseqc", "{sample}/se/{sample}.se.junction_annotation.txt"
             ),
-            sample = SAMPLES_SE
+            sample=SAMPLES_SE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.junction_annotation.txt"
+                "rseqc", "{sample}/{sample}.pe.junctionSaturation_plot.r"
             ),
-            sample = SAMPLES_PE
+            sample=SAMPLES_PE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.junction_annotation.txt"
+                "rseqc", "{sample}/se/{sample}.se.junctionSaturation_plot.r"
             ),
-            sample = SAMPLES_SE
+            sample=SAMPLES_SE,
+        ),
+        expand(
+            resolve_results_filepath("rseqc", "{sample}/{sample}.pe.GC.xls"),
+            sample=SAMPLES_PE,
+        ),
+        expand(
+            resolve_results_filepath("rseqc", "{sample}/se/{sample}.se.GC.xls"),
+            sample=SAMPLES_SE,
+        ),
+        expand(
+            resolve_results_filepath("rseqc", "{sample}/{sample}.pe.pos.DupRate.xls"),
+            sample=SAMPLES_PE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.junctionSaturation_plot.r"
+                "rseqc", "{sample}/se/{sample}.se.pos.DupRate.xls"
             ),
-            sample = SAMPLES_PE
+            sample=SAMPLES_SE,
+        ),
+        expand(
+            resolve_results_filepath("rseqc", "{sample}/{sample}.pe.saturation.pdf"),
+            sample=SAMPLES_PE,
         ),
         expand(
             resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.se.junctionSaturation_plot.r"
+                "rseqc", "{sample}/se/{sample}.se.saturation.pdf"
             ),
-            sample = SAMPLES_SE
+            sample=SAMPLES_SE,
         ),
-        expand(
-            resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.GC.xls"
-            ),
-            sample = SAMPLES_PE
-        ),
-        expand(
-            resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.GC.xls"
-            ),
-            sample = SAMPLES_SE
-        ),
-        expand(
-            resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.pos.DupRate.xls"
-            ),
-            sample = SAMPLES_PE
-        ),
-        expand(
-            resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.pos.DupRate.xls"
-            ),
-            sample = SAMPLES_SE
-        ),
-        expand(
-            resolve_results_filepath(
-                "rseqc",
-                "{sample}/{sample}.pe.saturation.pdf"
-            ),
-            sample = SAMPLES_PE
-        ),
-        expand(
-            resolve_results_filepath(
-                "rseqc",
-                "{sample}/se/{sample}.se.saturation.pdf"
-            ),
-            sample = SAMPLES_SE
-        ),
-
-
         # FastQC PE
         expand(
-            resolve_results_filepath("qc","fastqc/{sample}-R1.trimmed_fastqc.zip"),
-            sample=SAMPLES_PE
+            resolve_results_filepath("qc", "fastqc/{sample}-R1.trimmed_fastqc.zip"),
+            sample=SAMPLES_PE,
         ),
         expand(
-            resolve_results_filepath("qc","fastqc/{sample}-R2.trimmed_fastqc.zip"),
-            sample=SAMPLES_PE
+            resolve_results_filepath("qc", "fastqc/{sample}-R2.trimmed_fastqc.zip"),
+            sample=SAMPLES_PE,
         ),
-
         # FastQC SE
         expand(
-            resolve_results_filepath("qc","fastqc/se/{sample}_SE_fastqc.zip"),
-            sample=SAMPLES_SE
+            resolve_results_filepath("qc", "fastqc/se/{sample}.trimmed_fastqc.zip"),
+            sample=SAMPLES_SE,
         ),
-
         # MultiQC final report
-        resolve_results_filepath("qc","multiqc/multiqc_report.html")
-
-       
-
-
-
-
-
-
+        resolve_results_filepath("qc", "multiqc/multiqc_report.html"),
