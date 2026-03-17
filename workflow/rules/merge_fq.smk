@@ -6,6 +6,8 @@ rule fastq_merge_pe_r1:
                 "reads",
                 "untrimmed/{sample}-R1.fq.gz"
         )
+    wildcard_constraints:
+        sample=r"[^/]+"
     log:
         resolve_logs_filepath(
             "merge_fq",
@@ -32,6 +34,8 @@ rule fastq_merge_pe_r2:
             "reads",
             "untrimmed/{sample}-R2.fq.gz"
         )
+    wildcard_constraints:
+        sample=r"[^/]+"
     log:
         resolve_logs_filepath(
             "merge_fq",
@@ -60,6 +64,8 @@ rule fastq_merge_se:
             "reads",
             "untrimmed/se/{sample}.fq.gz"
         )
+    wildcard_constraints:
+        sample=r"[^/]+"
     log:
         resolve_logs_filepath(
             "merge_fq",

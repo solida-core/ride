@@ -52,6 +52,8 @@ rule kallisto_quant_pe:
             "kallisto",
             "{sample}/run_info.json"
         )
+    wildcard_constraints:
+        sample=r"[^/]+"
     params:
         outdir=resolve_results_filepath(
             "kallisto",
@@ -103,6 +105,8 @@ rule kallisto_quant_se:
         json= resolve_results_filepath(
             "kallisto",
             "se/{sample}/run_info.json")
+    wildcard_constraints:
+        sample=r"[^/]+"
     params:
         outdir  = resolve_results_filepath(
             "kallisto",

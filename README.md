@@ -1,20 +1,18 @@
 # RiDE – RNA-Seq Differential Expression Pipeline
 
 RiDE is a reproducible and modular Snakemake pipeline for RNA-Seq differential expression analysis.  
-It performs trimming, alignment, quantification, QC, and DE analysis using STAR, kallisto, and DESeq2.  
-Each run is fully isolated and includes a snapshot of the configuration for complete traceability.
+It performs trimming, alignment, quantification, and quality control,
+while differential expression analysis is carried out by a dedicated
+R-based module integrated in the framework.
 
----
 
-## 📦 Requirements
+## Requirements
 
 - Conda / Miniconda
 - Snakemake ≥ 8.x
 - Bash shell (Linux/macOS)
 
----
-
-## 📥 Clone the Repository
+## Clone the Repository
 
 Before installing the environment, clone the pipeline:
 
@@ -23,9 +21,7 @@ git clone https://github.com/solida-core/ride.git
 cd ride
 ````
 
----
-
-## 🔧 Setup
+## Setup
 
 Install the Conda environment:
 
@@ -51,9 +47,7 @@ Show all available Make targets:
 make help
 ```
 
----
-
-## ⚙️ Configuration
+## Configuration
 
 Before running the pipeline, you must edit the configuration files to match your dataset,
 reference genomes, and analysis parameters.
@@ -68,11 +62,10 @@ At minimum, you should review:
 
 - config/reheader.tsv (optional but recommended)
 
-📁 Configuration details
+### Configuration details
 
 See [config/README.md](config/README.md) for a detailed description of all configuration files and their expected formats.
 
----
 
 ## 🚀 Running the Pipeline
 
@@ -129,9 +122,8 @@ Options:
 ./run_ride.sh -p "--cores 40 --latency-wait 60"
 ````
 
----
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 config/            # Configuration files
@@ -151,9 +143,8 @@ Each run directory contains a copy of the configuration and all workflow outputs
 * `summary.tsv`
 * `report.html`
 
----
 
-## 📊 Output Summary
+## Output Summary
 
 RIDE produces:
 
@@ -164,9 +155,8 @@ RIDE produces:
 * Snakemake HTML report
 * Execution summary table
 
----
 
-## 🛠️ Makefile Targets
+## Makefile Targets
 
 ```makefile
 make help        # Show help
@@ -176,14 +166,8 @@ make clean       # Remove the environment
 make run         # Execute the pipeline via the launcher
 ```
 
----
+## Credits
 
-## 👤 Author
-
-Maintained by Rossano Atzeni — CRS4 Bioinformatics Unit
-
----
-
-## 📄 License
-
-Distributed under the MIT License (see `LICENSE`).
+* **Authors & Maintainers:** [Rossano Atzeni](https://www.crs4.it/en/people/rossano-atzeni/)
+* **Institution:** [CRS4](https://www.crs4.it) - Center for Advanced Studies, Research and Development in Sardinia
+* **Contact:** [ratzeni@crs4.it](mailto:ratzeni@crs4.it)
