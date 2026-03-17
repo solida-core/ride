@@ -67,7 +67,7 @@ At minimum, you should review:
 See [config/README.md](config/README.md) for a detailed description of all configuration files and their expected formats.
 
 
-## 🚀 Running the Pipeline
+## Running the Pipeline
 
 Launch the workflow with:
 
